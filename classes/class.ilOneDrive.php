@@ -2,6 +2,7 @@
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php');
 require_once('./Modules/Cloud/classes/class.ilCloudPlugin.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodAppBusiness.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodTenant.php');
 
 /**
  * Class ilOneDrive
@@ -10,6 +11,10 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  */
 class ilOneDrive extends ilCloudPlugin {
 
+	/**
+	 * @var exodApp
+	 */
+	protected static $app_instance;
 	/**
 	 * @var string
 	 */
@@ -33,7 +38,8 @@ class ilOneDrive extends ilCloudPlugin {
 	/**
 	 * @var int
 	 */
-	protected $max_file_size = 0;
+	protected $max_file_size = 200;
+
 
 
 	public function create() {
@@ -44,13 +50,26 @@ class ilOneDrive extends ilCloudPlugin {
 
 
 	/**
+	 * @param exodBearerToken $exodBearerToken
+	 */
+	public function storeToken(exodBearerToken $exodBearerToken) {
+		$this->setAccessToken($exodBearerToken->getAccessToken());
+		$this->setRefreshToken($exodBearerToken->getRefreshToken());
+		$this->setValidThrough($exodBearerToken->getValidThrough());
+		$this->doUpdate();
+	}
+
+
+	/**
 	 * @return exodBearerToken
 	 */
 	public function getTokenObject() {
 		$token = new exodBearerToken();
-		$token->setAccessToken($this->getAccessToken());
-		$token->setRefreshToken($this->getRefreshToken());
-		$token->setValidThrough($this->getValidThrough());
+		if ($this->getAccessToken()) {
+			$token->setAccessToken($this->getAccessToken());
+			$token->setRefreshToken($this->getRefreshToken());
+			$token->setValidThrough($this->getValidThrough());
+		}
 
 		return $token;
 	}
@@ -58,10 +77,17 @@ class ilOneDrive extends ilCloudPlugin {
 
 	/**
 	 * @return exodAppBusiness
-	 * @deprecated use ilOneDrivePlugin::getInstance()->getApp();
 	 */
-	public function getApp() {
-		ilOneDrivePlugin::getInstance()->getApp();
+	public function getExodApp() {
+		if (!isset(self::$app_instance)) {
+			$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
+			if($inst->checkAndRefreshToken()) {
+				$this->storeToken($inst->getExodBearerToken());
+			}
+			self::$app_instance = $inst;
+		}
+
+		return self::$app_instance;
 	}
 
 
@@ -80,6 +106,7 @@ class ilOneDrive extends ilCloudPlugin {
 				$this->{$k} = $rec->{$k};
 			}
 		}
+		$this->setMaxFileSize(500);
 
 		return true;
 	}

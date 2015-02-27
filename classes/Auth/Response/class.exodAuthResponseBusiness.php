@@ -80,8 +80,11 @@ class exodAuthResponse {
 
 	/**
 	 * @param array $fields
+	 * @param int   $request_type
+	 *
+	 * @throws ilCloudException
 	 */
-	public function loadFromRequest($fields = [ 'code' ], $request_type = self::REQ_TYPE_GET) {
+	public function loadFromRequest($fields = array( 'code' ), $request_type = self::REQ_TYPE_GET) {
 		$arr = array();
 		switch ($request_type) {
 			case self::REQ_TYPE_GET:
@@ -102,11 +105,16 @@ class exodAuthResponse {
 
 
 	/**
-	 * @param stdClass $response
+	 * @param $response
 	 *
 	 * @throws ilCloudException
 	 */
-	public function loadFromResponse(stdClass $response) {
+	public function loadFromResponse($response) {
+		$response = json_decode($response);
+		if (json_last_error()) {
+			throw new ilCloudException(- 1, 'Wrong response from Server');
+		}
+
 		foreach ($response as $k => $field) {
 			$this->{$k} = $response->$k;
 		}

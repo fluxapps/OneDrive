@@ -11,15 +11,14 @@ require_once('class.exodClientBusiness.php');
 class exodClientFactory {
 
 	/**
-	 * @param exodApp         $app
-	 * @param exodBearerToken $token
+	 * @param exodApp $exodApp
 	 *
 	 * @return exodClientBusiness
 	 */
-	public static function getClientInstance(exodApp $app, exodBearerToken $token) {
-		switch ($app->getType()) {
+	public static function getInstance(exodApp $exodApp) {
+		switch ($exodApp->getType()) {
 			case exodApp::TYPE_BUSINESS:
-				return new exodClientBusiness($app, $token);
+				return new exodClientBusiness($exodApp);
 		}
 	}
 }

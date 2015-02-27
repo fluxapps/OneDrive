@@ -17,6 +17,8 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 			'app_name' => array( 'type' => 'ilTextInputGUI', 'info' => 'config_info_app_name', 'subelements' => NULL ),
 			'app_key' => array( 'type' => 'ilTextInputGUI', 'info' => 'config_info_app_key', 'subelements' => NULL ),
 			'app_secret' => array( 'type' => 'ilTextInputGUI', 'info' => 'config_info_app_secret', 'subelements' => NULL ),
+			'tenant' => array( 'type' => 'ilTextInputGUI', 'info' => 'config_info_tenant', 'subelements' => NULL ),
+			'tenant_id' => array( 'type' => 'ilTextInputGUI', 'info' => 'config_info_tenant_id', 'subelements' => NULL ),
 			/*'config_max_file_size' => array( 'type' => 'ilCheckboxInputGUI', 'info' => 'config_info_config_max_upload_size', 'subelements' => NULL ),
 			'default_max_file_size' => array( 'type' => 'ilNumberInputGUI', 'info' => 'config_info_default_max_upload_size', 'subelements' => NULL ),
 			'default_allow_public_links' => array(
