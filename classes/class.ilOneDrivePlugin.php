@@ -11,7 +11,10 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 class ilOneDrivePlugin extends ilCloudHookPlugin implements ilDynamicLanguageInterfaceOD {
 
 	const PLUGIN_NAME = 'OneDrive';
-
+	/**
+	 * @var exodAppBusiness
+	 */
+	protected static $app_instance;
 
 	/**
 	 * @return string
@@ -19,24 +22,24 @@ class ilOneDrivePlugin extends ilCloudHookPlugin implements ilDynamicLanguageInt
 	public function getPluginName() {
 		return self::PLUGIN_NAME;
 	}
+
+
 	/**
+	 * @param exodBearerToken $exodBearerToken
+	 *
 	 * @return exodAppBusiness
 	 */
-	public function getApp() {
-		return new exodAppBusiness();
-	}
+	public function getExodApp(exodBearerToken $exodBearerToken) {
+		$exodTenant = new exodTenant();
+		$exodTenant->setTenantId('7b1ce663-ae89-4a2a-b34a-79142338f3f2');
+		$exodTenant->setTenantName('phzh');
 
-	/**
-	 * @param $a_var
-	 *
-	 * @return mixed|string
-	 */
-	public function txt($a_var, $original = false) {
-		if ($original) {
-			return parent::txt($a_var);
-		}
+		$client_id = '1bcd072d-05ec-4d61-89d7-bd8514172987';
+		$client_secret = 'LG5cK4keVdLN18HsG6wu6RfwGRcK1/rbquDG1bDI3LA=';
 
-		return ilDynamicLanguageOD::getInstance($this, ilDynamicLanguageOD::MODE_DEV)->txt($a_var);
+		$exodAppBusiness = exodAppBusiness::getInstance($exodBearerToken, $client_id, $client_secret, $exodTenant);
+
+		return $exodAppBusiness;
 	}
 
 

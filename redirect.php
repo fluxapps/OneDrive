@@ -1,23 +1,10 @@
 <?php
-$splitPos = strpos($_GET["state"], "|");
-if ($splitPos === false) {
-	//something went wrong
-	$state = NULL;
-	echo "Error in Auth, state equqals null";
-	exit;
-} else {
-	$state = substr($_GET["state"], $splitPos + 1);
-}
+require_once('./Services/Init/classes/class.ilInitialisation.php');
+ilInitialisation::initILIAS();
 
-$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'HTTPS://' : 'HTTP://';
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodAuthFactory.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php');
 
-$path = str_replace("Customizing/global/plugins/Modules/Cloud/CloudHook/Dropbox/redirect.php", "", $_SERVER['SCRIPT_NAME']);
-
-$address = $_SERVER['SERVER_NAME'];
-
-if (array_key_exists("code", $_GET)) {
-	header('Location: ' . $protocol . $address . $path . htmlspecialchars_decode($state) . '&code=' . $_GET["code"] . '&state=' . $_GET["state"]);
-} else {
-	header('Location: ' . $protocol . $address . $path . htmlspecialchars_decode($state));
-}
+ilOneDrivePlugin::getInstance()->getExodApp(new exodBearerToken())->getExodAuth()->redirectToObject();
+exit;
 ?>

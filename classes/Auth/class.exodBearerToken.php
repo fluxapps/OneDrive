@@ -23,6 +23,32 @@ class exodBearerToken {
 
 
 	/**
+	 * @return bool
+	 */
+	public function check() {
+		if ($this->getValidThrough() < time() AND $this->getAccessToken() AND $this->getRefreshToken()) {
+			return false;
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function refresh(exodAuth $exodAuth) {
+		if (!$this->check()) {
+			$exodAuth->refreshToken($this);
+
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getAccessToken() {
