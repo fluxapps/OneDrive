@@ -42,7 +42,8 @@ class exodClientBusiness extends exodClientBase {
 		$file->loadFromStdClass($this->getResponseJsonDecoded());
 		$this->setRessource($file->getContentUrl());
 
-		header("Content-type: " . $this->getResponseMimeType());
+		//		header("Content-type: " . $this->getResponseMimeType());
+		header("Content-type: application/octet-stream");
 		header('Content-Description: File Transfer');
 		header('Content-Disposition: attachment; filename=' . str_replace(' ', '_', basename($file->getName())));
 		header('Content-Transfer-Encoding: binary');
@@ -95,27 +96,24 @@ class exodClientBusiness extends exodClientBase {
 	 * @throws ilCloudException
 	 */
 	public function uploadFile($location, $local_file_path) {
-		//$location = ltrim($location, '/');
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$dirname = dirname($location);
 		if ($dirname == '.') {
 			$dirname = '/';
 		}
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode($dirname) . '\')');
-//				throw new ilCloudException(-1, $this->getRessource());
 		$this->request();
-		//
 
 		$folder = new exodFolder();
 		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
-
 		$name = rawurlencode(basename($location));
-		$content = file_get_contents($local_file_path);
+
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/Files/' . $folder->getId() . '/children/' . $name . '/content');
-//				throw new ilCloudException(-1, $this->getRessource());
-		$this->setRequestBody($content);
-		$this->setRequestContentType('text/plain');
+		$this->setRequestFilePath($local_file_path);
+		$request_content_type = finfo_file($finfo, $local_file_path);
+		$this->setRequestContentType($request_content_type);
 		$this->request();
 
 		return true;
