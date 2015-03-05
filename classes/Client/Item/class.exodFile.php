@@ -10,6 +10,20 @@ require_once('class.exodItem.php');
 class exodFile extends exodItem {
 
 	/**
+	 * @var array
+	 */
+	protected static $ms_formats = array(
+		'doc',
+		'docx',
+		'dot',
+		'dotx',
+		'xls',
+		'xlsx',
+		'xlt',
+		'xltx',
+
+	);
+	/**
 	 * @var int
 	 */
 	protected $type = self::TYPE_FILE;
@@ -21,6 +35,32 @@ class exodFile extends exodItem {
 	 * @var string
 	 */
 	protected $content_url = '';
+
+
+	/**
+	 * @return bool
+	 */
+	public function isMsFormat() {
+		return in_array($this->getSuffix(), self::$ms_formats);
+	}
+
+
+	/**
+	 * @return null
+	 */
+	public function getMsURL() {
+		if (!$this->isMsFormat()) {
+			return NULL;
+		}
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getSuffix() {
+		return pathinfo($this->getName(), PATHINFO_EXTENSION);
+	}
 
 
 	/**

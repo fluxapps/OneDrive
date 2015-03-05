@@ -123,8 +123,13 @@ class ilOneDriveService extends ilCloudPluginService {
 	/**
 	 * @param null            $path
 	 * @param ilCloudFileTree $file_tree
+	 *
+	 * @return bool
 	 */
 	public function deleteItem($path = NULL, ilCloudFileTree $file_tree = NULL) {
+		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
+
+		return $this->getClient()->delete($path);
 	}
 
 
