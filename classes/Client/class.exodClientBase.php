@@ -65,6 +65,10 @@ abstract class exodClientBase {
 	 * @var string
 	 */
 	protected $request_etag = '';
+	/**
+	 * @var string
+	 */
+	protected $request_file_path = '';
 
 
 	/**
@@ -108,7 +112,7 @@ abstract class exodClientBase {
 		curl_setopt($ch, CURLOPT_URL, $this->getRessource());
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->getRequestType());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 1);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 3);
 
 		$headers = array(
 			"Authorization: Bearer " . $this->getAccessToken(),
@@ -119,13 +123,10 @@ abstract class exodClientBase {
 				curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 				break;
 			case self::REQ_TYPE_PUT:
-				$headers[] = "Content-Length: " . strlen($this->getRequestBody());
-				$headers[] = 'Content-Type: ' . $this->getRequestContentType();
-
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $this->getRequestBody());
 				curl_setopt($ch, CURLOPT_PUT, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->getRequestBody()));
-
+				$fh_res = fopen($this->getRequestFilePath(), 'r');
+				curl_setopt($ch, CURLOPT_INFILE, $fh_res);
+				curl_setopt($ch, CURLOPT_INFILESIZE, filesize($this->getRequestFilePath()));
 				break;
 			case self::REQ_TYPE_DELETE:
 				$headers[] = 'if-match: ' . $this->getRequestEtag() . '';
@@ -364,6 +365,22 @@ abstract class exodClientBase {
 	 */
 	public function setRequestEtag($request_etag) {
 		$this->request_etag = $request_etag;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getRequestFilePath() {
+		return $this->request_file_path;
+	}
+
+
+	/**
+	 * @param string $request_file_path
+	 */
+	public function setRequestFilePath($request_file_path) {
+		$this->request_file_path = $request_file_path;
 	}
 }
 

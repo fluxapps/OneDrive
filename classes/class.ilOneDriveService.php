@@ -71,7 +71,6 @@ class ilOneDriveService extends ilCloudPluginService {
 			//			echo "!";
 		}
 		$file_tree->setLoadingOfFolderComplete($parent_folder);
-		//		$file_tree->clearFileTreeSession();
 	}
 
 
