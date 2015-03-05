@@ -35,8 +35,8 @@ abstract class exodApp {
 	/**
 	 * @var string
 	 */
-	//	protected $redirect_uri = 'https://rel44.local/od_oauth.php';
-	protected $redirect_uri = 'https://ilias.phzh.ch/next/od_oauth.php';
+	protected $redirect_uri = 'https://rel44.local/od_oauth.php';
+	//	protected $redirect_uri = 'https://ilias.phzh.ch/next/od_oauth.php';
 	/**
 	 * @var string
 	 */

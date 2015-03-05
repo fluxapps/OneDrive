@@ -79,13 +79,13 @@ class ilOneDrive extends ilCloudPlugin {
 	 * @return exodAppBusiness
 	 */
 	public function getExodApp() {
-		if (!isset(self::$app_instance)) {
+//		if (!isset(self::$app_instance)) {
 			$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
 			if($inst->checkAndRefreshToken()) {
 				$this->storeToken($inst->getExodBearerToken());
 			}
 			self::$app_instance = $inst;
-		}
+//		}
 
 		return self::$app_instance;
 	}

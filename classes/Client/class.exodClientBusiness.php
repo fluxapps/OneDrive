@@ -21,6 +21,7 @@ class exodClientBusiness extends exodClientBase {
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $folder_id . '\')/children';
 		$this->setRessource($ressource);
+		//		throw new ilCloudException(-1, $ressource);
 		$response = $this->getResponseJsonDecoded();
 
 		return exodItemFactory::getInstancesFromResponse($response);
@@ -94,14 +95,14 @@ class exodClientBusiness extends exodClientBase {
 	 * @throws ilCloudException
 	 */
 	public function uploadFile($location, $local_file_path) {
-		$location = ltrim($location, '/');
+		//$location = ltrim($location, '/');
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$dirname = dirname($location);
 		if ($dirname == '.') {
 			$dirname = '/';
 		}
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode($dirname) . '\')');
-		//		throw new ilCloudException(-1, $this->getRessource());
+//				throw new ilCloudException(-1, $this->getRessource());
 		$this->request();
 		//
 
@@ -112,7 +113,7 @@ class exodClientBusiness extends exodClientBase {
 		$content = file_get_contents($local_file_path);
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/Files/' . $folder->getId() . '/children/' . $name . '/content');
-		//		throw new ilCloudException(-1, $this->getRessource());
+//				throw new ilCloudException(-1, $this->getRessource());
 		$this->setRequestBody($content);
 		$this->setRequestContentType('text/plain');
 		$this->request();

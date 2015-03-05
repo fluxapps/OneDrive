@@ -13,12 +13,6 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 class ilOneDriveService extends ilCloudPluginService {
 
 	/**
-	 * @var exodAuth
-	 */
-	protected $auth;
-
-
-	/**
 	 * @return exodAppBusiness
 	 */
 	public function getApp() {
@@ -68,13 +62,16 @@ class ilOneDriveService extends ilCloudPluginService {
 	public function addToFileTree(ilCloudFileTree  &$file_tree, $parent_folder = "/") {
 		foreach ($this->getClient()->listFolder($parent_folder) as $item) {
 			if ($item instanceof exodFolder) {
-				//				$file_tree->addFolderToService($item->getId(), $item->getName());
+				// $file_tree->addFolderToService($item->getId(), $item->getName());
 			}
 			$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
-			$file_tree->addNode($item->getFullPath(), $item->getId(), ($item instanceof
-				exodFolder), strtotime($item->getDateTimeLastModified()), $size);
+			$is_Dir = $item instanceof exodFolder;
+			//			throw new ilCloudException(-1, $item->getFullPath());
+			$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
+			//			echo "!";
 		}
 		$file_tree->setLoadingOfFolderComplete($parent_folder);
+		//		$file_tree->clearFileTreeSession();
 	}
 
 
@@ -97,6 +94,9 @@ class ilOneDriveService extends ilCloudPluginService {
 	 */
 	public function putFile($file, $name, $path = '', ilCloudFileTree $file_tree = NULL) {
 		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
+		if ($path == '/') {
+			$path = '';
+		}
 
 		return $this->getClient()->uploadFile($path . "/" . $name, $file);
 	}
@@ -148,10 +148,10 @@ class ilOneDriveService extends ilCloudPluginService {
 		return parent::getPluginHookObject();
 	}
 
-
-	public function getRootId($root_path) {
-		return '';
-	}
+	//
+	//	public function getRootId($root_path) {
+	//		return '';
+	//	}
 }
 
 ?>
