@@ -60,6 +60,10 @@ abstract class exodClientBase {
 	 * @var string
 	 */
 	protected $request_content_type = '';
+	/**
+	 * @var string
+	 */
+	protected $request_etag = '';
 
 
 	/**
@@ -112,13 +116,16 @@ abstract class exodClientBase {
 
 		switch ($this->getRequestType()) {
 			case self::REQ_TYPE_PUT:
-				$headers[] = "Content-Length " . strlen($this->getRequestBody());
+				$headers[] = "Content-Length: " . strlen($this->getRequestBody());
 				$headers[] = 'Content-Type: ' . $this->getRequestContentType();
 
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $this->getRequestBody());
 				curl_setopt($ch, CURLOPT_PUT, true);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($this->getRequestBody()));
 
+				break;
+			case self::REQ_TYPE_DELETE:
+				$headers[] = 'if-match: ' . $this->getRequestEtag() . '';
 				break;
 		}
 
@@ -331,6 +338,22 @@ abstract class exodClientBase {
 	 */
 	public function setRequestContentType($request_content_type) {
 		$this->request_content_type = $request_content_type;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getRequestEtag() {
+		return $this->request_etag;
+	}
+
+
+	/**
+	 * @param string $request_etag
+	 */
+	public function setRequestEtag($request_etag) {
+		$this->request_etag = $request_etag;
 	}
 }
 

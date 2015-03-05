@@ -69,11 +69,11 @@ class exodClientBusiness extends exodClientBase {
 		$path = ltrim($path, '/');
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId() . '/children/' . basename(rawurlencode($path)));
-//		$this->setRessource($this->getExodApp()->getRessource() . '/Files/getByPath("' . $path . '")');
-//		throw new ilCloudException(-1, $this->getRessource());
-//		$this->setRequestContentType('application/json');
-//		$req = array( 'name' => basename($path) );
-//		$this->setRequestBody(json_encode($req));
+		//		$this->setRessource($this->getExodApp()->getRessource() . '/Files/getByPath("' . $path . '")');
+		//		throw new ilCloudException(-1, $this->getRessource());
+		//		$this->setRequestContentType('application/json');
+		//		$req = array( 'name' => basename($path) );
+		//		$this->setRequestBody(json_encode($req));
 		//		$this->setRequestContentLength(strlen($this->getRequestBody()));
 		$this->request();
 
@@ -97,11 +97,11 @@ class exodClientBusiness extends exodClientBase {
 		$location = ltrim($location, '/');
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$dirname = dirname($location);
-		if($dirname == '.') {
+		if ($dirname == '.') {
 			$dirname = '/';
 		}
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode($dirname) . '\')');
-//		throw new ilCloudException(-1, $this->getRessource());
+		//		throw new ilCloudException(-1, $this->getRessource());
 		$this->request();
 		//
 
@@ -112,9 +112,30 @@ class exodClientBusiness extends exodClientBase {
 		$content = file_get_contents($local_file_path);
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/Files/' . $folder->getId() . '/children/' . $name . '/content');
-//		throw new ilCloudException(-1, $this->getRessource());
+		//		throw new ilCloudException(-1, $this->getRessource());
 		$this->setRequestBody($content);
 		$this->setRequestContentType('text/plain');
+		$this->request();
+
+		return true;
+	}
+
+
+	/**
+	 * @param $path
+	 *
+	 * @return bool
+	 */
+	public function delete($path) {
+		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode($path) . '\')');
+		$this->setRequestType(self::REQ_TYPE_GET);
+		$this->request();
+
+		$folder = new exodFile();
+		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
+
+		$this->setRequestEtag($folder->getETag());
+		$this->setRequestType(self::REQ_TYPE_DELETE);
 		$this->request();
 
 		return true;
