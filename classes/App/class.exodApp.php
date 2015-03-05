@@ -35,8 +35,8 @@ abstract class exodApp {
 	/**
 	 * @var string
 	 */
-	***REMOVED***
-	protected $redirect_uri = '***REMOVED***';
+	protected $redirect_uri = 'https://rel44.local/od_oauth.php';
+	//	protected $redirect_uri = '***REMOVED***';
 	/**
 	 * @var string
 	 */

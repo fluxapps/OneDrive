@@ -8,6 +8,7 @@
  */
 abstract class exodClientBase {
 
+	const DEBUG = true;
 	const REQ_TYPE_GET = 'GET';
 	const REQ_TYPE_POST = 'POST';
 	const REQ_TYPE_DELETE = 'DELETE';
@@ -103,18 +104,20 @@ abstract class exodClientBase {
 	 * @throws ilCloudException
 	 */
 	protected function request() {
-		global $ilLog;
-		//		$ilLog->write('FSX request');
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getRessource());
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->getRequestType());
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSLVERSION, 1);
 
 		$headers = array(
 			"Authorization: Bearer " . $this->getAccessToken(),
 		);
 
 		switch ($this->getRequestType()) {
+			case self::REQ_TYPE_GET:
+				curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+				break;
 			case self::REQ_TYPE_PUT:
 				$headers[] = "Content-Length: " . strlen($this->getRequestBody());
 				$headers[] = 'Content-Type: ' . $this->getRequestContentType();
@@ -132,6 +135,9 @@ abstract class exodClientBase {
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
 		$resp_orig = curl_exec($ch);
+		if (! $resp_orig) {
+			throw new ilCloudException(- 1, curl_error($ch));
+		}
 		$this->setResponseBody($resp_orig);
 		$this->setResponseMimeType(curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
 		$this->setResponseContentSize(curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD));
@@ -143,8 +149,12 @@ abstract class exodClientBase {
 		}
 
 		if ($resp->error) {
-			throw new ilCloudException(- 1, $resp->error->message);
-			//			throw new ilCloudException(- 1, print_r($this, true));
+			if (self::DEBUG) {
+				throw new ilCloudException(- 1, print_r($resp, true));
+			} else {
+
+				throw new ilCloudException(- 1, $resp->error->message);
+			}
 		}
 	}
 
