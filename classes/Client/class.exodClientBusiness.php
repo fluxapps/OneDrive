@@ -12,19 +12,60 @@ require_once('class.exodClientBase.php');
 class exodClientBusiness extends exodClientBase {
 
 	/**
-	 * @param $folder_id
+	 * @param $id
 	 *
 	 * @return exodFile[]|exodFolder[]
 	 */
-	public function listFolder($folder_id) {
-		$folder_id = htmlspecialchars_decode($folder_id);
+	public function listFolder($id) {
+		$id = rawurlencode($id);
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $folder_id . '\')/children';
+		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $id . '\')/children';
 		$this->setRessource($ressource);
-		//		throw new ilCloudException(-1, $ressource);
 		$response = $this->getResponseJsonDecoded();
-
+		//var_dump($response ); // FS
+		//		exit;
+		//		throw new ilCloudException(-1, $response );
 		return exodItemFactory::getInstancesFromResponse($response);
+	}
+
+
+	/**
+	 * @param $id
+	 *
+	 * @return exodFile
+	 * @throws ilCloudException
+	 */
+	public function getFileObject($id) {
+		$this->setRequestType(self::REQ_TYPE_GET);
+		$ressource = $this->getExodApp()->getRessource() . '/files/' . $id . '';
+		$this->setRessource($ressource);
+		//		throw new ilCloudException(-1, $ressource );
+		$this->request();
+
+		$n = new exodFile();
+		$n->loadFromStdClass($this->getResponseJsonDecoded());
+
+		return $n;
+	}
+
+
+	/**
+	 * @param $path
+	 *
+	 * @return bool
+	 */
+	public function folderExists($path) {
+		return $this->itemExists($path);
+	}
+
+
+	/**
+	 * @param $path
+	 *
+	 * @return bool
+	 */
+	public function fileExists($path) {
+		return $this->itemExists($path);
 	}
 
 
@@ -36,7 +77,8 @@ class exodClientBusiness extends exodClientBase {
 	 */
 	public function deliverFile($path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . $path . '\')');
+		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode($path) . '\')');
+		//		throw new ilCloudException(-1, $this->getRessource());
 
 		$file = new exodFile();
 		$file->loadFromStdClass($this->getResponseJsonDecoded());
@@ -63,28 +105,18 @@ class exodClientBusiness extends exodClientBase {
 	 */
 	public function createFolder($path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . dirname($path) . '\')');
+		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode(dirname($path)) . '\')');
 		$this->request();
 
 		$folder = new exodFolder();
 		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
 		$path = ltrim($path, '/');
 		$this->setRequestType(self::REQ_TYPE_PUT);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId() . '/children/' . basename(rawurlencode($path)));
-		//		$this->setRessource($this->getExodApp()->getRessource() . '/Files/getByPath("' . $path . '")');
-		//		throw new ilCloudException(-1, $this->getRessource());
-		//		$this->setRequestContentType('application/json');
-		//		$req = array( 'name' => basename($path) );
-		//		$this->setRequestBody(json_encode($req));
-		//		$this->setRequestContentLength(strlen($this->getRequestBody()));
+		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId() . '/children/' . rawurlencode(basename($path)));
+
 		$this->request();
 
-		//		var_dump($this); // FSX
-		//
-		//		echo $this->getAccessToken();
-		//
-
-		return false;
+		return true;
 	}
 
 
@@ -136,6 +168,25 @@ class exodClientBusiness extends exodClientBase {
 		$this->setRequestEtag($folder->getETag());
 		$this->setRequestType(self::REQ_TYPE_DELETE);
 		$this->request();
+
+		return true;
+	}
+
+
+	/**
+	 * @param $path
+	 *
+	 * @return bool
+	 */
+	protected function itemExists($path) {
+		$path = rawurlencode($path);
+		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $path . '\')';
+		$this->setRessource($ressource);
+		try {
+			$this->request();
+		} catch (ilCloudException $e) {
+			return false;
+		}
 
 		return true;
 	}

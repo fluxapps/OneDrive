@@ -8,6 +8,8 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  */
 abstract class exodApp {
 
+	const SSL_STANDARD = NULL;
+	const SSL_V3 = 3;
 	const TYPE_BUSINESS = 1;
 	const TYPE_PUBLIC = 2;
 	const RESP_TYPE_CODE = 'code';
@@ -35,8 +37,8 @@ abstract class exodApp {
 	/**
 	 * @var string
 	 */
-	protected $redirect_uri = 'https://rel44.local/od_oauth.php';
-	//	protected $redirect_uri = '***REMOVED***';
+	***REMOVED***
+	protected $redirect_uri = '***REMOVED***';
 	/**
 	 * @var string
 	 */
@@ -69,11 +71,16 @@ abstract class exodApp {
 	 * @var int
 	 */
 	protected $il_one_drive;
-	protected static $instance;
 	/**
-	 * @return exodApp
+	 * @var
 	 */
-	//	abstract public static function getInstance();
+	protected $ssl_version = self::SSL_STANDARD;
+	/**
+	 * @var bool
+	 */
+	protected $ip_resolve_v4 = false;
+	protected static $instance;
+
 
 	/**
 	 * @param exodBearerToken $exod_bearer_token
@@ -84,6 +91,7 @@ abstract class exodApp {
 		$this->client_id = $client_id;
 		$this->client_secret = $client_secret;
 		$this->exod_bearer_token = $exod_bearer_token;
+		$this->initRedirectUri();
 		$this->buildURLs();
 		$this->init();
 	}
@@ -104,7 +112,6 @@ abstract class exodApp {
 		}
 		$this->setExodAuth($exodAuth);
 		$this->setExodClient($exodClient);
-		// $this->checkAndRefreshToken();
 	}
 
 
@@ -341,6 +348,48 @@ abstract class exodApp {
 	 */
 	public function setExodBearerToken($exod_bearer_token) {
 		$this->exod_bearer_token = $exod_bearer_token;
+	}
+
+
+	protected function initRedirectUri() {
+		$http_path = ILIAS_HTTP_PATH;
+		if (substr($http_path, - 1, 1) != '/') {
+			$http_path = $http_path . '/';
+		}
+		$http_path = $http_path . 'od_oauth.php';
+		$this->setRedirectUri($http_path);
+	}
+
+
+	/**
+	 * @return mixed
+	 */
+	public function getSslVersion() {
+		return $this->ssl_version;
+	}
+
+
+	/**
+	 * @param mixed $ssl_version
+	 */
+	public function setSslVersion($ssl_version) {
+		$this->ssl_version = $ssl_version;
+	}
+
+
+	/**
+	 * @return boolean
+	 */
+	public function getIpResolveV4() {
+		return $this->ip_resolve_v4;
+	}
+
+
+	/**
+	 * @param boolean $ip_resolve_v4
+	 */
+	public function setIpResolveV4($ip_resolve_v4) {
+		$this->ip_resolve_v4 = $ip_resolve_v4;
 	}
 }
 

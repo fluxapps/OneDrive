@@ -120,25 +120,19 @@ class exodAuth {
 		$this->response->loadFromRequest(array( 'code' ));
 		if ($this->response->getCode()) {
 			$this->exod_app->buildURLs();
-			$code = $this->response->getCode();
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $this->exod_app->getTokenUrl());
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-				"Content-Type: application/x-www-form-urlencoded",
-			));
-			$client_id = $this->exod_app->getClientId();
-			$redirect_uri = $this->exod_app->getRedirectUri();
-			$client_secret = $this->exod_app->getClientSecret();
-			$ressource_uri = $this->exod_app->getRessourceUri();
-			$body = "code={$code}&client_id={$client_id}&redirect_uri={$redirect_uri}&grant_type=authorization_code&client_secret={$client_secret}&resource={$ressource_uri}&";
+			$exodCurl = new exodCurl();
+			$exodCurl->setUrl($this->exod_app->getTokenUrl());
+			$exodCurl->addHeader("Content-Type: application/x-www-form-urlencoded");
 
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+			$exodCurl->addPostField('code', $this->response->getCode());
+			$exodCurl->addPostField('client_id', $this->exod_app->getClientId());
+			$exodCurl->addPostField('redirect_uri', $this->exod_app->getRedirectUri());
+			$exodCurl->addPostField('grant_type', 'authorization_code');
+			$exodCurl->addPostField('client_secret', $this->getExodApp()->getClientSecret());
+			$exodCurl->addPostField('resource', $this->exod_app->getRessourceUri());
 
-			$curl_exec = $this->execute($ch);
-			$this->response->loadFromResponse($curl_exec);
+			$exodCurl->post();
+			$this->response->loadFromResponse($exodCurl->getResponseBody());
 
 			$exodBearerToken = new exodBearerToken();
 			$exodBearerToken->setAccessToken($this->getResponse()->getAccessToken());
@@ -158,25 +152,19 @@ class exodAuth {
 	 */
 	public function refreshToken(exodBearerToken &$exodBearerToken) {
 		$this->exod_app->buildURLs();
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->exod_app->getTokenUrl());
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-			"Content-Type: application/x-www-form-urlencoded",
-		));
-		$client_id = $this->exod_app->getClientId();
-		$ressource_uri = $this->exod_app->getRessourceUri();
-		$refresh_token = $exodBearerToken->getRefreshToken();
-		$client_secret = $this->getExodApp()->getClientSecret();
+		$exodCurl = new exodCurl();
+		$exodCurl->setUrl($this->exod_app->getTokenUrl());
+		$exodCurl->addHeader("Content-Type: application/x-www-form-urlencoded");
 
-		$body = "client_secret={$client_secret}&client_id={$client_id}&grant_type=refresh_token&refresh_token={$refresh_token}&resource={$ressource_uri}";
+		$exodCurl->addPostField('client_secret', $this->getExodApp()->getClientSecret());
+		$exodCurl->addPostField('client_id', $this->exod_app->getClientId());
+		$exodCurl->addPostField('grant_type', 'refresh_token');
+		$exodCurl->addPostField('refresh_token', $exodBearerToken->getRefreshToken());
+		$exodCurl->addPostField('resource', $this->exod_app->getRessourceUri());
+		$exodCurl->addPostField('redirect_uri', $this->exod_app->getRedirectUri());
+		$exodCurl->post();
 
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-
-		$curl_exec = $this->execute($ch);
-		$this->response->loadFromResponse($curl_exec);
+		$this->response->loadFromResponse($exodCurl->getResponseBody());
 
 		$exodBearerToken->setRefreshToken($this->response->getRefreshToken());
 		$exodBearerToken->setAccessToken($this->response->getAccessToken());

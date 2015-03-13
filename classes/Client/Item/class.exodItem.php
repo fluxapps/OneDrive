@@ -89,6 +89,14 @@ abstract class exodItem {
 	/**
 	 * @return string
 	 */
+	public function getEncodedFullPath() {
+		return rawurlencode($this->getFullPath());
+	}
+
+
+	/**
+	 * @return string
+	 */
 	public function getId() {
 		return $this->id;
 	}

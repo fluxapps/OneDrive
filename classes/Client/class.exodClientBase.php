@@ -108,42 +108,33 @@ abstract class exodClientBase {
 	 * @throws ilCloudException
 	 */
 	protected function request() {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->getRessource());
-		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->getRequestType());
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-
-		$headers = array(
-			"Authorization: Bearer " . $this->getAccessToken(),
-		);
+		$exodCurl = new exodCurl();
+		$exodCurl->setUrl($this->getRessource());
+		$exodCurl->addHeader("Authorization: Bearer " . $this->getAccessToken());
 
 		switch ($this->getRequestType()) {
 			case self::REQ_TYPE_GET:
-				curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
+				$exodCurl->get();
 				break;
 			case self::REQ_TYPE_PUT:
-				curl_setopt($ch, CURLOPT_PUT, true);
-				$fh_res = fopen($this->getRequestFilePath(), 'r');
-				curl_setopt($ch, CURLOPT_INFILE, $fh_res);
-				curl_setopt($ch, CURLOPT_INFILESIZE, filesize($this->getRequestFilePath()));
+				$exodCurl->setPutFilePath($this->getRequestFilePath());
+				$exodCurl->put();
+
 				break;
 			case self::REQ_TYPE_DELETE:
-				$headers[] = 'if-match: ' . $this->getRequestEtag() . '';
+				$exodCurl->addHeader('if-match: ' . $this->getRequestEtag());
+				$exodCurl->delete();
+				break;
+			case self::REQ_TYPE_POST:
+				$exodCurl->post();
 				break;
 		}
 
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-		$resp_orig = curl_exec($ch);
-		if (! $resp_orig) {
-			throw new ilCloudException(- 1, curl_error($ch));
-		}
-		$this->setResponseBody($resp_orig);
-		$this->setResponseMimeType(curl_getinfo($ch, CURLINFO_CONTENT_TYPE));
-		$this->setResponseContentSize(curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD));
-		$this->setResponseStatus(curl_getinfo($ch, CURLINFO_HTTP_CODE));
-		$resp = json_decode($resp_orig);
+		$this->setResponseBody($exodCurl->getResponseBody());
+		$this->setResponseMimeType($exodCurl->getResponseMimeType());
+		$this->setResponseContentSize($exodCurl->getResponseContentSize());
+		$this->setResponseStatus($exodCurl->getResponseStatus());
+		$resp = json_decode($exodCurl->getResponseBody());
 
 		if ($this->getResponseStatus() == 401) {
 			throw new ilCloudException(998, 'token invalid');

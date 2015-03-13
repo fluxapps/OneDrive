@@ -23,7 +23,7 @@ class ilOneDriveService extends ilCloudPluginService {
 	/**
 	 * @return exodClientBusiness
 	 */
-	protected function getClient() {
+	public function getClient() {
 		return $this->getApp()->getExodClient();
 	}
 
@@ -49,7 +49,10 @@ class ilOneDriveService extends ilCloudPluginService {
 		$exodAuth->loadTokenFromSession();
 		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
 
-		$this->createFolder($this->getPluginObject()->getCloudModulObject()->getRootFolder()); // TODO
+		$rootFolder = $this->getPluginObject()->getCloudModulObject()->getRootFolder();
+		if (! $this->getClient()->folderExists($rootFolder)) {
+			$this->createFolder($rootFolder);
+		}
 
 		return true;
 	}
@@ -61,16 +64,11 @@ class ilOneDriveService extends ilCloudPluginService {
 	 */
 	public function addToFileTree(ilCloudFileTree  &$file_tree, $parent_folder = "/") {
 		foreach ($this->getClient()->listFolder($parent_folder) as $item) {
-			if ($item instanceof exodFolder) {
-				// $file_tree->addFolderToService($item->getId(), $item->getName());
-			}
 			$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
 			$is_Dir = $item instanceof exodFolder;
-			//			throw new ilCloudException(-1, $item->getFullPath());
 			$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
-			//			echo "!";
 		}
-		$file_tree->setLoadingOfFolderComplete($parent_folder);
+//		$file_tree->clearFileTreeSession();
 	}
 
 
@@ -146,11 +144,6 @@ class ilOneDriveService extends ilCloudPluginService {
 	public function getPluginHookObject() {
 		return parent::getPluginHookObject();
 	}
-
-	//
-	//	public function getRootId($root_path) {
-	//		return '';
-	//	}
 }
 
 ?>
