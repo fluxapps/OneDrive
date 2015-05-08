@@ -28,6 +28,10 @@ $fields = array(
 		'type' => 'integer',
 		'length' => 8
 	),
+	'validation_user_id' => array(
+		'type' => 'integer',
+		'length' => 8
+	),
 );
 global $ilDB;
 $ilDB->createTable($plugin_object->getPluginTableName(), $fields);

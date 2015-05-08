@@ -24,7 +24,7 @@ class exodAuth {
 	 */
 	protected $exod_app;
 	/**
-	 * @var exodAuthResponse
+	 * @var exodAuthResponseBase
 	 */
 	protected $response;
 	/**
@@ -62,7 +62,7 @@ class exodAuth {
 
 
 	/**
-	 * @return exodAuthResponse
+	 * @return exodAuthResponseBase
 	 */
 	public function getResponse() {
 		return $this->response;
@@ -70,7 +70,7 @@ class exodAuth {
 
 
 	/**
-	 * @param exodAuthResponse $response
+	 * @param exodAuthResponseBase $response
 	 */
 	public function setResponse($response) {
 		$this->response = $response;
@@ -81,13 +81,8 @@ class exodAuth {
 	 * @param $callback_url
 	 */
 	public function authenticate($callback_url) {
-		ilSession::set(self::EXOD_CALLBACK_URL, $callback_url);
-		$auth_url = $this->exod_app->getAuthUrl();
-		$client_id = $this->exod_app->getClientId();
-		$response_type = $this->exod_app->getResponseType();
-		$redirect_uri = urlencode($this->exod_app->getRedirectUri());
-
-		$auth_url = "{$auth_url}?client_id={$client_id}&response_type={$response_type}&redirect_uri={$redirect_uri}";
+		ilSession::set(self::EXOD_CALLBACK_URL, $this->getExodApp()->getHttpPath() . $callback_url);
+		$auth_url = $this->generateAuthUrl();
 
 		header("Location: " . $auth_url);
 	}
@@ -96,6 +91,7 @@ class exodAuth {
 	public function redirectToObject() {
 		$this->loadToken();
 		$this->storeTokenToSession();
+
 		ilUtil::redirect(ilSession::get(self::EXOD_CALLBACK_URL));
 	}
 
@@ -151,6 +147,9 @@ class exodAuth {
 	 * @return bool
 	 */
 	public function refreshToken(exodBearerToken &$exodBearerToken) {
+		//		throw new ilCloudException(-1, 'failed');
+		$exodLog = exodLog::getInstance();
+		$exodLog->write('refreshing-Token...');
 		$this->exod_app->buildURLs();
 		$exodCurl = new exodCurl();
 		$exodCurl->setUrl($this->exod_app->getTokenUrl());
@@ -190,19 +189,15 @@ class exodAuth {
 
 
 	/**
-	 * @param $ch
-	 *
-	 * @return mixed
-	 * @throws ilCloudException
+	 * @return string
 	 */
-	protected function execute($ch) {
-		$curl_exec = curl_exec($ch);
-		$curl_errno = curl_errno($ch);
-		if ($curl_errno) {
-			throw new ilCloudException(- 1, exodCurl::getErrorText($ch) . ': ' . curl_error($ch));
-		}
+	protected function generateAuthUrl() {
+		$auth_url = $this->exod_app->getAuthUrl();
+		$client_id = $this->exod_app->getClientId();
+		$response_type = $this->exod_app->getResponseType();
+		$redirect_uri = urlencode($this->exod_app->getRedirectUri());
 
-		return $curl_exec;
+		return "{$auth_url}?client_id={$client_id}&response_type={$response_type}&redirect_uri={$redirect_uri}";
 	}
 }
 

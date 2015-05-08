@@ -48,7 +48,7 @@ class ilOneDriveService extends ilCloudPluginService {
 		$exodAuth = $this->getApp()->getExodAuth();
 		$exodAuth->loadTokenFromSession();
 		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
-
+		//		return true;
 		$rootFolder = $this->getPluginObject()->getCloudModulObject()->getRootFolder();
 		if (! $this->getClient()->folderExists($rootFolder)) {
 			$this->createFolder($rootFolder);
@@ -63,12 +63,14 @@ class ilOneDriveService extends ilCloudPluginService {
 	 * @param string          $parent_folder
 	 */
 	public function addToFileTree(ilCloudFileTree  &$file_tree, $parent_folder = "/") {
-		foreach ($this->getClient()->listFolder($parent_folder) as $item) {
+		$exodFiles = $this->getClient()->listFolder($parent_folder);
+
+		foreach ($exodFiles as $item) {
 			$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
 			$is_Dir = $item instanceof exodFolder;
 			$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
 		}
-//		$file_tree->clearFileTreeSession();
+		//		$file_tree->clearFileTreeSession();
 	}
 
 
@@ -95,7 +97,9 @@ class ilOneDriveService extends ilCloudPluginService {
 			$path = '';
 		}
 
-		return $this->getClient()->uploadFile($path . "/" . $name, $file);
+		$return = $this->getClient()->uploadFile($path . "/" . $name, $file);
+
+		return $return;
 	}
 
 
@@ -109,6 +113,7 @@ class ilOneDriveService extends ilCloudPluginService {
 		if ($file_tree instanceof ilCloudFileTree) {
 			$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
 		}
+
 		if ($path != '/') {
 			$this->getClient()->createFolder($path);
 		}
@@ -124,6 +129,7 @@ class ilOneDriveService extends ilCloudPluginService {
 	 * @return bool
 	 */
 	public function deleteItem($path = NULL, ilCloudFileTree $file_tree = NULL) {
+		//		throw new ilCloudException(-1, print_r($file_tree, true));
 		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
 
 		return $this->getClient()->delete($path);

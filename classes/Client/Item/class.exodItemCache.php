@@ -8,6 +8,7 @@
  */
 class exodItemCache {
 
+	const EXOD_ITEM_CACHE = 'exod_item_cache';
 	/**
 	 * @var array
 	 */
@@ -18,7 +19,7 @@ class exodItemCache {
 	 * @param exodItem $exodItem
 	 */
 	public static function store(exodItem $exodItem) {
-		self::$instances[$exodItem->getId()] = $exodItem;
+		$_SESSION[self::EXOD_ITEM_CACHE][$exodItem->getId()] = serialize($exodItem);
 	}
 
 
@@ -28,7 +29,7 @@ class exodItemCache {
 	 * @return bool
 	 */
 	public static function exists($id) {
-		return (self::$instances[$id] instanceof exodItem);
+		return (unserialize($_SESSION[self::EXOD_ITEM_CACHE][$id]) instanceof exodItem);
 	}
 
 
@@ -39,7 +40,7 @@ class exodItemCache {
 	 */
 	public static function get($id) {
 		if (self::exists($id)) {
-			return self::$instances[$id];
+			return unserialize($_SESSION[self::EXOD_ITEM_CACHE][$id]);
 		}
 
 		return NULL;

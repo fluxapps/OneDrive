@@ -1,5 +1,9 @@
 <?php
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodClientFactory.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodAuthBusiness.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodAuthPublic.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodClientBusiness.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodClientPublic.php');
 
 /**
  * Class exodApp
@@ -79,6 +83,9 @@ abstract class exodApp {
 	 * @var bool
 	 */
 	protected $ip_resolve_v4 = false;
+	/**
+	 * @var
+	 */
 	protected static $instance;
 
 
@@ -91,6 +98,7 @@ abstract class exodApp {
 		$this->client_id = $client_id;
 		$this->client_secret = $client_secret;
 		$this->exod_bearer_token = $exod_bearer_token;
+		$this->setExodBearerToken($exod_bearer_token);
 		$this->initRedirectUri();
 		$this->buildURLs();
 		$this->init();
@@ -103,10 +111,12 @@ abstract class exodApp {
 	protected function init() {
 		switch ($this->getType()) {
 			case self::TYPE_BUSINESS:
-				$exodAuth = new exodAuth($this);
+				$exodAuth = new exodAuthBusiness($this);
 				$exodClient = new exodClientBusiness($this);
 				break;
 			case self::TYPE_PUBLIC:
+				$exodAuth = new exodAuthPublic($this);
+				$exodClient = new exodClientPublic($this);
 				// TODO
 				break;
 		}
@@ -116,14 +126,38 @@ abstract class exodApp {
 
 
 	/**
+	 * @return mixed|string
+	 */
+	public function getHttpPath() {
+		$http_path = ILIAS_HTTP_PATH;
+		if (substr($http_path, - 1, 1) != '/') {
+			$http_path = $http_path . '/';
+		}
+		if (strpos($http_path, 'Customizing') > 0) {
+			$http_path = strstr($http_path, 'Customizing', true);
+		}
+
+		return $http_path;
+	}
+
+
+	/**
 	 * @throws Exception
 	 */
 	public function checkAndRefreshToken() {
-		if ($this->exod_bearer_token->refresh($this->getExodAuth())) {
+		if ($this->getExodBearerToken()->refresh($this->getExodAuth())) {
 			return true;
 		}
 
 		return false;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function isTokenValid() {
+		return $this->getExodBearerToken()->isValid();
 	}
 
 

@@ -22,7 +22,10 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
 	 */
 	protected function addItemsAfter() {
 		if (! $this->node->getIsDir()) {
-			$exoFile = $this->getService()->getClient()->getFileObject($this->node->getId());
+			$exoFile = exodItemCache::get($this->node->getId());
+			if (! $exoFile instanceof exodFile) {
+				$exoFile = $this->getService()->getClient()->getFileObject($this->node->getId());
+			}
 			if ($exoFile->getMsURL()) {
 				$this->selection_list->addItem(ilOneDrivePlugin::getInstance()
 					->txt('asl_open_msoffice'), 'ms', $exoFile->getMsURL(), '', '', '_blank');

@@ -1,0 +1,9 @@
+
+
+<soap-env:envelope xmlns:soap-env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://www.uni-hohenheim.de/qisserver/services/dbinterface" xmlns:intf="http://www.uni-hohenheim.de/qisserver/services/dbinterface" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<soap-env:body>
+		<mns:getdataxml xmlns:mns="http://dbinterface.xml.his.de" soap-env:encodingstyle="http://schemas.xmlsoap.org/soap/encoding/">
+			<xmlparams xsi:type="soapenc:string">&lt;SOAPDataService&gt; &lt;general&gt; &lt;object&gt;persons&lt;/object&gt; &lt;group&gt;&lt;/group&gt; &lt;/general&gt; &lt;condition&gt; &lt;id&gt;11411&lt;/id&gt; &lt;/condition&gt; &lt;user-auth&gt; &lt;token&gt;&lt;/token&gt; &lt;/user-auth&gt; &lt;search&gt;&lt;/search&gt; &lt;limit&gt;1&lt;/limit&gt; &lt;offset&gt;0&lt;/offset&gt; &lt;language&gt;de-DE&lt;/language&gt; &lt;/SOAPDataService&gt;</xmlparams>
+		</mns:getdataxml>
+	</soap-env:body>
+</soap-env:envelope>

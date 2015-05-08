@@ -1,5 +1,8 @@
 <?php
 
+require_once('class.exodPath.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/Item/class.exodItemFactory.php');
 
 /**
  * Class exodClientBase
@@ -8,7 +11,7 @@
  */
 abstract class exodClientBase {
 
-	const DEBUG = true;
+	const DEBUG = false;
 	const REQ_TYPE_GET = 'GET';
 	const REQ_TYPE_POST = 'POST';
 	const REQ_TYPE_DELETE = 'DELETE';
@@ -137,6 +140,11 @@ abstract class exodClientBase {
 		$resp = json_decode($exodCurl->getResponseBody());
 
 		if ($this->getResponseStatus() == 401) {
+			if (self::DEBUG) {
+				echo '<pre>' . print_r($this, 1) . '</pre>';
+				exit;
+
+			}
 			throw new ilCloudException(998, 'token invalid');
 		}
 
