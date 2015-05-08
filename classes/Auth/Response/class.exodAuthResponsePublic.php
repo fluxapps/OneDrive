@@ -3,11 +3,19 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 
 /**
  *
- * Class exodAuthResponseBusiness
+ * Class exodAuthResponsePublic
  *
  * @author Fabian Schmid <fs@studer-raimann.ch>
  */
-class exodAuthResponseBusiness extends exodAuthResponseBase {
+class exodAuthResponsePublic extends exodAuthResponseBase {
+
+	/**
+	 * @return int
+	 */
+	public function getExpiresOn() {
+		return (int)$this->getExpiresIn() + time();
+	}
+
 
 	/**
 	 * @return exodAuthResponse

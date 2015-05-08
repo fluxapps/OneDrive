@@ -25,8 +25,13 @@ class exodBearerToken {
 	/**
 	 * @return bool
 	 */
-	public function check() {
-		if ($this->getValidThrough() < time() AND $this->getAccessToken() AND $this->getRefreshToken()) {
+	public function isValid() {
+		if (! $this->getAccessToken()) {
+			return true;
+		}
+		if ((int)$this->getValidThrough() <= time()) {
+			$exodLog = exodLog::getInstance();
+			$exodLog->write('Token no longer valid...');
 			return false;
 		}
 
@@ -38,7 +43,10 @@ class exodBearerToken {
 	 * @return bool
 	 */
 	public function refresh(exodAuth $exodAuth) {
-		if (!$this->check()) {
+		if (! $this->getAccessToken()) {
+			return false;
+		}
+		if (! $this->isValid()) {
 			$exodAuth->refreshToken($this);
 
 			return true;

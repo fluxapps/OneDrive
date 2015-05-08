@@ -1,31 +1,34 @@
 <?php
-require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php');
-require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/Item/class.exodItemFactory.php');
+// http://onedrive.github.io/misc/appfolder.htm
 require_once('class.exodClientBase.php');
-require_once('class.exodPath.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodPathPublic.php');
 
 /**
- * Class exodClientBusiness
+ * Class exodClientPublic
  *
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  * @version 1.0.0
  */
-class exodClientBusiness extends exodClientBase {
+class exodClientPublic extends exodClientBase {
 
 	/**
 	 * @param $id
 	 *
 	 * @return exodFile[]|exodFolder[]
 	 */
-	public function listFolder($id) {
-		$id = rawurlencode($id);
+	public function listFolder($path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $id . '\')/children';
+		$exodPath = exodPathPublic::getInstance($path);
+		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot:' . $exodPath->getDirname() . ':/children';
+//		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot:/children';
+		//			throw new ilCloudException(-1, $ressource );
 		$this->setRessource($ressource);
+
 		$response = $this->getResponseJsonDecoded();
 		//var_dump($response ); // FS
 		//		exit;
-		//		throw new ilCloudException(-1, $response );
+//		throw new ilCloudException(- 1, print_r($response, true));
+
 		return exodItemFactory::getInstancesFromResponse($response);
 	}
 
@@ -105,20 +108,17 @@ class exodClientBusiness extends exodClientBase {
 	 * @return bool
 	 */
 	public function createFolder($path) {
-		$exodPath = exodPath::getInstance($path);
-
-//		echo '<pre>' . print_r($exodPath, 1) . '</pre>';
-//		exit;
-
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . $exodPath->getParentDirname() . '\')');
+		$exodPath = exodPathPublic::getInstance($path);
+		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot';
+		$this->setRessource($ressource);
 		$this->request();
+
 		$folder = new exodFolder();
 		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId() . '/children/' . $exodPath->getBaseName());
-//		var_dump($this->getRessource()); // FSX
-//		exit;
+
 		$this->request();
 
 		return true;
@@ -163,7 +163,7 @@ class exodClientBusiness extends exodClientBase {
 	 * @return bool
 	 */
 	public function delete($path) {
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . rawurlencode($path) . '\')');
+		$this->setRessource($this->getExodApp()->getRessource() . '/me/skydrive/' . rawurlencode($path));
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$this->request();
 
@@ -184,8 +184,9 @@ class exodClientBusiness extends exodClientBase {
 	 * @return bool
 	 */
 	protected function itemExists($path) {
-		$path = rawurlencode($path);
-		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $path . '\')';
+		//			throw new ilCloudException(-1, 'lorem');
+		$exodPath = exodPathPublic::getInstance($path);
+		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot:/' . $exodPath->getDirname();
 		$this->setRessource($ressource);
 		try {
 			$this->request();

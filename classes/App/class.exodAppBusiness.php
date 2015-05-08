@@ -41,9 +41,9 @@ class exodAppBusiness extends exodApp {
 	 * @return exodApp
 	 */
 	public static function getInstance(exodBearerToken $exod_bearer_token, $client_id, $client_secret, exodTenant $exodTenant) {
-		if (!isset(self::$instance)) {
+//		if (!isset(self::$instance)) {
 			self::$instance = new self($exod_bearer_token, $client_id, $client_secret, $exodTenant);
-		}
+//		}
 
 		return self::$instance;
 	}

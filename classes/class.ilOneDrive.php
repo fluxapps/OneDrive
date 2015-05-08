@@ -28,6 +28,10 @@ class ilOneDrive extends ilCloudPlugin {
 	 */
 	protected $valid_through = '';
 	/**
+	 * @var int
+	 */
+	protected $validation_user_id = 6;
+	/**
 	 * @var bool
 	 */
 	protected $allow_public_links = false;
@@ -41,7 +45,6 @@ class ilOneDrive extends ilCloudPlugin {
 	protected $max_file_size = 200;
 
 
-
 	public function create() {
 		global $ilDB;
 
@@ -53,9 +56,12 @@ class ilOneDrive extends ilCloudPlugin {
 	 * @param exodBearerToken $exodBearerToken
 	 */
 	public function storeToken(exodBearerToken $exodBearerToken) {
+		global $ilUser;
 		$this->setAccessToken($exodBearerToken->getAccessToken());
 		$this->setRefreshToken($exodBearerToken->getRefreshToken());
 		$this->setValidThrough($exodBearerToken->getValidThrough());
+		$this->setValidThrough($exodBearerToken->getValidThrough());
+		$this->setValidationUserId($ilUser->getId());
 		$this->doUpdate();
 	}
 
@@ -65,7 +71,7 @@ class ilOneDrive extends ilCloudPlugin {
 	 */
 	public function getTokenObject() {
 		$token = new exodBearerToken();
-		if ($this->getAccessToken()) {
+		if ($this->getAccessToken() AND $this->getValidThrough()) {
 			$token->setAccessToken($this->getAccessToken());
 			$token->setRefreshToken($this->getRefreshToken());
 			$token->setValidThrough($this->getValidThrough());
@@ -79,15 +85,19 @@ class ilOneDrive extends ilCloudPlugin {
 	 * @return exodAppBusiness
 	 */
 	public function getExodApp() {
-//		if (!isset(self::$app_instance)) {
-			$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
-			if($inst->checkAndRefreshToken()) {
-				$this->storeToken($inst->getExodBearerToken());
+		$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
+		if (! $inst->isTokenValid()) {
+			global $ilUser;
+			if ($ilUser->getId() == $this->getOwnerId()) {
+				if ($inst->checkAndRefreshToken()) {
+					$this->storeToken($inst->getExodBearerToken());
+				}
+			} else {
+//				$this->set
 			}
-			self::$app_instance = $inst;
-//		}
+		}
 
-		return self::$app_instance;
+		return $inst;
 	}
 
 
@@ -222,6 +232,22 @@ class ilOneDrive extends ilCloudPlugin {
 
 
 	/**
+	 * @return int
+	 */
+	public function getValidationUserId() {
+		return $this->validation_user_id;
+	}
+
+
+	/**
+	 * @param int $validation_user_id
+	 */
+	public function setValidationUserId($validation_user_id) {
+		$this->validation_user_id = $validation_user_id;
+	}
+
+
+	/**
 	 * @return array
 	 */
 	protected function getArrayForDb() {
@@ -243,12 +269,16 @@ class ilOneDrive extends ilCloudPlugin {
 				$this->getRefreshToken()
 			),
 			'max_file_size' => array(
-				'text',
+				'integer',
 				$this->getMaxFileSize()
 			),
 			'valid_through' => array(
-				'text',
+				'integer',
 				$this->getValidThrough()
+			),
+			'validation_user_id' => array(
+				'integer',
+				$this->getValidationUserId()
 			),
 		);
 	}

@@ -21,6 +21,8 @@ class exodFile extends exodItem {
 		'xlsx',
 		'xlt',
 		'xltx',
+		'ppt',
+		'pptx',
 
 	);
 	/**
