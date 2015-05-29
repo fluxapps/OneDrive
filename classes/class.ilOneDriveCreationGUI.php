@@ -16,6 +16,7 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 	const F_CUSTOM_BASE_FOLDER_INPUT = 'custom_base_folder_input';
 
 
+
 	/**
 	 * @param ilRadioOption $option
 	 */
@@ -32,56 +33,6 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 		$custom_base_folder_input = new ilTextInputGUI($this->txt(self::F_CUSTOM_BASE_FOLDER_INPUT), self::F_CUSTOM_BASE_FOLDER_INPUT);
 		$custom_base_folder_input->setRequired(true);
 		$custom_base_folder_input->setInfo($this->txt('custom_base_folder_input_info'));
-
-//		$custom_base_folder_input = new ilCustomInputGUI('lorem', 'ipsum');
-//		$custom_base_folder_input->setHtml();
-
-
-//		$custom_base_folder_input->setHtml('<script src="//js.live.net/v5.0/wl.js"></script>
-//
-//
-//<div id="downloadFile_div">OneDrive save button to appear here</div>
-//<script>
-//WL.init({client_id:"000000004C14B8DC"});
-//WL.ui({
-//    name: "skydrivepicker",
-//    element: "downloadFile_div",
-//    mode: "open",
-//    select: "multi",
-//    onselected: onDownloadFileCompleted,
-//    onerror: onDownloadFileError
-//});
-//
-//function onDownloadFileCompleted(response) {
-//    var msg = "";
-//    // For each folder selected...
-//    if (response.data.folders.length > 0) {
-//        for (folder = 0; folder < response.data.folders.length; folder++) {
-//            // Use folder IDs to iterate through child folders and files as needed.
-//            msg += "\n" + response.data.folders[folder].id;
-//        }
-//    }
-//    // For each file selected...
-//    if (response.data.files.length > 0) {
-//        for (file = 0; file < response.data.files.length; file++) {
-//            // Use file IDs to iterate through files as needed.
-//            msg += "\n" + response.data.files[file].id;
-//        }
-//    }
-//    document.getElementById("info").innerText =
-//        "Selected folders/files:" + msg;
-//};
-//
-//function onDownloadFileError(responseFailed) {
-//    document.getElementById("info").innerText =
-//        "Error getting folder/file info: " + responseFailed.error.message;
-//}
-//
-//</script>
-//
-//
-//
-//');
 
 		$option_custom->addSubItem($custom_base_folder_input);
 		$sub_selection->addOption($option_default);

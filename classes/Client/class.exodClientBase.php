@@ -79,8 +79,8 @@ abstract class exodClientBase {
 	 */
 	public function __construct(exodApp $exodApp) {
 		$this->setExodApp($exodApp);
-		$this->setAccessToken($exodApp->getExodBearerToken()->getAccessToken());
-		$this->setRefreshToken($exodApp->getExodBearerToken()->getRefreshToken());
+//		$this->setAccessToken($exodApp->getExodBearerToken()->getAccessToken());
+//		$this->setRefreshToken($exodApp->getExodBearerToken()->getRefreshToken());
 	}
 
 
@@ -143,9 +143,9 @@ abstract class exodClientBase {
 			if (self::DEBUG) {
 				echo '<pre>' . print_r($this, 1) . '</pre>';
 				exit;
-
+//
 			}
-			throw new ilCloudException(998, 'token invalid');
+			throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, 'token invalid');
 		}
 
 		if ($resp->error) {
@@ -211,7 +211,7 @@ abstract class exodClientBase {
 	 * @return string
 	 */
 	public function getAccessToken() {
-		return $this->access_token;
+		return $this->getExodApp()->getExodBearerToken()->getAccessToken();
 	}
 
 
@@ -219,7 +219,7 @@ abstract class exodClientBase {
 	 * @param string $access_token
 	 */
 	public function setAccessToken($access_token) {
-		$this->access_token = $access_token;
+		$this->getExodApp()->getExodBearerToken()->setAccessToken($access_token);
 	}
 
 
@@ -227,7 +227,7 @@ abstract class exodClientBase {
 	 * @return string
 	 */
 	public function getRefreshToken() {
-		return $this->refresh_token;
+		return $this->getExodApp()->getExodBearerToken()->getRefreshToken();
 	}
 
 
@@ -235,7 +235,7 @@ abstract class exodClientBase {
 	 * @param string $refresh_token
 	 */
 	public function setRefreshToken($refresh_token) {
-		$this->refresh_token = $refresh_token;
+		$this->getExodApp()->getExodBearerToken()->setRefreshToken($refresh_token);
 	}
 
 

@@ -302,7 +302,7 @@ class exodAuthResponseBase {
 
 	protected function checkError() {
 		if ($this->getError()) {
-			throw new ilCloudException(ilCloudException::UNKNONW_EXCEPTION, $this->getErrorDescription());
+			throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, $this->getErrorDescription());
 		}
 	}
 }
