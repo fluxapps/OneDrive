@@ -18,27 +18,28 @@ class exodClientBusiness extends exodClientBase {
 	 * @return exodFile[]|exodFolder[]
 	 */
 	public function listFolder($id) {
+		$exodPath = exodPath::getInstance($id);
 		$id = rawurlencode($id);
+
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $id . '\')/children';
 		$this->setRessource($ressource);
 		$response = $this->getResponseJsonDecoded();
-		//var_dump($response ); // FS
-		//		exit;
-		//		throw new ilCloudException(-1, $response );
+
 		return exodItemFactory::getInstancesFromResponse($response);
 	}
 
 
 	/**
-	 * @param $id
+	 * @param $path
 	 *
 	 * @return exodFile
 	 * @throws ilCloudException
 	 */
-	public function getFileObject($id) {
+	public function getFileObject($path) {
+		$exodPath = exodPath::getInstance($path);
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$ressource = $this->getExodApp()->getRessource() . '/files/' . $id . '';
+		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $exodPath->getFullPath() . '\')';
 		$this->setRessource($ressource);
 		//		throw new ilCloudException(-1, $ressource );
 		$this->request();
@@ -107,18 +108,29 @@ class exodClientBusiness extends exodClientBase {
 	public function createFolder($path) {
 		$exodPath = exodPath::getInstance($path);
 
-//		echo '<pre>' . print_r($exodPath, 1) . '</pre>';
-//		exit;
+		foreach ($exodPath->getParts() as $i => $p) {
+			$pathToPart = $exodPath->getPathToPart($i);
+			if (! $this->folderExists($pathToPart)) {
+				$this->createSingleFolder($pathToPart);
+			}
+		}
 
+		return true;
+	}
+
+
+	protected function createSingleFolder($path) {
+		$exodPath = exodPath::getInstance($path);
+		
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . $exodPath->getParentDirname() . '\')');
 		$this->request();
+
 		$folder = new exodFolder();
 		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
+
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId() . '/children/' . $exodPath->getBaseName());
-//		var_dump($this->getRessource()); // FSX
-//		exit;
 		$this->request();
 
 		return true;
