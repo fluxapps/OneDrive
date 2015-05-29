@@ -23,6 +23,40 @@ class exodBearerToken {
 
 
 	/**
+	 * @return bool
+	 */
+	public function isValid() {
+		if (! $this->getAccessToken()) {
+			return true;
+		}
+		if ((int)$this->getValidThrough() <= time()) {
+			$exodLog = exodLog::getInstance();
+			$exodLog->write('Token no longer valid...');
+			return false;
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * @return bool
+	 */
+	public function refresh(exodAuth $exodAuth) {
+		if (! $this->getAccessToken()) {
+			return false;
+		}
+		if (! $this->isValid()) {
+			$exodAuth->refreshToken($this);
+
+			return true;
+		}
+
+		return false;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getAccessToken() {

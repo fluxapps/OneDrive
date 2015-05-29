@@ -2,6 +2,7 @@
 <?php
 include_once("./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php");
 $plugin_object = ilOneDrivePlugin::getInstance();
+
 $fields = array(
 	'id' => array(
 		'type' => 'integer',
@@ -24,6 +25,10 @@ $fields = array(
 		'length' => 256
 	),
 	'valid_through' => array(
+		'type' => 'integer',
+		'length' => 8
+	),
+	'validation_user_id' => array(
 		'type' => 'integer',
 		'length' => 8
 	),

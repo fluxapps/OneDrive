@@ -1,5 +1,24 @@
 <!-- language file start -->
-app_key#:#App-Key
-app_name#:#App-Name
+OneDrive#:#OneDrive
+add_new_base_folder#:#Base-Folder
+add_new_custom_base_folder#:#New Folder
+add_new_custom_base_folder_input#:#Foldername
+add_new_custom_base_folder_input_info#:#With leading /
+add_new_default_base_folder#:#Main folder
 app_secret#:#App-Name
+asl_open_msoffice#:#Open in Office Online
+client_id#:#Client-ID
+client_secret#:#Client-Secret
+client_type#:#Client
+config_info_client_id#:#ID of the registred Client in Windows Azure
+config_info_client_secret#:#View in Windows Azure
+config_info_client_type#:#API-Type
+config_info_ip_resolve_v4#:#Activate if needed on server
+config_info_tenant_id#:#ID of the Office365 Instance
+config_info_tenant_name#:#Name of the Office365 Instance
 configuration#:#Configuration
+create_info#:#Microsoft OneDrive Business
+info_token_expires#:#Access-Token expires
+ip_resolve_v4#:#Resolve IP V4
+tenant_id#:#Tenant-ID
+tenant_name#:#Tenant-Name

@@ -13,20 +13,26 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 class ilOneDriveService extends ilCloudPluginService {
 
 	/**
-	 * @var exodAuth
+	 * @return exodAppBusiness
 	 */
-	protected $auth;
+	public function getApp() {
+		return $this->getPluginObject()->getExodApp();
+	}
+
+
+	/**
+	 * @return exodClientBusiness
+	 */
+	public function getClient() {
+		return $this->getApp()->getExodClient();
+	}
 
 
 	/**
 	 * @return exodAuth
 	 */
 	public function getAuth() {
-		if (!$this->auth) {
-			$this->auth = exodAuthFactory::getAuthInstance(ilOneDrivePlugin::getInstance()->getApp());
-		}
-
-		return $this->auth;
+		return $this->getApp()->getExodAuth();
 	}
 
 
@@ -39,14 +45,15 @@ class ilOneDriveService extends ilCloudPluginService {
 
 
 	public function afterAuthService() {
-		$exodAuth = exodAuth::getInstanceFromSession();
-		$this->getPluginObject()->setAccessToken($exodAuth->getResponse()->getAccessToken());
-		$this->getPluginObject()->setRefreshToken($exodAuth->getResponse()->getAccessToken());
-		$this->getPluginObject()->setValidThrough($exodAuth->getResponse()->getExpiresOn());
+		$exodAuth = $this->getApp()->getExodAuth();
+		$exodAuth->loadTokenFromSession();
+		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
+		//		return true;
+		$rootFolder = $this->getPluginObject()->getCloudModulObject()->getRootFolder();
+		if (! $this->getClient()->folderExists($rootFolder)) {
+			$this->createFolder($rootFolder);
+		}
 
-		$this->getPluginObject()->doUpdate();
-
-		//$this->createFolder($this->getPluginObject()->getCloudModulObject()->getRootFolder());
 		return true;
 	}
 
@@ -56,19 +63,14 @@ class ilOneDriveService extends ilCloudPluginService {
 	 * @param string          $parent_folder
 	 */
 	public function addToFileTree(ilCloudFileTree  &$file_tree, $parent_folder = "/") {
-		$client = $this->getClient();
+		$exodFiles = $this->getClient()->listFolder($parent_folder);
 
-		foreach ($client->listFolder($parent_folder) as $item) {
-			if ($item instanceof exodFolder) {
-				//				$file_tree->addFolderToService($item->getId(), $item->getName());
-			}
+		foreach ($exodFiles as $item) {
 			$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
-
-			//			echo '<pre>' . print_r($item, 1) . '</pre>';
-			$file_tree->addNode($item->getFullPath(), $item->getId(), ($item instanceof
-				exodFolder), strtotime($item->getDateTimeLastModified()), $size);
+			$is_Dir = $item instanceof exodFolder;
+			$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
 		}
-		$file_tree->setLoadingOfFolderComplete($parent_folder);
+		//		$file_tree->clearFileTreeSession();
 	}
 
 
@@ -82,15 +84,39 @@ class ilOneDriveService extends ilCloudPluginService {
 
 
 	/**
+	 * @param                 $file
+	 * @param                 $name
+	 * @param string          $path
+	 * @param ilCloudFileTree $file_tree
+	 *
+	 * @return mixed
+	 */
+	public function putFile($file, $name, $path = '', ilCloudFileTree $file_tree = NULL) {
+		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
+		if ($path == '/') {
+			$path = '';
+		}
+
+		$return = $this->getClient()->uploadFile($path . "/" . $name, $file);
+
+		return $return;
+	}
+
+
+	/**
 	 * @param null            $path
 	 * @param ilCloudFileTree $file_tree
+	 *
+	 * @return bool
 	 */
 	public function createFolder($path = NULL, ilCloudFileTree $file_tree = NULL) {
-		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
+		if ($file_tree instanceof ilCloudFileTree) {
+			$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
+		}
 
-		var_dump($file_tree->getNodeFromId('root')); // FSX
-
-		$this->getClient()->createFolder($path);
+		if ($path != '/') {
+			$this->getClient()->createFolder($path);
+		}
 
 		return true;
 	}
@@ -99,8 +125,14 @@ class ilOneDriveService extends ilCloudPluginService {
 	/**
 	 * @param null            $path
 	 * @param ilCloudFileTree $file_tree
+	 *
+	 * @return bool
 	 */
 	public function deleteItem($path = NULL, ilCloudFileTree $file_tree = NULL) {
+		//		throw new ilCloudException(-1, print_r($file_tree, true));
+		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
+
+		return $this->getClient()->delete($path);
 	}
 
 
@@ -117,21 +149,6 @@ class ilOneDriveService extends ilCloudPluginService {
 	 */
 	public function getPluginHookObject() {
 		return parent::getPluginHookObject();
-	}
-
-
-	public function getRootId($root_path) {
-		return '';
-	}
-
-
-	/**
-	 * @return exodClientBusiness
-	 */
-	protected function getClient() {
-		$client = exodClientFactory::getClientInstance($this->getPluginHookObject()->getApp(), $this->getPluginObject()->getTokenObject());
-
-		return $client;
 	}
 }
 

@@ -18,17 +18,9 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 
 
 	protected function initPluginSettings() {
-		$n = new ilNonEditableValueGUI($this->getPluginHookObject()->txt('token_expires'));
+		$n = new ilNonEditableValueGUI($this->getPluginHookObject()->txt('info_token_expires'));
 		$n->setValue(date(DATE_ISO8601, $this->getPluginObject()->getValidThrough()));
 		$this->form->addItem($n);
-
-		$n = new ilNonEditableValueGUI($this->getPluginHookObject()->txt('access_token'));
-		$n->setValue($this->getPluginObject()->getAccessToken());
-//		$this->form->addItem($n);
-
-		$n = new ilNonEditableValueGUI($this->getPluginHookObject()->txt('refresh_token'));
-		$n->setValue($this->getPluginObject()->getRefreshToken());
-//		$this->form->addItem($n);
 	}
 
 
