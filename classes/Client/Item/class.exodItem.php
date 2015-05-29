@@ -77,7 +77,20 @@ abstract class exodItem {
 	 * @return string
 	 */
 	public function getFullPath() {
-		return $this->getPath() . '/' . $this->getName();
+		$path = '';
+		if ($this->getPath() AND $this->getPath() != '/') {
+			$path = $this->getPath();
+		}
+
+		return $path . '/' . $this->getName();
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getEncodedFullPath() {
+		return rawurlencode($this->getFullPath());
 	}
 
 

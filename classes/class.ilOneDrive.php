@@ -2,6 +2,7 @@
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php');
 require_once('./Modules/Cloud/classes/class.ilCloudPlugin.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodAppBusiness.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodTenant.php');
 
 /**
  * Class ilOneDrive
@@ -10,6 +11,10 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  */
 class ilOneDrive extends ilCloudPlugin {
 
+	/**
+	 * @var exodApp
+	 */
+	protected static $app_instance;
 	/**
 	 * @var string
 	 */
@@ -23,6 +28,10 @@ class ilOneDrive extends ilCloudPlugin {
 	 */
 	protected $valid_through = '';
 	/**
+	 * @var int
+	 */
+	protected $validation_user_id = 6;
+	/**
 	 * @var bool
 	 */
 	protected $allow_public_links = false;
@@ -33,7 +42,7 @@ class ilOneDrive extends ilCloudPlugin {
 	/**
 	 * @var int
 	 */
-	protected $max_file_size = 0;
+	protected $max_file_size = 200;
 
 
 	public function create() {
@@ -44,13 +53,29 @@ class ilOneDrive extends ilCloudPlugin {
 
 
 	/**
+	 * @param exodBearerToken $exodBearerToken
+	 */
+	public function storeToken(exodBearerToken $exodBearerToken) {
+		global $ilUser;
+		$this->setAccessToken($exodBearerToken->getAccessToken());
+		$this->setRefreshToken($exodBearerToken->getRefreshToken());
+		$this->setValidThrough($exodBearerToken->getValidThrough());
+		$this->setValidThrough($exodBearerToken->getValidThrough());
+		$this->setValidationUserId($ilUser->getId());
+		$this->doUpdate();
+	}
+
+
+	/**
 	 * @return exodBearerToken
 	 */
 	public function getTokenObject() {
 		$token = new exodBearerToken();
-		$token->setAccessToken($this->getAccessToken());
-		$token->setRefreshToken($this->getRefreshToken());
-		$token->setValidThrough($this->getValidThrough());
+		if ($this->getAccessToken() AND $this->getValidThrough()) {
+			$token->setAccessToken($this->getAccessToken());
+			$token->setRefreshToken($this->getRefreshToken());
+			$token->setValidThrough($this->getValidThrough());
+		}
 
 		return $token;
 	}
@@ -58,10 +83,23 @@ class ilOneDrive extends ilCloudPlugin {
 
 	/**
 	 * @return exodAppBusiness
-	 * @deprecated use ilOneDrivePlugin::getInstance()->getApp();
+	 * @throws ilCloudException
 	 */
-	public function getApp() {
-		ilOneDrivePlugin::getInstance()->getApp();
+	public function getExodApp() {
+		$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
+		if (! $inst->isTokenValid()) {
+			global $ilUser;
+			if ($ilUser->getId() == $this->getOwnerId()) {
+				if ($inst->checkAndRefreshToken()) {
+					$this->storeToken($inst->getExodBearerToken());
+				}
+			} else {
+				throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, 'Der Ordner kann zur Zeit nur vom Besitzer geöffnet werden.');
+			}
+		} else {
+		}
+
+		return $inst;
 	}
 
 
@@ -80,6 +118,7 @@ class ilOneDrive extends ilCloudPlugin {
 				$this->{$k} = $rec->{$k};
 			}
 		}
+		$this->setMaxFileSize(500);
 
 		return true;
 	}
@@ -195,6 +234,22 @@ class ilOneDrive extends ilCloudPlugin {
 
 
 	/**
+	 * @return int
+	 */
+	public function getValidationUserId() {
+		return $this->validation_user_id;
+	}
+
+
+	/**
+	 * @param int $validation_user_id
+	 */
+	public function setValidationUserId($validation_user_id) {
+		$this->validation_user_id = $validation_user_id;
+	}
+
+
+	/**
 	 * @return array
 	 */
 	protected function getArrayForDb() {
@@ -216,12 +271,16 @@ class ilOneDrive extends ilCloudPlugin {
 				$this->getRefreshToken()
 			),
 			'max_file_size' => array(
-				'text',
+				'integer',
 				$this->getMaxFileSize()
 			),
 			'valid_through' => array(
-				'text',
+				'integer',
 				$this->getValidThrough()
+			),
+			'validation_user_id' => array(
+				'integer',
+				$this->getValidationUserId()
 			),
 		);
 	}

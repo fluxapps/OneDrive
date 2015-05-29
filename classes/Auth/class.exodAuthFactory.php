@@ -11,12 +11,12 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 class exodAuthFactory {
 
 	/**
-	 * @param exodApp $app
+	 * @param exodApp $exodApp
 	 *
 	 * @return exodAuth
 	 */
-	public static function getAuthInstance(exodApp $app) {
-		return exodAuth::getInstance($app);
+	public static function getInstance(exodApp $exodApp) {
+		return exodAuth::getInstance($exodApp);
 	}
 }
 
