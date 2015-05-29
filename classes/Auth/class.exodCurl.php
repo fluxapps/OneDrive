@@ -68,14 +68,14 @@ class exodCurl {
 		}
 
 		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
-//		curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
+		//		curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
 		curl_setopt($ch, CURLOPT_SSLVERSION, 1);
-		curl_setopt($ch, CURLOPT_SSL_CIPHER, 'TLS_RSA_WITH_AES_256_CBC_SHA:TLS_RSA_WITH_AES_128_CBC_SHA:TLS_RSA_WITH_3DES_EDE_CBC_SHA');
+//		curl_setopt($ch, CURLOPT_SSL_CIPHER, 'TLS_RSA_WITH_AES_256_CBC_SHA:TLS_RSA_WITH_AES_128_CBC_SHA:TLS_RSA_WITH_3DES_EDE_CBC_SHA');
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		if (self::DEBUG) {
 			curl_setopt($ch, CURLOPT_VERBOSE, self::DEBUG);
-			$handle = fopen('/var/iliasdata/rel50/od.log', 'w');
+			$handle = fopen(ILIAS_LOG_DIR . '/od.log', 'w');
 			curl_setopt($ch, CURLOPT_STDERR, $handle);
 		}
 
@@ -98,7 +98,7 @@ class exodCurl {
 		if ($resp_orig === false) {
 			$this->setResponseError(new exodCurlError($ch));
 			curl_close($ch);
-			throw new ilCloudException(- 1, $this->getResponseError()->getMessage());
+			throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, $this->getResponseError()->getMessage());
 		}
 		$this->setResponseBody($resp_orig);
 		$this->setResponseMimeType(curl_getinfo($ch, CURLINFO_CONTENT_TYPE));

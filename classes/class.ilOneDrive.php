@@ -83,6 +83,7 @@ class ilOneDrive extends ilCloudPlugin {
 
 	/**
 	 * @return exodAppBusiness
+	 * @throws ilCloudException
 	 */
 	public function getExodApp() {
 		$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
@@ -93,8 +94,9 @@ class ilOneDrive extends ilCloudPlugin {
 					$this->storeToken($inst->getExodBearerToken());
 				}
 			} else {
-//				$this->set
+				throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, 'Der Ordner kann zur Zeit nur vom Besitzer geöffnet werden.');
 			}
+		} else {
 		}
 
 		return $inst;
