@@ -66,13 +66,53 @@ class exodPath {
 	}
 
 
+	/**
+	 * @param $path
+	 *
+	 * @throws ilCloudException
+	 */
 	protected function __construct($path) {
+		//		$path = '/ILIASCloud/' . ltrim($path, '/');
 		$this->path = $path;
 		//		$path = ltrim($path, '/');
 
 		$this->initDirname();
 		$this->initBasename();
 		$this->full_path = $this->encode($this->path);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	public function getParts() {
+		return explode('/', ltrim($this->path, "/"));
+	}
+
+
+	/**
+	 * @param $nr
+	 *
+	 * @return string
+	 */
+	public function getPathToPart($nr) {
+		$parts = $this->getParts();
+		$path = '';
+		for ($x = 0; $x < count($parts) AND $x <= $nr; $x ++) {
+			$path .= '/' . $parts[$x];
+		}
+
+		return $path;
+	}
+
+
+	/**
+	 * @param $nr
+	 *
+	 * @return string
+	 */
+	public function getPathToPartEncoded($nr) {
+		return $this->encode($this->getPathToPart($nr));
 	}
 
 
@@ -110,14 +150,19 @@ class exodPath {
 
 	protected function initDirname() {
 		$dirname = dirname($this->path);
+
 		if ($dirname == '/' AND $this->path != '/') {
 			$dirname = $this->path;
 		}
-		//		throw new ilCloudException(- 1, $dirname . '|||' . $this->path);
+
 		if ($dirname == '.') {
 			$dirname = '/';
 		}
-		$this->parent_dirname = $this->encode(dirname($dirname));
+
+		$this->parent_dirname = $this->encode($this->getPathToPart(count($this->getParts() )-2));
+		if(!$this->parent_dirname) {
+			$this->parent_dirname = '/';
+		}
 		$this->dirname = $this->encode($dirname);
 	}
 

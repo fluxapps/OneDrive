@@ -55,7 +55,6 @@ class exodCurl {
 
 
 	protected function execute() {
-
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->getUrl());
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->getRequestType());
@@ -74,9 +73,9 @@ class exodCurl {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		if (self::DEBUG) {
-			curl_setopt($ch, CURLOPT_VERBOSE, self::DEBUG);
-			$handle = fopen(ILIAS_LOG_DIR . '/od.log', 'w');
-			curl_setopt($ch, CURLOPT_STDERR, $handle);
+//			curl_setopt($ch, CURLOPT_VERBOSE, self::DEBUG);
+//			$handle = fopen(ILIAS_LOG_DIR . '/od.log', 'w');
+//			curl_setopt($ch, CURLOPT_STDERR, $handle);
 		}
 
 		switch ($this->getRequestType()) {
@@ -98,6 +97,9 @@ class exodCurl {
 		if ($resp_orig === false) {
 			$this->setResponseError(new exodCurlError($ch));
 			curl_close($ch);
+			echo $this->getResponseError()->getMessage();
+			echo "!!!";
+			exit;
 			throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, $this->getResponseError()->getMessage());
 		}
 		$this->setResponseBody($resp_orig);

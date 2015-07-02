@@ -24,7 +24,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
 		if (! $this->node->getIsDir()) {
 			$exoFile = exodItemCache::get($this->node->getId());
 			if (! $exoFile instanceof exodFile) {
-				$exoFile = $this->getService()->getClient()->getFileObject($this->node->getId());
+				$exoFile = $this->getService()->getClient()->getFileObject($this->node->getPath());
 			}
 			if ($exoFile->getMsURL()) {
 				$this->selection_list->addItem(ilOneDrivePlugin::getInstance()

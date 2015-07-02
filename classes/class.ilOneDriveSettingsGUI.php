@@ -21,6 +21,8 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 		$n = new ilNonEditableValueGUI($this->getPluginHookObject()->txt('info_token_expires'));
 		$n->setValue(date(DATE_ISO8601, $this->getPluginObject()->getValidThrough()));
 		$this->form->addItem($n);
+
+		$this->form->getItemByPostVar('root_folder')->setDisabled(true);
 	}
 
 
