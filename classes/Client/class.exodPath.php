@@ -154,18 +154,16 @@ class exodPath {
 		if ($dirname == '/' AND $this->path != '/') {
 			$dirname = $this->path;
 		}
-		//		throw new ilCloudException(- 1, $dirname . '|||' . $this->path);
+
 		if ($dirname == '.') {
 			$dirname = '/';
 		}
-//		$path_parts = pathinfo($this->path);
-//		echo '<pre>' . print_r($path_parts, 1) . '</pre>';
 
-		//		var_dump(dirname($dirname)); // FSX
 		$this->parent_dirname = $this->encode($this->getPathToPart(count($this->getParts() )-2));
+		if(!$this->parent_dirname) {
+			$this->parent_dirname = '/';
+		}
 		$this->dirname = $this->encode($dirname);
-//		echo '<pre>' . print_r($this->parent_dirname, 1) . '</pre>';
-//		exit;
 	}
 
 
