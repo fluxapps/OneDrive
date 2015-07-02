@@ -108,9 +108,11 @@ class exodClientBusiness extends exodClientBase {
 	public function createFolder($path) {
 		$exodPath = exodPath::getInstance($path);
 
+
 		foreach ($exodPath->getParts() as $i => $p) {
 			$pathToPart = $exodPath->getPathToPart($i);
 			if (! $this->folderExists($pathToPart)) {
+
 				$this->createSingleFolder($pathToPart);
 			}
 		}
@@ -121,7 +123,7 @@ class exodClientBusiness extends exodClientBase {
 
 	protected function createSingleFolder($path) {
 		$exodPath = exodPath::getInstance($path);
-		
+
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\'' . $exodPath->getParentDirname() . '\')');
 		$this->request();
