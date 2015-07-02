@@ -27,9 +27,9 @@ class exodBearerToken {
 	 */
 	public function isValid() {
 		if (! $this->getAccessToken()) {
-			return true;
+//			return true;
 		}
-		if ((int)$this->getValidThrough() <= time()) {
+		if ((int)$this->getValidThrough() <= time() AND $this->getValidThrough()!==NULL) {
 			$exodLog = exodLog::getInstance();
 			$exodLog->write('Token no longer valid...');
 			return false;
@@ -43,7 +43,7 @@ class exodBearerToken {
 	 * @return bool
 	 */
 	public function refresh(exodAuth $exodAuth) {
-		if (! $this->getAccessToken()) {
+		if (! $this->getRefreshToken()) {
 			return false;
 		}
 		if (! $this->isValid()) {

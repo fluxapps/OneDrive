@@ -86,7 +86,15 @@ class ilOneDrive extends ilCloudPlugin {
 	 * @throws ilCloudException
 	 */
 	public function getExodApp() {
-		$inst = ilOneDrivePlugin::getInstance()->getExodApp($this->getTokenObject());
+		$exodBearerToken = $this->getTokenObject();
+		$inst = ilOneDrivePlugin::getInstance()->getExodApp($exodBearerToken);
+//		echo '<pre>' . print_r($this->getTokenObject(), 1) . '</pre>';
+//		var_dump($inst->isTokenValid()); // FSX
+//		exit;
+		if(!$inst->isTokenValid()) {
+//			$inst->getExodAuth()->authenticate(ilLink::_getLink($_GET['ref_id']));
+		}
+
 		if (! $inst->isTokenValid()) {
 			global $ilUser;
 			if ($ilUser->getId() == $this->getOwnerId()) {

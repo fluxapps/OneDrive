@@ -49,7 +49,13 @@ class ilOneDriveService extends ilCloudPluginService {
 		$exodAuth->loadTokenFromSession();
 		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
 		//		return true;
-		$rootFolder = $this->getPluginObject()->getCloudModulObject()->getRootFolder();
+		$ilObjCloud = $this->getPluginObject()->getCloudModulObject();
+//		$rootFolder = '/ILIASCloud/' . ltrim($ilObjCloud->getRootFolder(), '/');
+		$rootFolder = $ilObjCloud->getRootFolder();
+//		var_dump($rootFolder); // FSX
+//		exit;
+//		$ilObjCloud->setRootFolder($rootFolder);
+//		$ilObjCloud->update();
 		if (! $this->getClient()->folderExists($rootFolder)) {
 			$this->createFolder($rootFolder);
 		}
@@ -61,16 +67,24 @@ class ilOneDriveService extends ilCloudPluginService {
 	/**
 	 * @param ilCloudFileTree $file_tree
 	 * @param string          $parent_folder
+	 *
+	 * @throws Exception
 	 */
 	public function addToFileTree(ilCloudFileTree  &$file_tree, $parent_folder = "/") {
-		$exodFiles = $this->getClient()->listFolder($parent_folder);
+		try {
+			$exodFiles = $this->getClient()->listFolder($parent_folder);
 
-		foreach ($exodFiles as $item) {
-			$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
-			$is_Dir = $item instanceof exodFolder;
-			$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
+			foreach ($exodFiles as $item) {
+				$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
+				$is_Dir = $item instanceof exodFolder;
+				$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
+			}
+			//		$file_tree->clearFileTreeSession();
+		} catch (Exception $e) {
+			$this->getPluginObject()->getCloudModulObject()->setAuthComplete(false);
+			$this->getPluginObject()->getCloudModulObject()->update();
+			throw $e;
 		}
-		//		$file_tree->clearFileTreeSession();
 	}
 
 
