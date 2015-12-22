@@ -1,4 +1,8 @@
 # ILIAS Plugin for OneDrive Business
+##Prerequisite
+------------
+Go to "Administration->Repository->Repository Object Types" and make the cloud object available
+
 ##Installation
 ------------
 Start at your ILIAS root directory
