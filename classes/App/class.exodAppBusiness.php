@@ -48,7 +48,11 @@ class exodAppBusiness extends exodApp {
 		return self::$instance;
 	}
 
+	protected function initRedirectUri() {
+		$this->setRedirectUri($this->getHttpPath() . 'Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/redirect.php');
+	}
 
+	
 	/**
 	 * @param exodBearerToken $exod_bearer_token
 	 * @param                 $client_id
