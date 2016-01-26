@@ -41,7 +41,6 @@ abstract class exodApp {
 	/**
 	 * @var string
 	 */
-	***REMOVED***
 	protected $redirect_uri = '***REMOVED***';
 	/**
 	 * @var string
