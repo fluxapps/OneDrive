@@ -1,8 +1,7 @@
 <?php
 $id = 'exod';
-$version = '0.0.5';
-$ilias_min_version = '4.4.0';
-$ilias_max_version = '5.1.999';
-$responsible = 'Fabian Schmid';
-$responsible_mail = 'fs@studer-raimann.ch';
-?>
+$version = '1.0.0';
+$ilias_min_version = '5.1.0';
+$ilias_max_version = '5.2.999';
+$responsible = 'studer + raimann ag';
+$responsible_mail = 'support@studer-raimann.ch';

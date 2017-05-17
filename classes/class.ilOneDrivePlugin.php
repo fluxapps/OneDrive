@@ -1,6 +1,5 @@
 <?php
 require_once('./Modules/Cloud/classes/class.ilCloudHookPlugin.php');
-require_once('class.ilDynamicLanguage.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.exodConfig.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodAppBusiness.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodAppPublic.php');
@@ -11,7 +10,7 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  * @version 1.0.0
  */
-class ilOneDrivePlugin extends ilCloudHookPlugin implements ilDynamicLanguageInterfaceOD {
+class ilOneDrivePlugin extends ilCloudHookPlugin  {
 
 	const PLUGIN_NAME = 'OneDrive';
 	/**
