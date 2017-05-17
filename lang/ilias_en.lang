@@ -1,5 +1,3 @@
-<!-- language file start -->
-OneDrive#:#OneDrive
 add_new_base_folder#:#Base-Folder
 add_new_custom_base_folder#:#New Folder
 add_new_custom_base_folder_input#:#Foldername
@@ -16,9 +14,12 @@ config_info_client_type#:#API-Type
 config_info_ip_resolve_v4#:#Activate if needed on server
 config_info_tenant_id#:#ID of the Office365 Instance
 config_info_tenant_name#:#Name of the Office365 Instance
-configuration#:#Configuration
+config_info_ssl_version#:#This specific version will be used for connections
+common_configuration#:#Configuration
+common_OneDrive#:#OneDrive
 create_info#:#Microsoft OneDrive Business
 info_token_expires#:#Access-Token expires
 ip_resolve_v4#:#Resolve IP V4
 tenant_id#:#Tenant-ID
 tenant_name#:#Tenant-Name
+ssl_version#:#SSL-Version

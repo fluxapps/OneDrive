@@ -97,7 +97,7 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 
 		$this->form->addCommandButton("save", $lng->txt("save"));
 
-		$this->form->setTitle($this->plugin_object->txt("configuration"));
+		$this->form->setTitle($this->plugin_object->txt("common_configuration"));
 		$this->form->setFormAction($ilCtrl->getFormAction($this));
 
 		return $this->form;
