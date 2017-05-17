@@ -107,7 +107,6 @@ abstract class exodClientBase {
 
 
 	/**
-	 * @return mixed
 	 * @throws ilCloudException
 	 */
 	protected function request() {
@@ -383,4 +382,3 @@ abstract class exodClientBase {
 	}
 }
 
-?>

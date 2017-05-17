@@ -2,7 +2,6 @@
 require_once("./Modules/Cloud/classes/class.ilCloudPluginService.php");
 require_once('./Modules/Cloud/exceptions/class.ilCloudException.php');
 require_once("./Modules/Cloud/classes/class.ilCloudUtil.php");
-require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodAuthFactory.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodClientFactory.php');
 
 /**
@@ -70,7 +69,7 @@ class ilOneDriveService extends ilCloudPluginService {
 	 *
 	 * @throws Exception
 	 */
-	public function addToFileTree(ilCloudFileTree &$file_tree, $parent_folder = "/") {
+	public function addToFileTree(ilCloudFileTree $file_tree, $parent_folder = "/") {
 		try {
 			$exodFiles = $this->getClient()->listFolder($parent_folder);
 

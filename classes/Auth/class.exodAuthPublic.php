@@ -46,11 +46,7 @@ class exodAuthPublic extends exodAuth {
 
 			$exodCurl->post();
 
-			//			exit;
 			$this->response->loadFromResponse($exodCurl->getResponseBody());
-
-			//			echo '<pre>' . print_r($this, 1) . '</pre>';
-			//			exit;
 
 			$exodBearerToken = new exodBearerToken();
 			$exodBearerToken->setAccessToken($this->getResponse()->getAccessToken());
@@ -63,4 +59,3 @@ class exodAuthPublic extends exodAuth {
 	}
 }
 
-?>

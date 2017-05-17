@@ -12,7 +12,7 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 class exodClientPublic extends exodClientBase {
 
 	/**
-	 * @param $id
+	 * @param $path
 	 *
 	 * @return exodFile[]|exodFolder[]
 	 */
@@ -206,4 +206,3 @@ class exodClientPublic extends exodClientBase {
 	}
 }
 
-?>

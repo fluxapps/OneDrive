@@ -44,5 +44,3 @@ class exodAppPublic extends exodApp {
 		                      . 'Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/redirect.php');
 	}
 }
-
-?>

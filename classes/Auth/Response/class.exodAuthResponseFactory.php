@@ -13,7 +13,7 @@ class exodAuthResponseFactory {
 	/**
 	 * @param exodApp $app
 	 *
-	 * @return exodAuthResponseBase
+	 * @return exodAuthResponseBusiness|exodAuthResponsePublic
 	 * @throws ilCloudException
 	 */
 	public static function getResponseInstance(exodApp $app) {
@@ -29,4 +29,3 @@ class exodAuthResponseFactory {
 	}
 }
 
-?>

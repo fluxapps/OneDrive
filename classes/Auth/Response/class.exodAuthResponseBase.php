@@ -56,7 +56,7 @@ class exodAuthResponseBase {
 	 */
 	protected $error_description = '';
 	/**
-	 * @var exodAuthResponse
+	 * @var exodAuthResponseBase
 	 */
 	protected static $instance;
 	const REQ_TYPE_GET = 1;
@@ -307,5 +307,3 @@ class exodAuthResponseBase {
 		}
 	}
 }
-
-?>

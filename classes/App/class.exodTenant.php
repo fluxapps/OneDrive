@@ -49,5 +49,3 @@ class exodTenant {
 		$this->tenant_name = $tenant_name;
 	}
 }
-
-?>

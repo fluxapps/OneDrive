@@ -18,7 +18,7 @@ class exodAuthResponsePublic extends exodAuthResponseBase {
 
 
 	/**
-	 * @return exodAuthResponse
+	 * @return exodAuthResponsePublic
 	 */
 	public static function getInstance() {
 		if (!isset(self::$instance)) {
@@ -29,4 +29,3 @@ class exodAuthResponsePublic extends exodAuthResponseBase {
 	}
 }
 
-?>

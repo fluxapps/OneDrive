@@ -38,6 +38,7 @@ class exodAppBusiness extends exodApp {
 	 * @param exodBearerToken $exod_bearer_token
 	 * @param                 $client_id
 	 * @param                 $client_secret
+	 * @param     exodTenant $exodTenant
 	 *
 	 * @return exodAppBusiness
 	 */
@@ -101,5 +102,3 @@ class exodAppBusiness extends exodApp {
 		$this->tenant_name = $tenant_name;
 	}
 }
-
-?>

@@ -41,6 +41,7 @@ class exodBearerToken {
 
 
 	/**
+	 * @param \exodAuth $exodAuth
 	 * @return bool
 	 */
 	public function refresh(exodAuth $exodAuth) {
@@ -104,5 +105,3 @@ class exodBearerToken {
 		$this->valid_through = $valid_through;
 	}
 }
-
-?>

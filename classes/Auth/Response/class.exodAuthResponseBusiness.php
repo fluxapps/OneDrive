@@ -10,7 +10,7 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 class exodAuthResponseBusiness extends exodAuthResponseBase {
 
 	/**
-	 * @return exodAuthResponse
+	 * @return exodAuthResponseBusiness
 	 */
 	public static function getInstance() {
 		if (!isset(self::$instance)) {
@@ -20,5 +20,3 @@ class exodAuthResponseBusiness extends exodAuthResponseBase {
 		return self::$instance;
 	}
 }
-
-?>

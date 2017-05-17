@@ -97,9 +97,6 @@ class exodCurl {
 		if ($resp_orig === false) {
 			$this->setResponseError(new exodCurlError($ch));
 			curl_close($ch);
-			echo $this->getResponseError()->getMessage();
-			echo "!!!";
-			exit;
 			throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, $this->getResponseError()->getMessage());
 		}
 		$this->setResponseBody($resp_orig);
@@ -517,7 +514,6 @@ class exodCurlError {
 		81 => 'CURLE_AGAIN',
 		82 => 'CURLE_SSL_CRL_BADFILE',
 		83 => 'CURLE_SSL_ISSUER_ERROR',
-		84 => 'CURLE_FTP_PRET_FAILED',
 		84 => 'CURLE_FTP_PRET_FAILED',
 		85 => 'CURLE_RTSP_CSEQ_ERROR',
 		86 => 'CURLE_RTSP_SESSION_ERROR',

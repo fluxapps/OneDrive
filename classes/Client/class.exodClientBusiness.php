@@ -218,5 +218,3 @@ class exodClientBusiness extends exodClientBase {
 		return true;
 	}
 }
-
-?>

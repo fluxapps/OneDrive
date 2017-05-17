@@ -45,7 +45,7 @@ class exodPathPublic {
 	/**
 	 * @param $path
 	 *
-	 * @return exodPath
+	 * @return \exodPathPublic
 	 */
 	public static function getInstance($path) {
 		return new self($path);
@@ -59,13 +59,15 @@ class exodPathPublic {
 	 */
 	protected function encode($path) {
 		return $path;
-
-		return rawurlencode($path);
 	}
 
 
+	/**
+	 * exodPathPublic constructor.
+	 *
+	 * @param $path
+	 */
 	protected function __construct($path) {
-		//		$path = ltrim($path, '/');
 		$this->path = $path;
 
 		$this->initDirname();
@@ -120,5 +122,3 @@ class exodPathPublic {
 		$this->basename = $this->encode(addslashes($basename));
 	}
 }
-
-?>

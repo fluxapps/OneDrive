@@ -71,10 +71,6 @@ abstract class exodApp {
 	 */
 	protected $exod_bearer_token;
 	/**
-	 * @var int
-	 */
-	protected $il_one_drive;
-	/**
 	 * @var
 	 */
 	protected $ssl_version = self::SSL_STANDARD;
@@ -159,21 +155,6 @@ abstract class exodApp {
 		return $this->getExodBearerToken()->isValid();
 	}
 
-
-	/**
-	 * @return ilOneDrive
-	 */
-	public function getIlonedrive() {
-		return $this->il_one_drive;
-	}
-
-
-	/**
-	 * @param ilOneDrive $il_one_drive
-	 */
-	public function setIlonedrive(ilOneDrive $il_one_drive) {
-		$this->il_one_drive = $il_one_drive;
-	}
 
 
 	/**
