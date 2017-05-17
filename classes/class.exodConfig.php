@@ -31,17 +31,19 @@ class exodConfig extends ilCloudPluginConfig {
 	 * @throws ilCloudException
 	 */
 	public function checkComplete() {
-		if (! $this->getClientType()) {
+		if (!$this->getClientType()) {
 			throw new ilCloudException(- 1, 'Configuration of OneDrive inclomplete. Please contact your system administrator');
 		}
 		switch ($this->getClientType()) {
 			case exodApp::TYPE_BUSINESS:
-				if (! $this->getClientId() || ! $this->getClientSecret() || ! $this->getTenantName() || ! $this->getTentantId()) {
+				if (!$this->getClientId() || !$this->getClientSecret() || !$this->getTenantName()
+				    || !$this->getTentantId()
+				) {
 					throw new ilCloudException(- 1, 'Configuration of OneDrive inclomplete. Please contact your system administrator');
 				}
 				break;
 			case exodApp::TYPE_PUBLIC:
-				if (! $this->getClientId() || ! $this->getClientSecret()) {
+				if (!$this->getClientId() || !$this->getClientSecret()) {
 					throw new ilCloudException(- 1, 'Configuration of OneDrive inclomplete. Please contact your system administrator');
 				}
 				break;
@@ -119,7 +121,7 @@ class exodConfig extends ilCloudPluginConfig {
 	 * @throws ilCloudPluginConfigException
 	 */
 	public function getValue($key) {
-		if (! isset(self::$value_cache[$key])) {
+		if (!isset(self::$value_cache[$key])) {
 			self::$value_cache[$key] = parent::getValue($key);
 		}
 
@@ -139,4 +141,4 @@ class exodConfig extends ilCloudPluginConfig {
 	}
 }
 
-?>
+

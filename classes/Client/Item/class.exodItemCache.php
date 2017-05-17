@@ -43,7 +43,7 @@ class exodItemCache {
 			return unserialize($_SESSION[self::EXOD_ITEM_CACHE][$id]);
 		}
 
-		return NULL;
+		return null;
 	}
 }
 

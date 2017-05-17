@@ -34,4 +34,3 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 	}
 }
 
-?>

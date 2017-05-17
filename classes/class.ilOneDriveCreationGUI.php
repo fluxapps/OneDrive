@@ -50,7 +50,7 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 
 	/**
 	 * @param ilPropertyFormGUI $form
-	 * @param ilObjCloud        $obj
+	 * @param ilObjCloud $obj
 	 */
 	public function afterSavePluginCreation(ilObjCloud &$obj, ilPropertyFormGUI $form) {
 		if ($form->getInput(self::F_BASE_FOLDER) == self::F_DEFAULT_BASE_FOLDER) {
@@ -62,5 +62,3 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 		$obj->setRootFolder($root_folder);
 	}
 }
-
-?>

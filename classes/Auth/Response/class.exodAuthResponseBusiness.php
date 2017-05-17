@@ -13,13 +13,12 @@ class exodAuthResponseBusiness extends exodAuthResponseBase {
 	 * @return exodAuthResponse
 	 */
 	public static function getInstance() {
-		if (! isset(self::$instance)) {
+		if (!isset(self::$instance)) {
 			self::$instance = new self();
 		}
 
 		return self::$instance;
 	}
 }
-
 
 ?>

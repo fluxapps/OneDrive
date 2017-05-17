@@ -51,8 +51,8 @@ class exodFile extends exodItem {
 	 * @return null
 	 */
 	public function getMsURL() {
-		if (! $this->isMsFormat()) {
-			return NULL;
+		if (!$this->isMsFormat()) {
+			return null;
 		}
 
 		$re1 = '.*?';
@@ -60,12 +60,13 @@ class exodFile extends exodItem {
 
 		if ($c = preg_match_all("/" . $re1 . $re2 . "/is", $this->getETag(), $matches)) {
 			$cbraces1 = $matches[1][0];
-			$strstr = strstr($this->getContentUrl(), '/_api', true) . '/_layouts/15/WopiFrame.aspx?sourcedoc=' . rawurlencode($cbraces1) . '&file='
-				. $this->getName() . '&action=default';
+			$strstr = strstr($this->getContentUrl(), '/_api', true)
+			          . '/_layouts/15/WopiFrame.aspx?sourcedoc=' . rawurlencode($cbraces1)
+			          . '&file=' . $this->getName() . '&action=default';
 
 			return $strstr;
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 

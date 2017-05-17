@@ -88,14 +88,14 @@ class ilOneDrive extends ilCloudPlugin {
 	public function getExodApp() {
 		$exodBearerToken = $this->getTokenObject();
 		$inst = ilOneDrivePlugin::getInstance()->getExodApp($exodBearerToken);
-//		echo '<pre>' . print_r($this->getTokenObject(), 1) . '</pre>';
-//		var_dump($inst->isTokenValid()); // FSX
-//		exit;
-		if(!$inst->isTokenValid()) {
-//			$inst->getExodAuth()->authenticate(ilLink::_getLink($_GET['ref_id']));
+		//		echo '<pre>' . print_r($this->getTokenObject(), 1) . '</pre>';
+		//		var_dump($inst->isTokenValid()); // FSX
+		//		exit;
+		if (!$inst->isTokenValid()) {
+			//			$inst->getExodAuth()->authenticate(ilLink::_getLink($_GET['ref_id']));
 		}
 
-		if (! $inst->isTokenValid()) {
+		if (!$inst->isTokenValid()) {
 			global $ilUser;
 			if ($ilUser->getId() == $this->getOwnerId()) {
 				if ($inst->checkAndRefreshToken()) {
@@ -117,9 +117,10 @@ class ilOneDrive extends ilCloudPlugin {
 	public function read() {
 		global $ilDB;
 
-		$set = $ilDB->query('SELECT * FROM ' . $this->getTableName() . ' WHERE id = ' . $ilDB->quote($this->getObjId(), 'integer'));
+		$set = $ilDB->query('SELECT * FROM ' . $this->getTableName() . ' WHERE id = '
+		                    . $ilDB->quote($this->getObjId(), 'integer'));
 		$rec = $ilDB->fetchObject($set);
-		if ($rec == NULL) {
+		if ($rec == null) {
 			return false;
 		} else {
 			foreach ($this->getArrayForDb() as $k => $v) {
@@ -134,14 +135,20 @@ class ilOneDrive extends ilCloudPlugin {
 
 	public function doUpdate() {
 		global $ilDB;
-		$ilDB->update($this->getTableName(), $this->getArrayForDb(), array( 'id' => array( 'integer', $this->getObjId() ) ));
+		$ilDB->update($this->getTableName(), $this->getArrayForDb(), array(
+			'id' => array(
+				'integer',
+				$this->getObjId(),
+			),
+		));
 	}
 
 
 	public function doDelete() {
 		global $ilDB;
 
-		$ilDB->manipulate('DELETE FROM ' . $this->getTableName() . ' WHERE ' . ' id = ' . $ilDB->quote($this->getObjId(), 'integer'));
+		$ilDB->manipulate('DELETE FROM ' . $this->getTableName() . ' WHERE ' . ' id = '
+		                  . $ilDB->quote($this->getObjId(), 'integer'));
 	}
 
 
@@ -262,36 +269,34 @@ class ilOneDrive extends ilCloudPlugin {
 	 */
 	protected function getArrayForDb() {
 		return array(
-			'id' => array(
+			'id'                 => array(
 				'text',
-				$this->getObjId()
+				$this->getObjId(),
 			),
-			'public_link' => array(
+			'public_link'        => array(
 				'text',
-				$this->getPublicLink()
+				$this->getPublicLink(),
 			),
-			'access_token' => array(
+			'access_token'       => array(
 				'text',
-				$this->getAccessToken()
+				$this->getAccessToken(),
 			),
-			'refresh_token' => array(
+			'refresh_token'      => array(
 				'text',
-				$this->getRefreshToken()
+				$this->getRefreshToken(),
 			),
-			'max_file_size' => array(
+			'max_file_size'      => array(
 				'integer',
-				$this->getMaxFileSize()
+				$this->getMaxFileSize(),
 			),
-			'valid_through' => array(
+			'valid_through'      => array(
 				'integer',
-				$this->getValidThrough()
+				$this->getValidThrough(),
 			),
 			'validation_user_id' => array(
 				'integer',
-				$this->getValidationUserId()
+				$this->getValidationUserId(),
 			),
 		);
 	}
 }
-
-?>

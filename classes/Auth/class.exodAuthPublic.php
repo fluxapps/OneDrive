@@ -18,13 +18,12 @@ class exodAuthPublic extends exodAuth {
 			'wl.signin',
 			'wl.basic',
 			'wl.offline_access',
-//			'wl.skydrive_update',
-			'onedrive.appfolder'
+			//			'wl.skydrive_update',
+			'onedrive.appfolder',
 		);
 
 		return $base . '&scope=' . implode('%20', $scopes);
 	}
-
 
 
 	/**
@@ -47,11 +46,11 @@ class exodAuthPublic extends exodAuth {
 
 			$exodCurl->post();
 
-//			exit;
+			//			exit;
 			$this->response->loadFromResponse($exodCurl->getResponseBody());
 
-//			echo '<pre>' . print_r($this, 1) . '</pre>';
-//			exit;
+			//			echo '<pre>' . print_r($this, 1) . '</pre>';
+			//			exit;
 
 			$exodBearerToken = new exodBearerToken();
 			$exodBearerToken->setAccessToken($this->getResponse()->getAccessToken());
@@ -62,7 +61,6 @@ class exodAuthPublic extends exodAuth {
 			throw new ilCloudException(ilCloudException::UNKNONW_EXCEPTION, 'No Code received');
 		}
 	}
-
 }
 
 ?>

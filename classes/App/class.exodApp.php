@@ -12,7 +12,7 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  */
 abstract class exodApp {
 
-	const SSL_STANDARD = NULL;
+	const SSL_STANDARD = null;
 	const SSL_V3 = 3;
 	const TYPE_BUSINESS = 1;
 	const TYPE_PUBLIC = 2;
@@ -425,6 +425,5 @@ abstract class exodApp {
 		$this->ip_resolve_v4 = $ip_resolve_v4;
 	}
 }
-
 
 ?>
