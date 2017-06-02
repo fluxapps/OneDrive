@@ -51,4 +51,3 @@ class exodFolder extends exodItem {
 	}
 }
 
-?>

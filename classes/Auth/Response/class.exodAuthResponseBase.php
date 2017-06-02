@@ -56,7 +56,7 @@ class exodAuthResponseBase {
 	 */
 	protected $error_description = '';
 	/**
-	 * @var exodAuthResponse
+	 * @var exodAuthResponseBase
 	 */
 	protected static $instance;
 	const REQ_TYPE_GET = 1;
@@ -66,7 +66,7 @@ class exodAuthResponseBase {
 
 	/**
 	 * @param array $fields
-	 * @param int   $request_type
+	 * @param int $request_type
 	 *
 	 * @throws ilCloudException
 	 */
@@ -302,12 +302,8 @@ class exodAuthResponseBase {
 
 	protected function checkError() {
 		if ($this->getError()) {
-//			$this->debug();
+			//			$this->debug();
 			// throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, $this->getErrorDescription());
 		}
 	}
-
-
 }
-
-?>

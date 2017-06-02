@@ -2,7 +2,6 @@
 require_once("./Modules/Cloud/classes/class.ilCloudPluginService.php");
 require_once('./Modules/Cloud/exceptions/class.ilCloudException.php');
 require_once("./Modules/Cloud/classes/class.ilCloudUtil.php");
-require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodAuthFactory.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodClientFactory.php');
 
 /**
@@ -50,13 +49,13 @@ class ilOneDriveService extends ilCloudPluginService {
 		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
 		//		return true;
 		$ilObjCloud = $this->getPluginObject()->getCloudModulObject();
-//		$rootFolder = '/ILIASCloud/' . ltrim($ilObjCloud->getRootFolder(), '/');
+		//		$rootFolder = '/ILIASCloud/' . ltrim($ilObjCloud->getRootFolder(), '/');
 		$rootFolder = $ilObjCloud->getRootFolder();
-//		var_dump($rootFolder); // FSX
-//		exit;
-//		$ilObjCloud->setRootFolder($rootFolder);
-//		$ilObjCloud->update();
-		if (! $this->getClient()->folderExists($rootFolder)) {
+		//		var_dump($rootFolder); // FSX
+		//		exit;
+		//		$ilObjCloud->setRootFolder($rootFolder);
+		//		$ilObjCloud->update();
+		if (!$this->getClient()->folderExists($rootFolder)) {
 			$this->createFolder($rootFolder);
 		}
 
@@ -66,16 +65,16 @@ class ilOneDriveService extends ilCloudPluginService {
 
 	/**
 	 * @param ilCloudFileTree $file_tree
-	 * @param string          $parent_folder
+	 * @param string $parent_folder
 	 *
 	 * @throws Exception
 	 */
-	public function addToFileTree(ilCloudFileTree  &$file_tree, $parent_folder = "/") {
+	public function addToFileTree(ilCloudFileTree $file_tree, $parent_folder = "/") {
 		try {
 			$exodFiles = $this->getClient()->listFolder($parent_folder);
 
 			foreach ($exodFiles as $item) {
-				$size = ($item instanceof exodFile) ? $size = $item->getSize() : NULL;
+				$size = ($item instanceof exodFile) ? $size = $item->getSize() : null;
 				$is_Dir = $item instanceof exodFolder;
 				$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
 			}
@@ -89,10 +88,10 @@ class ilOneDriveService extends ilCloudPluginService {
 
 
 	/**
-	 * @param null            $path
+	 * @param null $path
 	 * @param ilCloudFileTree $file_tree
 	 */
-	public function getFile($path = NULL, ilCloudFileTree $file_tree = NULL) {
+	public function getFile($path = null, ilCloudFileTree $file_tree = null) {
 		$this->getClient()->deliverFile($path);
 	}
 
@@ -100,12 +99,12 @@ class ilOneDriveService extends ilCloudPluginService {
 	/**
 	 * @param                 $file
 	 * @param                 $name
-	 * @param string          $path
+	 * @param string $path
 	 * @param ilCloudFileTree $file_tree
 	 *
 	 * @return mixed
 	 */
-	public function putFile($file, $name, $path = '', ilCloudFileTree $file_tree = NULL) {
+	public function putFile($file, $name, $path = '', ilCloudFileTree $file_tree = null) {
 		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
 		if ($path == '/') {
 			$path = '';
@@ -118,12 +117,12 @@ class ilOneDriveService extends ilCloudPluginService {
 
 
 	/**
-	 * @param null            $path
+	 * @param null $path
 	 * @param ilCloudFileTree $file_tree
 	 *
 	 * @return bool
 	 */
-	public function createFolder($path = NULL, ilCloudFileTree $file_tree = NULL) {
+	public function createFolder($path = null, ilCloudFileTree $file_tree = null) {
 		if ($file_tree instanceof ilCloudFileTree) {
 			$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
 		}
@@ -137,12 +136,12 @@ class ilOneDriveService extends ilCloudPluginService {
 
 
 	/**
-	 * @param null            $path
+	 * @param null $path
 	 * @param ilCloudFileTree $file_tree
 	 *
 	 * @return bool
 	 */
-	public function deleteItem($path = NULL, ilCloudFileTree $file_tree = NULL) {
+	public function deleteItem($path = null, ilCloudFileTree $file_tree = null) {
 		//		throw new ilCloudException(-1, print_r($file_tree, true));
 		$path = ilCloudUtil::joinPaths($file_tree->getRootPath(), $path);
 
@@ -165,5 +164,3 @@ class ilOneDriveService extends ilCloudPluginService {
 		return parent::getPluginHookObject();
 	}
 }
-
-?>

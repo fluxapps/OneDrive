@@ -45,7 +45,7 @@ class exodPathPublic {
 	/**
 	 * @param $path
 	 *
-	 * @return exodPath
+	 * @return \exodPathPublic
 	 */
 	public static function getInstance($path) {
 		return new self($path);
@@ -59,12 +59,15 @@ class exodPathPublic {
 	 */
 	protected function encode($path) {
 		return $path;
-		return rawurlencode($path);
 	}
 
 
+	/**
+	 * exodPathPublic constructor.
+	 *
+	 * @param $path
+	 */
 	protected function __construct($path) {
-//		$path = ltrim($path, '/');
 		$this->path = $path;
 
 		$this->initDirname();
@@ -99,7 +102,7 @@ class exodPathPublic {
 
 	protected function initDirname() {
 		$dirname = dirname($this->path);
-//				throw new ilCloudException(- 1, $dirname . '|||' . $this->path);
+		//				throw new ilCloudException(- 1, $dirname . '|||' . $this->path);
 		if ($dirname == '.' AND $this->path != '.') {
 			$dirname = $this->path;
 		}
@@ -114,10 +117,8 @@ class exodPathPublic {
 		$basename = basename($this->path);
 		if (strpbrk($basename, implode('', self::$preserved_chars))) {
 			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
-				. htmlentities(implode(' ', self::$preserved_chars)));
+			                                                                     . htmlentities(implode(' ', self::$preserved_chars)));
 		}
 		$this->basename = $this->encode(addslashes($basename));
 	}
 }
-
-?>

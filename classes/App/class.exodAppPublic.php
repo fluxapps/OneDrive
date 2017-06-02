@@ -40,9 +40,7 @@ class exodAppPublic extends exodApp {
 
 
 	protected function initRedirectUri() {
-		$this->setRedirectUri($this->getHttpPath() . 'Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/redirect.php');
+		$this->setRedirectUri($this->getHttpPath()
+		                      . 'Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/redirect.php');
 	}
 }
-
-
-?>

@@ -159,8 +159,8 @@ class exodPath {
 			$dirname = '/';
 		}
 
-		$this->parent_dirname = $this->encode($this->getPathToPart(count($this->getParts() )-2));
-		if(!$this->parent_dirname) {
+		$this->parent_dirname = $this->encode($this->getPathToPart(count($this->getParts()) - 2));
+		if (!$this->parent_dirname) {
 			$this->parent_dirname = '/';
 		}
 		$this->dirname = $this->encode($dirname);
@@ -171,10 +171,9 @@ class exodPath {
 		$basename = basename($this->path);
 		if (strpbrk($basename, implode('', self::$preserved_chars))) {
 			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
-				. htmlentities(implode(' ', self::$preserved_chars)));
+			                                                                     . htmlentities(implode(' ', self::$preserved_chars)));
 		}
 		$this->basename = $this->encode(addslashes($basename));
 	}
 }
 
-?>

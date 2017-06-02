@@ -1,0 +1,196 @@
+{
+    "plugin_prefix": "cld_cldh_exod",
+    "languages": [
+        "de",
+        "en"
+    ],
+    "entries": {
+        "add": {
+            "new_base_folder": {
+                "translations": {
+                    "de": "Basis-Ordner",
+                    "en": "Base-Folder"
+                }
+            },
+            "new_custom_base_folder": {
+                "translations": {
+                    "de": "Eigener Ordner",
+                    "en": "New Folder"
+                }
+            },
+            "new_custom_base_folder_input": {
+                "translations": {
+                    "de": "Ordnername",
+                    "en": "Foldername"
+                }
+            },
+            "new_custom_base_folder_input_info": {
+                "translations": {
+                    "de": "Mit führendem /",
+                    "en": "With leading /"
+                }
+            },
+            "new_default_base_folder": {
+                "translations": {
+                    "de": "Hauptverzeichnis",
+                    "en": "Main folder"
+                }
+            }
+        },
+        "app": {
+            "secret": {
+                "translations": {
+                    "de": "App-Secret",
+                    "en": "App-Name"
+                }
+            }
+        },
+        "asl": {
+            "open_msoffice": {
+                "translations": {
+                    "de": "In Office Online öffnen",
+                    "en": "Open in Office Online"
+                }
+            }
+        },
+        "client": {
+            "id": {
+                "translations": {
+                    "de": "Client-ID",
+                    "en": "Client-ID"
+                },
+                "last_used": "17.05.2017"
+            },
+            "secret": {
+                "translations": {
+                    "de": "Client-Secret",
+                    "en": "Client-Secret"
+                },
+                "last_used": "17.05.2017"
+            },
+            "type": {
+                "translations": {
+                    "de": "Client",
+                    "en": "Client"
+                },
+                "last_used": "17.05.2017"
+            }
+        },
+        "config": {
+            "info_client_id": {
+                "translations": {
+                    "de": "ID der in Windows Azure registrierten App",
+                    "en": "ID of the registred Client in Windows Azure"
+                },
+                "last_used": "17.05.2017"
+            },
+            "info_client_secret": {
+                "translations": {
+                    "de": "In Windows Azure sichtbar",
+                    "en": "View in Windows Azure"
+                },
+                "last_used": "17.05.2017"
+            },
+            "info_client_type": {
+                "translations": {
+                    "de": "Typ der API",
+                    "en": "API-Type"
+                },
+                "last_used": "17.05.2017"
+            },
+            "info_ip_resolve_v4": {
+                "translations": {
+                    "de": "Aktivieren, falls vom Server benötigt",
+                    "en": "Activate if needed on server"
+                },
+                "last_used": "17.05.2017"
+            },
+            "info_tenant_id": {
+                "translations": {
+                    "de": "ID der Office365 Instanz",
+                    "en": "ID of the Office365 Instance"
+                },
+                "last_used": "17.05.2017"
+            },
+            "info_tenant_name": {
+                "translations": {
+                    "de": "Name der Office365 Instanz",
+                    "en": "Name of the Office365 Instance"
+                },
+                "last_used": "17.05.2017"
+            },
+            "info_ssl_version": {
+                "translations": {
+                    "de": "Diese SSL-version wird bei der Kommunikation verwendet",
+                    "en": "This specific version will be used for connections"
+                },
+                "last_used": "17.05.2017"
+            }
+        },
+        "common": {
+            "configuration": {
+                "translations": {
+                    "de": "Konfiguration",
+                    "en": "Configuration"
+                },
+                "last_used": "17.05.2017"
+            },
+            "OneDrive": {
+                "translations": {
+                    "de": "OneDrive",
+                    "en": "OneDrive"
+                }
+            }
+        },
+        "create": {
+            "info": {
+                "translations": {
+                    "de": "Microsoft OneDrive Business",
+                    "en": "Microsoft OneDrive Business"
+                }
+            }
+        },
+        "info": {
+            "token_expires": {
+                "translations": {
+                    "de": "Acces-Token läuft aus",
+                    "en": "Access-Token expires"
+                }
+            }
+        },
+        "ip": {
+            "resolve_v4": {
+                "translations": {
+                    "de": "IP V4 Auflösung",
+                    "en": "Resolve IP V4"
+                },
+                "last_used": "17.05.2017"
+            }
+        },
+        "tenant": {
+            "id": {
+                "translations": {
+                    "de": "Tenant-ID",
+                    "en": "Tenant-ID"
+                },
+                "last_used": "17.05.2017"
+            },
+            "name": {
+                "translations": {
+                    "de": "Tenant-Name",
+                    "en": "Tenant-Name"
+                },
+                "last_used": "17.05.2017"
+            }
+        },
+        "ssl": {
+            "version": {
+                "translations": {
+                    "de": "SSL-Version",
+                    "en": "SSL-Version"
+                },
+                "last_used": "17.05.2017"
+            }
+        }
+    }
+}

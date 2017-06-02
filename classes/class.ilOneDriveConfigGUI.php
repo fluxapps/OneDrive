@@ -20,53 +20,51 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 	 */
 	public function getFields() {
 		return array(
-			exodConfig::F_CLIENT_TYPE => array(
-				'type' => self::IL_SELECT_INPUT_GUI,
-				'options' => array( exodApp::TYPE_BUSINESS => 'OneDrive Business', exodApp::TYPE_PUBLIC => 'OneDrive' ),
-				'info' => 'config_info_client_type',
-				'subelements' => NULL
-			),
-			exodConfig::F_CLIENT_ID => array( 'type' => self::IL_TEXT_INPUT_GUI, 'info' => 'config_info_client_id', 'subelements' => NULL ),
-			exodConfig::F_CLIENT_SECRET => array( 'type' => self::IL_TEXT_INPUT_GUI, 'info' => 'config_info_client_secret', 'subelements' => NULL ),
-			exodConfig::F_TENANT_NAME => array( 'type' => self::IL_TEXT_INPUT_GUI, 'info' => 'config_info_tenant_name', 'subelements' => NULL ),
-			exodConfig::F_TENANT_ID => array( 'type' => self::IL_TEXT_INPUT_GUI, 'info' => 'config_info_tenant_id', 'subelements' => NULL ),
-			exodConfig::F_IP_RESOLVE_V_4 => array(
-				'type' => self::IL_CHECKBOX_INPUT_GUI,
-				'info' => 'config_info_ip_resolve_v4',
-				'subelements' => NULL
-			),
-			exodConfig::F_SSL_VERSION => array(
-				'type' => self::IL_SELECT_INPUT_GUI,
-				'options' => array(
-					CURL_SSLVERSION_DEFAULT => 'Standard',
-					CURL_SSLVERSION_TLSv1 => 'TLSv1',
-					CURL_SSLVERSION_SSLv2 => 'SSLv2',
-					CURL_SSLVERSION_SSLv3 => 'SSLv3'
+			exodConfig::F_CLIENT_TYPE    => array(
+				'type'        => self::IL_SELECT_INPUT_GUI,
+				'options'     => array(
+					exodApp::TYPE_BUSINESS => 'OneDrive Business',
+					exodApp::TYPE_PUBLIC   => 'OneDrive',
 				),
-				'info' => 'config_info_ssl_version',
-				'subelements' => NULL
+				'info'        => 'config_info_client_type',
+				'subelements' => null,
 			),
-			//			'config_max_file_size' => array(
-			//				'type' => self::IL_CHECKBOX_INPUT_GUI,
-			//				'info' => 'config_info_config_max_upload_size',
-			//				'subelements' => NULL
-			//			),
-			//			'default_max_file_size' => array(
-			//				'type' => self::IL_NUMBER_INPUT_GUI,
-			//				'info' => 'config_info_default_max_upload_size',
-			//				'subelements' => NULL
-			//			),
-			//			'default_allow_public_links' => array(
-			//				'type' => self::IL_CHECKBOX_INPUT_GUI,
-			//				'info' => 'default_info_config_allow_public_links',
-			//				'subelements' => array(
-			//					'config_allow_public_links' => array(
-			//						'type' => self::IL_CHECKBOX_INPUT_GUI,
-			//						'info' => 'config_default_config_allow_public_links_info',
-			//						'subelements' => NULL
-			//					)
-			//				)
-			//			),
+			exodConfig::F_CLIENT_ID      => array(
+				'type'        => self::IL_TEXT_INPUT_GUI,
+				'info'        => 'config_info_client_id',
+				'subelements' => null,
+			),
+			exodConfig::F_CLIENT_SECRET  => array(
+				'type'        => self::IL_TEXT_INPUT_GUI,
+				'info'        => 'config_info_client_secret',
+				'subelements' => null,
+			),
+			exodConfig::F_TENANT_NAME    => array(
+				'type'        => self::IL_TEXT_INPUT_GUI,
+				'info'        => 'config_info_tenant_name',
+				'subelements' => null,
+			),
+			exodConfig::F_TENANT_ID      => array(
+				'type'        => self::IL_TEXT_INPUT_GUI,
+				'info'        => 'config_info_tenant_id',
+				'subelements' => null,
+			),
+			exodConfig::F_IP_RESOLVE_V_4 => array(
+				'type'        => self::IL_CHECKBOX_INPUT_GUI,
+				'info'        => 'config_info_ip_resolve_v4',
+				'subelements' => null,
+			),
+			exodConfig::F_SSL_VERSION    => array(
+				'type'        => self::IL_SELECT_INPUT_GUI,
+				'options'     => array(
+					CURL_SSLVERSION_DEFAULT => 'Standard',
+					CURL_SSLVERSION_TLSv1   => 'TLSv1',
+					CURL_SSLVERSION_SSLv2   => 'SSLv2',
+					CURL_SSLVERSION_SSLv3   => 'SSLv3',
+				),
+				'info'        => 'config_info_ssl_version',
+				'subelements' => null,
+			)
 		);
 	}
 
@@ -85,7 +83,10 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 			$field->setInfo($this->plugin_object->txt($item["info"]));
 			if (is_array($item["subelements"])) {
 				foreach ($item["subelements"] as $subkey => $subitem) {
-					$subfield = new $subitem["type"]($this->plugin_object->txt($key . "_" . $subkey), $key . "_" . $subkey);
+					$subfield = new $subitem["type"]($this->plugin_object->txt($key . "_"
+					                                                           . $subkey), $key
+					                                                                       . "_"
+					                                                                       . $subkey);
 					$subfield->setInfo($this->plugin_object->txt($subitem["info"]));
 					$field->addSubItem($subfield);
 				}
@@ -96,11 +97,10 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 
 		$this->form->addCommandButton("save", $lng->txt("save"));
 
-		$this->form->setTitle($this->plugin_object->txt("configuration"));
+		$this->form->setTitle($this->plugin_object->txt("common_configuration"));
 		$this->form->setFormAction($ilCtrl->getFormAction($this));
 
 		return $this->form;
 	}
 }
 
-?>

@@ -13,14 +13,14 @@ class exodClientFactory {
 	/**
 	 * @param exodApp $exodApp
 	 *
-	 * @return exodClientBusiness
+	 * @return exodClientBusiness|exodClientPublic
 	 */
 	public static function getInstance(exodApp $exodApp) {
 		switch ($exodApp->getType()) {
 			case exodApp::TYPE_BUSINESS:
 				return new exodClientBusiness($exodApp);
+			default:
+				return new exodClientPublic($exodApp);
 		}
 	}
 }
-
-?>

@@ -69,13 +69,13 @@ class exodCurl {
 		curl_setopt($ch, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
 		//		curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);
 		curl_setopt($ch, CURLOPT_SSLVERSION, 1);
-//		curl_setopt($ch, CURLOPT_SSL_CIPHER, 'TLS_RSA_WITH_AES_256_CBC_SHA:TLS_RSA_WITH_AES_128_CBC_SHA:TLS_RSA_WITH_3DES_EDE_CBC_SHA');
+		//		curl_setopt($ch, CURLOPT_SSL_CIPHER, 'TLS_RSA_WITH_AES_256_CBC_SHA:TLS_RSA_WITH_AES_128_CBC_SHA:TLS_RSA_WITH_3DES_EDE_CBC_SHA');
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		if (self::DEBUG) {
-//			curl_setopt($ch, CURLOPT_VERBOSE, self::DEBUG);
-//			$handle = fopen(ILIAS_LOG_DIR . '/od.log', 'w');
-//			curl_setopt($ch, CURLOPT_STDERR, $handle);
+			//			curl_setopt($ch, CURLOPT_VERBOSE, self::DEBUG);
+			//			$handle = fopen(ILIAS_LOG_DIR . '/od.log', 'w');
+			//			curl_setopt($ch, CURLOPT_STDERR, $handle);
 		}
 
 		switch ($this->getRequestType()) {
@@ -97,9 +97,6 @@ class exodCurl {
 		if ($resp_orig === false) {
 			$this->setResponseError(new exodCurlError($ch));
 			curl_close($ch);
-			echo $this->getResponseError()->getMessage();
-			echo "!!!";
-			exit;
 			throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, $this->getResponseError()->getMessage());
 		}
 		$this->setResponseBody($resp_orig);
@@ -157,7 +154,7 @@ class exodCurl {
 	/**
 	 * @var exodCurlError
 	 */
-	protected $response_error = NULL;
+	protected $response_error = null;
 	/**
 	 * @var string
 	 */
@@ -413,7 +410,7 @@ class exodCurl {
 	protected function preparePut($ch) {
 		curl_setopt($ch, CURLOPT_PUT, self::DEBUG);
 		if ($this->getPutFilePath()) {
-			if (! is_readable($this->getPutFilePath())) {
+			if (!is_readable($this->getPutFilePath())) {
 				throw new ilCloudException(- 1, 'File not readable');
 			}
 			$fh_res = fopen($this->getPutFilePath(), 'r');
@@ -446,15 +443,15 @@ class exodCurlError {
 	 * @var array
 	 */
 	protected static $error_codes = array(
-		1 => 'CURLE_UNSUPPORTED_PROTOCOL',
-		2 => 'CURLE_FAILED_INIT',
-		3 => 'CURLE_URL_MALFORMAT',
-		4 => 'CURLE_URL_MALFORMAT_USER',
-		5 => 'CURLE_COULDNT_RESOLVE_PROXY',
-		6 => 'CURLE_COULDNT_RESOLVE_HOST',
-		7 => 'CURLE_COULDNT_CONNECT',
-		8 => 'CURLE_FTP_WEIRD_SERVER_REPLY',
-		9 => 'CURLE_REMOTE_ACCESS_DENIED',
+		1  => 'CURLE_UNSUPPORTED_PROTOCOL',
+		2  => 'CURLE_FAILED_INIT',
+		3  => 'CURLE_URL_MALFORMAT',
+		4  => 'CURLE_URL_MALFORMAT_USER',
+		5  => 'CURLE_COULDNT_RESOLVE_PROXY',
+		6  => 'CURLE_COULDNT_RESOLVE_HOST',
+		7  => 'CURLE_COULDNT_CONNECT',
+		8  => 'CURLE_FTP_WEIRD_SERVER_REPLY',
+		9  => 'CURLE_REMOTE_ACCESS_DENIED',
 		11 => 'CURLE_FTP_WEIRD_PASS_REPLY',
 		13 => 'CURLE_FTP_WEIRD_PASV_REPLY',
 		14 => 'CURLE_FTP_WEIRD_227_FORMAT',
@@ -518,11 +515,10 @@ class exodCurlError {
 		82 => 'CURLE_SSL_CRL_BADFILE',
 		83 => 'CURLE_SSL_ISSUER_ERROR',
 		84 => 'CURLE_FTP_PRET_FAILED',
-		84 => 'CURLE_FTP_PRET_FAILED',
 		85 => 'CURLE_RTSP_CSEQ_ERROR',
 		86 => 'CURLE_RTSP_SESSION_ERROR',
 		87 => 'CURLE_FTP_BAD_FILE_LIST',
-		88 => 'CURLE_CHUNK_FAILED'
+		88 => 'CURLE_CHUNK_FAILED',
 	);
 
 
@@ -585,4 +581,3 @@ class exodCurlError {
 	}
 }
 
-?>

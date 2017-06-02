@@ -12,7 +12,7 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  */
 abstract class exodApp {
 
-	const SSL_STANDARD = NULL;
+	const SSL_STANDARD = null;
 	const SSL_V3 = 3;
 	const TYPE_BUSINESS = 1;
 	const TYPE_PUBLIC = 2;
@@ -70,10 +70,6 @@ abstract class exodApp {
 	 * @var exodBearerToken
 	 */
 	protected $exod_bearer_token;
-	/**
-	 * @var int
-	 */
-	protected $il_one_drive;
 	/**
 	 * @var
 	 */
@@ -159,21 +155,6 @@ abstract class exodApp {
 		return $this->getExodBearerToken()->isValid();
 	}
 
-
-	/**
-	 * @return ilOneDrive
-	 */
-	public function getIlonedrive() {
-		return $this->il_one_drive;
-	}
-
-
-	/**
-	 * @param ilOneDrive $il_one_drive
-	 */
-	public function setIlonedrive(ilOneDrive $il_one_drive) {
-		$this->il_one_drive = $il_one_drive;
-	}
 
 
 	/**
@@ -425,6 +406,5 @@ abstract class exodApp {
 		$this->ip_resolve_v4 = $ip_resolve_v4;
 	}
 }
-
 
 ?>

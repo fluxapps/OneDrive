@@ -18,10 +18,10 @@ class exodAuthResponsePublic extends exodAuthResponseBase {
 
 
 	/**
-	 * @return exodAuthResponse
+	 * @return exodAuthResponsePublic
 	 */
 	public static function getInstance() {
-		if (! isset(self::$instance)) {
+		if (!isset(self::$instance)) {
 			self::$instance = new self();
 		}
 
@@ -29,5 +29,3 @@ class exodAuthResponsePublic extends exodAuthResponseBase {
 	}
 }
 
-
-?>

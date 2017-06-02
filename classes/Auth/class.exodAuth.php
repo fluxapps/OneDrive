@@ -169,6 +169,8 @@ class exodAuth {
 		$exodBearerToken->setAccessToken($this->response->getAccessToken());
 		$exodBearerToken->setValidThrough($this->response->getExpiresOn());
 		$this->setExodBearerToken($exodBearerToken);
+
+		return true;
 	}
 
 
@@ -200,5 +202,3 @@ class exodAuth {
 		return "{$auth_url}?client_id={$client_id}&response_type={$response_type}&redirect_uri={$redirect_uri}";
 	}
 }
-
-?>
