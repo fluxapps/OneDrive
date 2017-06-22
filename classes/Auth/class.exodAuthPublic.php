@@ -30,12 +30,12 @@ class exodAuthPublic extends exodAuth {
 	 * @throws ilCloudException
 	 */
 	protected function loadToken() {
-		$this->response->loadFromRequest(array( 'code' ));
+		$this->response->loadFromRequest(array( 'code', 'error', 'err' ));
 		if ($this->response->getCode()) {
 			$this->exod_app->buildURLs();
 			$exodCurl = new exodCurl();
 			$exodCurl->setUrl($this->exod_app->getTokenUrl());
-			$exodCurl->addHeader("Content-Type: application/x-www-form-urlencoded");
+			$exodCurl->setContentType(exodCurl::X_WWW_FORM_URL_ENCODED);
 
 			$exodCurl->addPostField('code', $this->response->getCode());
 			$exodCurl->addPostField('client_id', $this->exod_app->getClientId());

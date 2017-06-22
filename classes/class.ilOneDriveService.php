@@ -20,7 +20,7 @@ class ilOneDriveService extends ilCloudPluginService {
 
 
 	/**
-	 * @return exodClientBusiness
+	 * @return exodClientBusiness|exodClientPublic
 	 */
 	public function getClient() {
 		return $this->getApp()->getExodClient();
@@ -76,7 +76,8 @@ class ilOneDriveService extends ilCloudPluginService {
 			foreach ($exodFiles as $item) {
 				$size = ($item instanceof exodFile) ? $size = $item->getSize() : null;
 				$is_Dir = $item instanceof exodFolder;
-				$file_tree->addNode($item->getFullPath(), $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
+				$path = end(explode(':', $item->getFullPath()));
+				$file_tree->addNode($path, $item->getId(), $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
 			}
 			//		$file_tree->clearFileTreeSession();
 		} catch (Exception $e) {

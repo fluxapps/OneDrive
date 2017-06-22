@@ -45,6 +45,8 @@ class exodCurl {
 		$log .= "\n";
 		$log .= print_r($this->getHeaders(), self::DEBUG);
 		$log .= "\n";
+		$log .= print_r($this->getPostBody(), self::DEBUG);
+		$log .= "\n";
 		foreach (debug_backtrace() as $b) {
 			$log .= $b['file'] . ': ' . $b["function"] . "\n";
 		}
@@ -111,6 +113,8 @@ class exodCurl {
 	const REQ_TYPE_POST = 'POST';
 	const REQ_TYPE_DELETE = 'DELETE';
 	const REQ_TYPE_PUT = 'PUT';
+	const X_WWW_FORM_URL_ENCODED = 'application/x-www-form-urlencoded';
+	const JSON = 'application/json';
 	/**
 	 * @var array
 	 */
@@ -163,6 +167,10 @@ class exodCurl {
 	 * @var string
 	 */
 	protected $post_body = '';
+	/**
+	 * @var string
+	 */
+	protected $content_type = self::X_WWW_FORM_URL_ENCODED;
 
 
 	/**
@@ -386,6 +394,22 @@ class exodCurl {
 
 
 	/**
+	 * @return string
+	 */
+	public function getContentType() {
+		return $this->content_type;
+	}
+
+
+	/**
+	 * @param string $content_type
+	 */
+	public function setContentType($content_type) {
+		$this->content_type = $content_type;
+	}
+
+
+	/**
 	 * @param array $post_fields
 	 */
 	public function setPostFields($post_fields) {
@@ -425,10 +449,23 @@ class exodCurl {
 	 */
 	protected function preparePost($ch) {
 		$post_body = array();
-		foreach ($this->getPostFields() as $key => $value) {
-			$post_body[] = $key . '=' . $value;
+		switch ($this->getContentType()) {
+			case self::X_WWW_FORM_URL_ENCODED:
+				foreach ($this->getPostFields() as $key => $value) {
+					$post_body[] = $key . '=' . $value;
+				}
+				$this->setPostBody(implode('&', $post_body));
+				$this->addHeader('Content-Type: ' . self::X_WWW_FORM_URL_ENCODED);
+				break;
+		case self::JSON:
+				foreach ($this->getPostFields() as $key => $value) {
+					$post_body[$key] = $value;
+				}
+				$this->setPostBody(json_encode($post_body));
+				$this->addHeader('Content-Type: ' . self::JSON);
+				break;
 		}
-		$this->setPostBody(implode('&', $post_body));
+
 
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->getPostBody());
 	}

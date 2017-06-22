@@ -18,6 +18,10 @@ abstract class exodItem {
 	/**
 	 * @var string
 	 */
+	protected $drive_id = '';
+	/**
+	 * @var string
+	 */
 	protected $path = '';
 	/**
 	 * @var string
@@ -63,13 +67,53 @@ abstract class exodItem {
 	public function loadFromStdClass(stdClass $item) {
 		foreach ($item as $k => $v) {
 			$internal_key = self::fromCamelCase($k);
+
+			switch ($internal_key) {
+				case 'created_date_time':
+					$internal_key = 'date_time_created';
+					break;
+				case 'last_modified_date_time':
+					$internal_key = 'date_time_last_modified';
+					break;
+				case '@content.download_url':
+					$internal_key = 'content_url';
+					break;
+				case 'id':
+					if (strpos($v, '!')) {
+						$ids_array = explode('!', $v);
+						$this->drive_id = array_shift($ids_array);
+						$v = array_shift($ids_array);
+					}
+					break;
+				case 'parent_reference':
+					$this->setPath($v->path);
+					continue;
+			}
+
 			if (property_exists(get_class($this), $internal_key)) {
 				$this->{$internal_key} = $v;
 			}
-			if ($k == 'parentReference') {
-				$this->setPath($v->path);
-			}
 		}
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getDriveId() {
+		return $this->drive_id;
+	}
+
+
+	/**
+	 * @param string $drive_id
+	 */
+	public function setDriveId($drive_id) {
+		$this->drive_id = $drive_id;
+	}
+
+	public function getFullId() {
+		return ltrim($this->getDriveId() . '!' . $this->getId(), '!');
 	}
 
 

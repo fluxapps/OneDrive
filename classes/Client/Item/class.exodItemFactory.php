@@ -23,7 +23,7 @@ class exodItemFactory {
 		}
 
 		foreach ($response->value as $item) {
-			if ($item->type == 'Folder') {
+			if ($item->type == 'Folder' || $item->folder) {
 				$exid_item = new exodFolder();
 				$exid_item->loadFromStdClass($item);
 				exodItemCache::store($exid_item);
