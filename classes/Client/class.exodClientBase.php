@@ -49,9 +49,9 @@ abstract class exodClientBase {
 	 */
 	protected $response_content_size = 0;
 	/**
-	 * @var string
+	 * @var array
 	 */
-	protected $request_body = '';
+	protected $post_fields = array();
 	/**
 	 * @var string
 	 */
@@ -114,6 +114,10 @@ abstract class exodClientBase {
 		$exodCurl->setUrl($this->getRessource());
 		$exodCurl->addHeader("Authorization: Bearer " . $this->getAccessToken());
 
+		if ($this->getRequestContentType()) {
+			$exodCurl->setContentType($this->getRequestContentType());
+		}
+
 		switch ($this->getRequestType()) {
 			case self::REQ_TYPE_GET:
 				$exodCurl->get();
@@ -128,6 +132,7 @@ abstract class exodClientBase {
 				$exodCurl->delete();
 				break;
 			case self::REQ_TYPE_POST:
+				$exodCurl->setPostFields($this->getPostfields());
 				$exodCurl->post();
 				break;
 		}
@@ -287,18 +292,18 @@ abstract class exodClientBase {
 
 
 	/**
-	 * @return string
+	 * @return array
 	 */
-	public function getRequestBody() {
-		return $this->request_body;
+	public function getPostfields() {
+		return $this->post_fields;
 	}
 
 
 	/**
-	 * @param string $request_body
+	 * @param array $post_fields
 	 */
-	public function setRequestBody($request_body) {
-		$this->request_body = $request_body;
+	public function setPostfields($post_fields) {
+		$this->post_fields = $post_fields;
 	}
 
 

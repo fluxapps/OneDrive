@@ -19,8 +19,8 @@ class exodClientPublic extends exodClientBase {
 	public function listFolder($path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$exodPath = exodPathPublic::getInstance($path);
-		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot:'
-		             . $exodPath->getDirname() . ':/children';
+		$ressource = $this->getExodApp()->getRessource() . '/drive/special/approot:'
+		             . $exodPath->getFullPath() . ':/children';
 		//		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot:/children';
 		//			throw new ilCloudException(-1, $ressource );
 		$this->setRessource($ressource);
@@ -82,13 +82,15 @@ class exodClientPublic extends exodClientBase {
 	 */
 	public function deliverFile($path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\''
-		                    . rawurlencode($path) . '\')');
+		$this->setRessource($this->getExodApp()->getRessource() . '/drive/special/approot:' . rawurlencode($path));
+		$this->setRequestContentType(exodCurl::JSON);
+		$this->request();
 		//		throw new ilCloudException(-1, $this->getRessource());
 
 		$file = new exodFile();
 		$file->loadFromStdClass($this->getResponseJsonDecoded());
 		$this->setRessource($file->getContentUrl());
+		$this->request();
 
 		//		header("Content-type: " . $this->getResponseMimeType());
 		header("Content-type: application/octet-stream");
@@ -113,15 +115,17 @@ class exodClientPublic extends exodClientBase {
 	public function createFolder($path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$exodPath = exodPathPublic::getInstance($path);
-		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot';
+		$ressource = $this->getExodApp()->getRessource() . '/drive/special/approot:' . $exodPath->getDirname();
 		$this->setRessource($ressource);
 		$this->request();
 
 		$folder = new exodFolder();
 		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
-		$this->setRequestType(self::REQ_TYPE_PUT);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId()
-		                    . '/children/' . $exodPath->getBaseName());
+		$this->setRequestType(self::REQ_TYPE_POST);
+		$this->setRequestContentType(exodCurl::JSON);
+		$this->setPostfields(array("name" => $exodPath->getBasename(), "folder" => new stdClass()));
+		$this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $folder->getFullId()
+		                    . '/children');
 
 		$this->request();
 
@@ -138,22 +142,18 @@ class exodClientPublic extends exodClientBase {
 	 */
 	public function uploadFile($location, $local_file_path) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$dirname = dirname($location);
-		if ($dirname == '.') {
-			$dirname = '/';
-		}
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\''
-		                    . rawurlencode($dirname) . '\')');
+		$exodPath = exodPathPublic::getInstance($location);
+		$ressource = $this->getExodApp()->getRessource() . '/drive/special/approot:' . $exodPath->getDirname();
+		$this->setRessource($ressource);
 		$this->request();
 
 		$folder = new exodFolder();
 		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
-		$name = rawurlencode(basename($location));
 
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$this->setRequestType(self::REQ_TYPE_PUT);
-		$this->setRessource($this->getExodApp()->getRessource() . '/Files/' . $folder->getId()
-		                    . '/children/' . $name . '/content');
+		$this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $folder->getFullId()
+		                    . '/children/' . rawurlencode($exodPath->getBasename()) . '/content');
 		$this->setRequestFilePath($local_file_path);
 		$request_content_type = finfo_file($finfo, $local_file_path);
 		$this->setRequestContentType($request_content_type);
@@ -169,7 +169,7 @@ class exodClientPublic extends exodClientBase {
 	 * @return bool
 	 */
 	public function delete($path) {
-		$this->setRessource($this->getExodApp()->getRessource() . '/me/skydrive/'
+		$this->setRessource($this->getExodApp()->getRessource() . '/drive/special/approot:'
 		                    . rawurlencode($path));
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$this->request();
@@ -193,8 +193,8 @@ class exodClientPublic extends exodClientBase {
 	protected function itemExists($path) {
 		//			throw new ilCloudException(-1, 'lorem');
 		$exodPath = exodPathPublic::getInstance($path);
-		$ressource = $this->getExodApp()->getRessource() . 'drive/special/approot:/'
-		             . $exodPath->getDirname();
+		$ressource = $this->getExodApp()->getRessource() . '/drive/special/approot:'
+		             . $exodPath->getFullPath();
 		$this->setRessource($ressource);
 		try {
 			$this->request();

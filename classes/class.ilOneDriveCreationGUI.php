@@ -58,7 +58,9 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 		} else {
 			$root_folder = $form->getInput(self::F_CUSTOM_BASE_FOLDER_INPUT);
 		}
-		$root_folder = '/ILIASCloud/' . ltrim($root_folder, "/");
+		if ($this->getAdminConfigObject()->getValue(exodConfig::F_CLIENT_TYPE) == exodApp::TYPE_BUSINESS) {
+			$root_folder = '/ILIASCloud/' . ltrim($root_folder, "/");
+		}
 		$obj->setRootFolder($root_folder);
 	}
 }

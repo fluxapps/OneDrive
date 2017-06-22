@@ -118,7 +118,7 @@ class exodAuth {
 			$this->exod_app->buildURLs();
 			$exodCurl = new exodCurl();
 			$exodCurl->setUrl($this->exod_app->getTokenUrl());
-			$exodCurl->addHeader("Content-Type: application/x-www-form-urlencoded");
+			$exodCurl->setContentType(exodCurl::X_WWW_FORM_URL_ENCODED);
 
 			$exodCurl->addPostField('code', $this->response->getCode());
 			$exodCurl->addPostField('client_id', $this->exod_app->getClientId());
@@ -153,7 +153,7 @@ class exodAuth {
 		$this->exod_app->buildURLs();
 		$exodCurl = new exodCurl();
 		$exodCurl->setUrl($this->exod_app->getTokenUrl());
-		$exodCurl->addHeader("Content-Type: application/x-www-form-urlencoded");
+		$exodCurl->setContentType(exodCurl::X_WWW_FORM_URL_ENCODED);
 
 		$exodCurl->addPostField('client_secret', $this->getExodApp()->getClientSecret());
 		$exodCurl->addPostField('client_id', $this->exod_app->getClientId());
