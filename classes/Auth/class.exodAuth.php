@@ -84,6 +84,10 @@ class exodAuth {
 		ilSession::set(self::EXOD_CALLBACK_URL, $this->getExodApp()->getHttpPath() . $callback_url);
 		$auth_url = $this->generateAuthUrl();
 
+		$exodLog = exodLog::getInstance();
+		$exodLog->write('authenticating...');
+		$exodLog->write('Location: ' . $auth_url);
+
 		header("Location: " . $auth_url);
 	}
 
