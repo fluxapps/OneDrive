@@ -18,7 +18,8 @@ $fields = array(
 		'length' => 2000
 	),
 	'public_link' => array(
-		'type' => 'boolean',
+		'type' => 'integer',
+		'length' => 1
 	),
 	'max_file_size' => array(
 		'type' => 'text',
