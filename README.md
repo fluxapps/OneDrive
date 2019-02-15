@@ -11,9 +11,9 @@ As ILIAS administrator go to "Administration->Plugins" and install/activate the 
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests
-* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/PLDROPBOX
-* Bug reports under https://jira.studer-raimann.ch/projects/PLDROPBOX
-* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLDROPBOX
+* Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/PLONEDRIVE
+* Bug reports under https://jira.studer-raimann.ch/projects/PLONEDRIVE
+* For external users you can report it at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLONEDRIVE
 
 ### ILIAS Plugin SLA
 Wir lieben und leben die Philosophie von Open Source Software! Die meisten unserer Entwicklungen, welche wir im Kundenauftrag oder in Eigenleistung entwickeln, stellen wir öffentlich allen Interessierten kostenlos unter https://github.com/studer-raimann zur Verfügung.
