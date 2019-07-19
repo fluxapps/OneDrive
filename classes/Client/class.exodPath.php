@@ -1,5 +1,7 @@
 <?php
 
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrive.php');
+
 /**
  * Class exodPath
  *
@@ -32,7 +34,6 @@ class exodPath {
 	 * @var array
 	 */
 	protected static $preserved_chars = array(
-		"'",
 		'"',
 		'|',
 		'#',
@@ -43,13 +44,28 @@ class exodPath {
 		'>',
 		'?',
 		'/',
+		'\\'
 	);
+
+
+	/**
+	 * @param $basename
+	 *
+	 * @throws ilCloudException
+	 */
+	public static function validateBasename($basename) {
+		if (strpbrk($basename, implode('', self::$preserved_chars))) {
+			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
+				. htmlentities(implode(' ', self::$preserved_chars)));
+		}
+	}
 
 
 	/**
 	 * @param $path
 	 *
 	 * @return exodPath
+	 * @throws ilCloudException
 	 */
 	public static function getInstance($path) {
 		return new self($path);
@@ -69,9 +85,11 @@ class exodPath {
 	/**
 	 * @param $path
 	 *
+	 * @param $root_path
+	 *
 	 * @throws ilCloudException
 	 */
-	protected function __construct($path) {
+	protected function __construct($path) {;
 		//		$path = '/ILIASCloud/' . ltrim($path, '/');
 		$this->path = $path;
 		//		$path = ltrim($path, '/');
@@ -169,10 +187,6 @@ class exodPath {
 
 	protected function initBasename() {
 		$basename = basename($this->path);
-		if (strpbrk($basename, implode('', self::$preserved_chars))) {
-			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
-			                                                                     . htmlentities(implode(' ', self::$preserved_chars)));
-		}
 		$this->basename = $this->encode(addslashes($basename));
 	}
 }

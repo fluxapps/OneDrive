@@ -2,6 +2,7 @@
 /* Copyright (c) 1998-2009 ILIAS open source, Extended GPL, see docs/LICENSE */
 
 require_once('./Modules/Cloud/classes/class.ilCloudPluginCreationGUI.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodPath.php');
 
 /**
  * Class ilOneDriveCreationGUI
@@ -50,9 +51,12 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 
 	/**
 	 * @param ilPropertyFormGUI $form
-	 * @param ilObjCloud $obj
+	 * @param ilObjCloud        $obj
+	 *
+	 * @throws ilCloudException
 	 */
 	public function afterSavePluginCreation(ilObjCloud &$obj, ilPropertyFormGUI $form) {
+		exodPath::validateBasename($form->getInput("title"));
 		if ($form->getInput(self::F_BASE_FOLDER) == self::F_DEFAULT_BASE_FOLDER) {
 			$root_folder = $obj->getTitle();
 		} else {
@@ -61,6 +65,7 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 		if ($this->getAdminConfigObject()->getValue(exodConfig::F_CLIENT_TYPE) == exodApp::TYPE_BUSINESS) {
 			$root_folder = '/ILIASCloud/' . ltrim($root_folder, "/");
 		}
+
 		$obj->setRootFolder($root_folder);
 	}
 }

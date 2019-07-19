@@ -42,7 +42,7 @@ class ilOneDriveService extends ilCloudPluginService {
 		$this->getAuth()->authenticate(htmlspecialchars_decode($callback_url));
 	}
 
-
+	
 	public function afterAuthService() {
 		$exodAuth = $this->getApp()->getExodAuth();
 		$exodAuth->loadTokenFromSession();

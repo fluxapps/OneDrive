@@ -1,5 +1,7 @@
 <?php
 
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodPath.php');
+
 /**
  * Class ilOneDriveSettingsGUI
  *
@@ -15,6 +17,26 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 	 * @var ilPropertyFormGUI
 	 */
 	protected $form;
+
+
+	public function updateSettings() {
+		global $DIC;
+		$ilCtrl = $DIC['ilCtrl'];
+
+		try {
+			$this->initSettingsForm();
+
+			if ($this->form->checkInput()) {
+				exodPath::validateBasename($this->form->getInput("title"));
+			}
+
+			parent::updateSettings();
+		} catch (Exception $e) {
+			ilUtil::sendFailure($e->getMessage(), true);
+			$ilCtrl->redirect($this, 'editSettings');
+		}
+
+	}
 
 
 	protected function initPluginSettings() {
