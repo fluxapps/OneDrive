@@ -51,6 +51,7 @@ class exodPath {
 	/**
 	 * @param $basename
 	 *
+	 * @return string
 	 * @throws ilCloudException
 	 */
 	public static function validateBasename($basename) {
@@ -58,6 +59,8 @@ class exodPath {
 			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
 				. htmlentities(implode(' ', self::$preserved_chars)));
 		}
+
+		return ltrim($basename);
 	}
 
 

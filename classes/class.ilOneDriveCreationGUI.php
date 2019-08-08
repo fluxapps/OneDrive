@@ -56,7 +56,8 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 	 * @throws ilCloudException
 	 */
 	public function afterSavePluginCreation(ilObjCloud &$obj, ilPropertyFormGUI $form) {
-		exodPath::validateBasename($form->getInput("title"));
+		$adjustedTitle = $_POST["title"] = exodPath::validateBasename($form->getInput("title"));
+		$obj->setTitle($adjustedTitle);
 		if ($form->getInput(self::F_BASE_FOLDER) == self::F_DEFAULT_BASE_FOLDER) {
 			$root_folder = $obj->getTitle();
 		} else {

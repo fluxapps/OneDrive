@@ -27,7 +27,7 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 			$this->initSettingsForm();
 
 			if ($this->form->checkInput()) {
-				exodPath::validateBasename($this->form->getInput("title"));
+				$_POST['title'] = exodPath::validateBasename($this->form->getInput("title"));
 			}
 
 			parent::updateSettings();
