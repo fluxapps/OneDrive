@@ -184,12 +184,16 @@ class exodPath {
 		if (!$this->parent_dirname) {
 			$this->parent_dirname = '/';
 		}
+
 		$this->dirname = $this->encode($dirname);
 	}
 
 
 	protected function initBasename() {
-		$basename = basename($this->path);
+	    // basename() replacement, as basename doesn't properly work with umlauts at the beginning
+		$pathContents = explode("/", $this->path);
+		$basename = $pathContents[count($pathContents) - 1];
+
 		$this->basename = $this->encode(addslashes($basename));
 	}
 }
