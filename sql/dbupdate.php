@@ -46,3 +46,13 @@ $plugin_object = ilOneDrivePlugin::getInstance();
 $config_object = new ilCloudPluginConfig($plugin_object->getPluginConfigTableName());
 $config_object->initDB();
 ?>
+<#3>
+<?php
+global $DIC;
+$ilDB = $DIC['ilDB'];
+
+$ilDB->manipulate(
+		"UPDATE il_cld_data SET " .
+        " auth_complete = 0"
+);
+?>

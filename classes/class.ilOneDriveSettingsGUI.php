@@ -19,7 +19,13 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 	protected $form;
 
 
-	public function updateSettings() {
+    protected function initPluginSettings()
+    {
+        $this->form->getItemByPostVar('root_folder')->setDisabled(true);
+    }
+
+
+    public function updateSettings() {
 		global $DIC;
 		$ilCtrl = $DIC['ilCtrl'];
 
@@ -37,6 +43,42 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
 		}
 
 	}
+
+
+    function editSettings()
+    {
+        global $DIC;
+        $ilCtrl = $DIC['ilCtrl'];
+        $lng = $DIC['lng'];
+
+        $cloud_object_changed = false;
+
+        // On object creation set cloud root id
+        if (isset($_GET["root_id"])) {
+            $this->applyRootId();
+            $cloud_object_changed = true;
+            ilUtil::sendSuccess($lng->txt("cld_object_added"), true);
+        }
+
+        $service = ilCloudConnector::getServiceClass($this->cloud_object->getServiceName(), $this->cloud_object->getId());
+
+        if ($service->updateRootFolderPosition($this->cloud_object->getRootId())) {
+            $cloud_object_changed = true;
+        }
+
+        if ($cloud_object_changed) {
+
+            $ilCtrl->redirectByClass("ilCloudPluginSettingsGUI", "editSettings");
+        }
+
+        parent::editSettings();
+    }
+
+
+    protected function applyRootId() {
+        $this->cloud_object->setRootId($_GET["root_id"]);
+        $this->cloud_object->update();
+    }
 
 
     public function initSettingsForm()

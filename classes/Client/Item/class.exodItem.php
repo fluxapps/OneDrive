@@ -66,7 +66,7 @@ abstract class exodItem {
 	 */
 	public function loadFromStdClass(stdClass $item) {
 		foreach ($item as $k => $v) {
-			$internal_key = self::fromCamelCase($k);
+			$internal_key = ilCloudPluginConfig::_fromCamelCase($k);
 
 			switch ($internal_key) {
 				case 'created_date_time':
