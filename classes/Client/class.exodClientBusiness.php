@@ -176,7 +176,7 @@ class exodClientBusiness extends exodClientBase {
     protected function createSingleFolderByRootId($parent_root_id, $folder_name) {
         $this->setRequestType(self::REQ_TYPE_PUT);
         $this->setRessource($this->getExodApp()->getRessource() . '/files/' . $parent_root_id
-            . '/children/' . $folder_name);
+            . '/children/' . rawurlencode($folder_name));
         $response = $this->getResponseJsonDecoded();
 
         return $response->id;
@@ -195,7 +195,7 @@ class exodClientBusiness extends exodClientBase {
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$this->setRequestType(self::REQ_TYPE_PUT);
 		$this->setRessource($this->getExodApp()->getRessource() . '/Files/' . $parent_folder_id
-		                    . '/children/' . $name . '/content');
+            . '/children/' . rawurlencode($name) . '/content');
 		$this->setRequestFilePath($local_file_path);
 		$request_content_type = finfo_file($finfo, $local_file_path);
 		$this->setRequestContentType($request_content_type);
