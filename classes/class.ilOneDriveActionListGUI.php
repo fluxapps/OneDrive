@@ -2,14 +2,21 @@
 require_once('./Modules/Cloud/classes/class.ilCloudPluginActionListGUI.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/Item/class.exodItemCache.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/Mapping/OneDriveEmailBuilderFactory.php');
 
 /**
  * Class ilOneDriveActionListGUI
  *
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  * @version 1.0.0
+ *
+ * @ilCtrl_isCalledBy ilOneDriveActionListGUI: ilObjCloudGUI
  */
 class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
+
+    const CMD_OPEN_IN_OFFICE_ONLINE = 'openInOfficeOnline';
+
+    const ITEM_ID = 'item_id';
 
 	/**
 	 * @var ilAdvancedSelectionListGUI
@@ -31,14 +38,23 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      * @throws ilCloudException
      */
 	protected function addItemsAfter() {
+	    global $DIC;
         if (!$this->node->getIsDir() && $this->checkOpenInOfficePerm()) {
 			$exoFile = exodItemCache::get($this->node->getId());
 			if (!$exoFile instanceof exodFile) {
 				$exoFile = $this->getService()->getClient()->getFileObject($this->node->getId());
 			}
-			if ($exoFile->getMsURL()) {
-				$this->selection_list->addItem(ilOneDrivePlugin::getInstance()->txt('asl_open_msoffice'), 'ms', $exoFile->getMsURL(), '', '', '_blank');
-			}
+            if ($exoFile->getMsURL()) {
+                $DIC->ctrl()->setParameterByClass(ilCloudPluginActionListGUI::class, self::ITEM_ID, $exoFile->getId());
+                $this->selection_list->addItem(
+                    ilOneDrivePlugin::getInstance()->txt('asl_open_msoffice'),
+                    'ms',
+                    $DIC->ctrl()->getLinkTargetByClass([ilObjCloudGUI::class, ilCloudPluginActionListGUI::class], self::CMD_OPEN_IN_OFFICE_ONLINE),
+                    '',
+                    '',
+                    '_blank'
+                );
+            }
 		}
 
 		return true;
@@ -59,6 +75,27 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         return $DIC->access()->checkAccessOfUser($user_id, $perm, "", $ref_id);
     }
 
+
+    /**
+     *
+     */
+    protected function openInOfficeOnline()
+    {
+        global $DIC;
+
+        $item_id = filter_input(INPUT_GET, self::ITEM_ID);
+        $exoFile = exodItemCache::get($item_id);
+        if (!$exoFile instanceof exodFile) {
+            $exoFile = $this->getService()->getClient()->getFileObject($item_id);
+        }
+
+        $response = $this->getService()->getClient()->addWritePermissionToFile(
+            $item_id,
+            OneDriveEmailBuilderFactory::getInstance()->getEmailBuilder()->getOneDriveEmailForUser($DIC->user())
+        );
+
+        Header('Location: ' . $exoFile->getMsURL());
+    }
 
 	/**
      * @return ilOneDrive

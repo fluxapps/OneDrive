@@ -21,6 +21,10 @@ class exodConfig extends ilCloudPluginConfig {
 	const F_IP_RESOLVE_V_4 = 'ip_resolve_v4';
 	const F_CLIENT_TYPE = 'client_type';
 	const F_SSL_VERSION = 'ssl_version';
+	const F_EMAIL_MAPPING_HOOK_ACTIVE = 'email_mapping_hook';
+	const F_EMAIL_MAPPING_HOOK_PATH = 'path';
+	const F_EMAIL_MAPPING_HOOK_CLASS = 'class';
+
 	/**
 	 * @var array
 	 */

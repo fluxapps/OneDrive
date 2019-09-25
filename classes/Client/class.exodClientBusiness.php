@@ -12,6 +12,23 @@ require_once('class.exodPath.php');
  */
 class exodClientBusiness extends exodClientBase {
 
+    public function addWritePermissionToFile($id, $email)
+    {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $ressource = $this->getExodApp()->getRessource() . '/items/' . $id . '/invite';
+        $this->setRessource($ressource);    // TODO: ressource stimmt noch nicht (wahrscheinlich brauchts api v 2)
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields([
+            'roles' => ['write'],
+            'requiresSignIn' => true,
+            'sendInvitation' => false,
+            'message' => '',
+            'recipients' => [$email]
+        ]);
+        $this->request();
+        return $this->getResponseBody();
+    }
+
     /**
      * @param $folder_id
      *
