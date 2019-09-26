@@ -259,4 +259,22 @@ class exodClientBusiness extends exodClientBase {
 
 		return true;
 	}
+
+
+    public function createSharingLink($id)
+    {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields(
+            [
+                "type"  => "view",
+                "scope" => "anonymous",
+            ]
+        );
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id
+            . '/createLink');
+        $response = $this->getResponseJsonDecoded();
+
+        return $response->link->webUrl;
+    }
 }

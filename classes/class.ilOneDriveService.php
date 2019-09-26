@@ -51,6 +51,7 @@ class ilOneDriveService extends ilCloudPluginService {
 		$exodAuth = $this->getApp()->getExodAuth();
 		$exodAuth->loadTokenFromSession();
 		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
+        $this->getPluginObject()->setAllowPublicLinks(true);
 		$ilObjCloud = $this->getPluginObject()->getCloudModulObject();
 		$rootFolder = $ilObjCloud->getRootFolder();
 
@@ -74,6 +75,8 @@ class ilOneDriveService extends ilCloudPluginService {
 		    $rootId = $ilObjCloud->getRootId();
         }
 
+        $this->getPluginObject()->setPublicLink($this->createSharingLink($rootId));
+        $this->getPluginObject()->doUpdate();
         global $DIC;
         $DIC->ctrl()->setParameterByClass("ilcloudpluginsettingsgui", "root_id", $rootId);
 
@@ -198,6 +201,12 @@ class ilOneDriveService extends ilCloudPluginService {
      */
 	public function getFolderObjectByPath($path) {
         return $this->getClient()->getFolderObjectByPath($path);
+    }
+
+
+    public function createSharingLink($id)
+    {
+        return $this->getClient()->createSharingLink($id);
     }
 
 

@@ -28,3 +28,4 @@ tenant_id#:#Tenant-ID
 tenant_name#:#Tenant-Name
 ssl_version#:#SSL-Version
 settings_root_folder#:#Path
+open_in_onedrive#:#Open folder in OneDrive

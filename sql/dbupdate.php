@@ -18,8 +18,8 @@ $fields = array(
 		'length' => 2000
 	),
 	'public_link' => array(
-		'type' => 'integer',
-		'length' => 1
+        'type'   => 'text',
+        'length' => 2000,
 	),
 	'max_file_size' => array(
 		'type' => 'text',
@@ -35,7 +35,7 @@ $fields = array(
 	),
 );
 global $ilDB;
-$ilDB->createTable($plugin_object->getPluginTableName(), $fields);
+$ilDB->createTable($plugin_object->getPluginTableName(), $fields, true);
 $ilDB->addPrimaryKey($plugin_object->getPluginTableName(), array( "id" ));
 ?>
 <#2>
