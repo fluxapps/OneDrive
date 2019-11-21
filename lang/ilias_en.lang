@@ -29,3 +29,4 @@ tenant_name#:#Tenant-Name
 ssl_version#:#SSL-Version
 settings_root_folder#:#Path
 open_in_onedrive#:#Open folder in OneDrive
+err_unsupported_chars#:#The name contains unsupported characters. Please correct the form input. The following characters are not supported:

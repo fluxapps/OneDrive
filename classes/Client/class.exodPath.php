@@ -54,14 +54,17 @@ class exodPath {
 	 * @return string
 	 * @throws ilCloudException
 	 */
-	public static function validateBasename($basename) {
-		if (strpbrk($basename, implode('', self::$preserved_chars))) {
-			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
-				. htmlentities(implode(' ', self::$preserved_chars)));
-		}
+    public static function validateBasename($basename)
+    {
+        global $DIC;
+        if (strpbrk($basename, implode('', self::$preserved_chars))) {
+            $error_msg = $DIC->language()->txt(ilOneDrivePlugin::getInstance()->getPrefix() . "_err_unsupported_chars");
+            throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>' . $error_msg . '</b> '
+                . htmlentities(implode(' ', self::$preserved_chars)));
+        }
 
-		return ltrim($basename);
-	}
+        return ltrim($basename);
+    }
 
 
 	/**
