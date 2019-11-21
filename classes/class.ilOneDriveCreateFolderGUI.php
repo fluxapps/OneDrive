@@ -23,7 +23,7 @@ class ilOneDriveCreateFolderGUI extends ilCloudPluginCreateFolderGUI {
     public function createFolder()
     {
         try {
-            exodPath::validateBasename($_POST["folder_name"]);
+            $_POST["folder_name"] = exodPath::validateBasename($_POST["folder_name"]);
             parent::createFolder();
         } catch (Exception $e) {
             echo "<script language='javascript' type='text/javascript'>window.parent.il.CloudFileList.afterCreateFolder(" . ilJsonUtil::encode($e->getMessage()) . ");</script>";
