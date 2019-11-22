@@ -22,7 +22,14 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      */
     protected function checkHasAction()
     {
-        return $this->checkOpenInOfficePerm();
+        // Check if this is a file that can be opened in Office Online
+        if (!$this->node->getIsDir() && $this->checkOpenInOfficePerm()) {
+            $file = $this->fetchExoFileByNodeId($this->node->getId());
+
+            return !is_null($file->getMsURL());
+        }
+
+        return false;
     }
 
 
@@ -32,17 +39,33 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      */
 	protected function addItemsAfter() {
         if (!$this->node->getIsDir() && $this->checkOpenInOfficePerm()) {
-			$exoFile = exodItemCache::get($this->node->getId());
-			if (!$exoFile instanceof exodFile) {
-				$exoFile = $this->getService()->getClient()->getFileObject($this->node->getId());
-			}
-			if ($exoFile->getMsURL()) {
-				$this->selection_list->addItem(ilOneDrivePlugin::getInstance()->txt('asl_open_msoffice'), 'ms', $exoFile->getMsURL(), '', '', '_blank');
-			}
-		}
+            $file = $this->fetchExoFileByNodeId($this->node->getId());
 
-		return true;
-	}
+            if (!is_null($file->getMsURL())) {
+                $this->selection_list->addItem(ilOneDrivePlugin::getInstance()->txt('asl_open_msoffice'), 'ms', $file->getMsURL(), '', '', '_blank');
+            }
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @param int $node_id
+     *
+     * @return exodFile|exodItem|null
+     * @throws ilCloudException
+     */
+    protected function fetchExoFileByNodeId($node_id)
+    {
+        $exoFile = exodItemCache::get($node_id);
+
+        if (!$exoFile instanceof exodFile) {
+            $exoFile = $this->getService()->getClient()->getFileObject($this->node->getId());
+        }
+
+        return $exoFile;
+    }
 
 
     /**
