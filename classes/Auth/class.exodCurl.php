@@ -35,6 +35,11 @@ class exodCurl {
 		$this->execute();
 	}
 
+    public function patch() {
+        $this->setRequestType(self::REQ_TYPE_PATCH);
+        $this->execute();
+    }
+
 
 	protected function debug() {
 		$exodLog = exodLog::getInstance();
@@ -84,6 +89,7 @@ class exodCurl {
 			case self::REQ_TYPE_PUT:
 				$this->preparePut($ch);
 				break;
+            case self::REQ_TYPE_PATCH:
 			case self::REQ_TYPE_POST:
 				$this->preparePost($ch);
 				break;
@@ -113,6 +119,7 @@ class exodCurl {
 	const REQ_TYPE_POST = 'POST';
 	const REQ_TYPE_DELETE = 'DELETE';
 	const REQ_TYPE_PUT = 'PUT';
+	const REQ_TYPE_PATCH = 'PATCH';
 	const X_WWW_FORM_URL_ENCODED = 'application/x-www-form-urlencoded';
 	const JSON = 'application/json';
 	/**

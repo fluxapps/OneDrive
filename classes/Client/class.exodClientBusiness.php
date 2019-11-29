@@ -277,4 +277,19 @@ class exodClientBusiness extends exodClientBase {
 
         return $response->link->webUrl;
     }
+
+    public function renameItemById($id, $title)
+    {
+        $this->setRequestType(self::REQ_TYPE_PATCH);
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields(
+            [
+                "name"  => $title,
+            ]
+        );
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id);
+        $this->request();
+
+        return true;
+    }
 }

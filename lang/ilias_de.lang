@@ -9,6 +9,7 @@ add_new_default_base_folder#:#Hauptverzeichnis
 add_new_default_base_folder_info#:#Es wird im Ordner ILIASCloud auf OneDrive ein Unterordner erstellt. Als Namen wird der weiter oben eingefügte Titel genommen. Wenn der Ordner bereits existiert, wird dessen Inhalt in ILIAS angezeigt.
 app_secret#:#App-Secret
 asl_open_msoffice#:#In Office Online öffnen
+asl_rename#:#Umbenennen
 client_id#:#Client-ID
 client_secret#:#Client-Secret
 client_type#:#Client
@@ -30,3 +31,8 @@ ssl_version#:#SSL-Version
 settings_root_folder#:#Pfad
 open_in_onedrive#:#Ordner in OneDrive öffnen
 err_unsupported_chars#:#Der Name enthält Zeichen, welche nicht unterstützt werden. Bitte korrigieren Sie Ihre Eingabe. Die folgenden Zeichen werden nicht unterstützt:
+form_title_rename#:#Objekt umbenennen
+title#:#Titel
+msg_renamed#:#Objekt wurde umbenannt.
+save#:#Speichern
+cancel#:#Abbrechen
