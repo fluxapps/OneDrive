@@ -17,8 +17,8 @@ config_info_client_id#:#ID der in Windows Azure registrierten App
 config_info_client_secret#:#In Windows Azure sichtbar
 config_info_client_type#:#Typ der API
 config_info_ip_resolve_v4#:#Aktivieren, falls vom Server benötigt
-config_info_tenant_id#:#ID der Office365 Instanz
-config_info_tenant_name#:#Name der Office365 Instanz
+config_info_tenant_id#:#ID der Office 365 Instanz
+config_info_tenant_name#:#Name der Office 365 Instanz
 config_info_ssl_version#:#Diese SSL-version wird bei der Kommunikation verwendet
 common_configuration#:#Konfiguration
 common_OneDrive#:#OneDrive
@@ -36,3 +36,5 @@ title#:#Titel
 msg_renamed#:#Objekt wurde umbenannt.
 save#:#Speichern
 cancel#:#Abbrechen
+office_365_mapping#:#Office 356 Mapping
+config_info_o365_mapping#:#Benutzerfeld, welches den Office 356 Benutzernamen enthält.

@@ -64,12 +64,21 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 				),
 				'info'        => 'config_info_ssl_version',
 				'subelements' => null,
-			)
+			),
+            exodConfig::F_O365_MAPPING => array(
+                'type'          => self::IL_SELECT_INPUT_GUI,
+                'options'       => $this->getMappingOptions(),
+                'info'          => 'config_info_o365_mapping',
+                'subelements'   => null
+            )
 		);
 	}
 
 
-	public function initConfigurationForm() {
+    /**
+     * @return ilPropertyFormGUI
+     */
+    public function initConfigurationForm() {
 		global $lng, $ilCtrl;
 
 		include_once("./Services/Form/classes/class.ilPropertyFormGUI.php");
@@ -102,5 +111,23 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 
 		return $this->form;
 	}
+
+
+    /**
+     * @return array
+     */
+    protected function getMappingOptions()
+    {
+        global $DIC;
+
+        $options = [
+            'email' => $DIC->language()->txt('email'),
+            'ext_id' => $DIC->language()->txt('user_ext_account')
+        ];
+        $definitions = array_map(function($element) {
+            return $element['field_name'];
+        }, ilUserDefinedFields::_getInstance()->getDefinitions());
+        return array_merge($options, $definitions);
+    }
 }
 

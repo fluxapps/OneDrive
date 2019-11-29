@@ -15,10 +15,11 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
 
     const CMD_INIT_RENAME = 'initRename';
     const CMD_RENAME = 'rename';
+    const CMD_OPEN_IN_OFFICE_ONLINE = 'openInOfficeOnline';
 
     const GET_ID = 'id';
     const POST_TITLE = 'title';
-
+    const ITEM_ID = 'item_id';
 
 	/**
 	 * @var ilAdvancedSelectionListGUI
@@ -67,12 +68,22 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      * @throws ilCloudException
      */
 	protected function addItemsAfter() {
+	    global $DIC;
         if (!$this->node->getIsDir() && $this->checkOpenInOfficePerm()) {
             $file = $this->fetchExoFileByNodeId($this->node->getId());
 
             if (!is_null($file->getMsURL())) {
-                $this->selection_list->addItem(ilOneDrivePlugin::getInstance()->txt('asl_open_msoffice'), 'ms', $file->getMsURL(), '', '', '_blank');
+                $DIC->ctrl()->setParameterByClass(ilCloudPluginActionListGUI::class, self::ITEM_ID, $file->getId());
+                $this->selection_list->addItem(
+                    ilOneDrivePlugin::getInstance()->txt('asl_open_msoffice'),
+                    'ms',
+                    $DIC->ctrl()->getLinkTargetByClass([ilObjCloudGUI::class, ilCloudPluginActionListGUI::class], self::CMD_OPEN_IN_OFFICE_ONLINE),
+                    '',
+                    '',
+                    '_blank'
+                );
             }
+
         }
 
         return true;
@@ -219,4 +230,29 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
             . ");</script>";
         exit;
     }
+
+    /**
+     *
+     */
+    protected function openInOfficeOnline()
+    {
+        global $DIC;
+
+        $item_id = filter_input(INPUT_GET, self::ITEM_ID);
+        $exoFile = exodItemCache::get($item_id);
+        if (!$exoFile instanceof exodFile) {
+            $exoFile = $this->getService()->getClient()->getFileObject($item_id);
+        }
+
+        $od_email = ilOneDrivePlugin::getInstance()->getOneDriveEmailForUser($DIC->user());
+        if (!is_null($od_email)) {
+            $response = $this->getService()->getClient()->addWritePermissionToFile(
+                $item_id,
+                $od_email
+            );
+        }
+
+        Header('Location: ' . $exoFile->getMsURL());
+    }
+
 }
