@@ -343,14 +343,14 @@ class exodClientBusiness extends exodClientBase {
     public function addWritePermissionToFile($id, $email)
     {
         $this->setRequestType(self::REQ_TYPE_POST);
-        $this->setRessource($this->getExodApp()->getRessource() . '/items/' . $id . '/invite');
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id . '/invite');
         $this->setRequestContentType(exodCurl::JSON);
         $this->setPostfields([
             'roles' => ['write'],
-            'requiresSignIn' => true,
+            'requireSignIn' => true,
             'sendInvitation' => false,
             'message' => '',
-            'recipients' => [$email]
+            'recipients' => [['email' => $email]]
         ]);
         $this->request();
         return $this->getResponseBody();

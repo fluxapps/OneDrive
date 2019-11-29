@@ -245,7 +245,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         }
 
         $od_email = ilOneDrivePlugin::getInstance()->getOneDriveEmailForUser($DIC->user());
-        if (!is_null($od_email)) {
+        if (!is_null($od_email) && $od_email !== '') {
             $response = $this->getService()->getClient()->addWritePermissionToFile(
                 $item_id,
                 $od_email
