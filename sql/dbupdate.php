@@ -69,3 +69,17 @@ if ($orgu_type_id) {
     }
 }
 ?>
+<#5>
+<?php
+include_once("./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php");
+$plugin_object = ilOneDrivePlugin::getInstance();
+global $DIC;
+$DIC->database()->modifyTableColumn(
+	$plugin_object->getPluginTableName(),
+	'public_link',
+    [
+        'type'   => 'text',
+        'length' => 2000,
+    ]
+);
+?>
