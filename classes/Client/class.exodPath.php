@@ -1,5 +1,7 @@
 <?php
 
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrive.php');
+
 /**
  * Class exodPath
  *
@@ -32,7 +34,6 @@ class exodPath {
 	 * @var array
 	 */
 	protected static $preserved_chars = array(
-		"'",
 		'"',
 		'|',
 		'#',
@@ -43,13 +44,34 @@ class exodPath {
 		'>',
 		'?',
 		'/',
+		'\\'
 	);
+
+
+	/**
+	 * @param $basename
+	 *
+	 * @return string
+	 * @throws ilCloudException
+	 */
+    public static function validateBasename($basename)
+    {
+        global $DIC;
+        if (strpbrk($basename, implode('', self::$preserved_chars))) {
+            $error_msg = $DIC->language()->txt(ilOneDrivePlugin::getInstance()->getPrefix() . "_err_unsupported_chars");
+            throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>' . $error_msg . '</b> '
+                . htmlentities(implode(' ', self::$preserved_chars)));
+        }
+
+        return ltrim($basename);
+    }
 
 
 	/**
 	 * @param $path
 	 *
 	 * @return exodPath
+	 * @throws ilCloudException
 	 */
 	public static function getInstance($path) {
 		return new self($path);
@@ -69,9 +91,11 @@ class exodPath {
 	/**
 	 * @param $path
 	 *
+	 * @param $root_path
+	 *
 	 * @throws ilCloudException
 	 */
-	protected function __construct($path) {
+	protected function __construct($path) {;
 		//		$path = '/ILIASCloud/' . ltrim($path, '/');
 		$this->path = $path;
 		//		$path = ltrim($path, '/');
@@ -163,16 +187,16 @@ class exodPath {
 		if (!$this->parent_dirname) {
 			$this->parent_dirname = '/';
 		}
+
 		$this->dirname = $this->encode($dirname);
 	}
 
 
 	protected function initBasename() {
-		$basename = basename($this->path);
-		if (strpbrk($basename, implode('', self::$preserved_chars))) {
-			throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>Name contains unsupported Characters: </b>'
-			                                                                     . htmlentities(implode(' ', self::$preserved_chars)));
-		}
+	    // basename() replacement, as basename doesn't properly work with umlauts at the beginning
+		$pathContents = explode("/", $this->path);
+		$basename = $pathContents[count($pathContents) - 1];
+
 		$this->basename = $this->encode(addslashes($basename));
 	}
 }

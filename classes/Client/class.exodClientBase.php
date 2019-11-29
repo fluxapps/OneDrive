@@ -16,6 +16,8 @@ abstract class exodClientBase {
 	const REQ_TYPE_POST = 'POST';
 	const REQ_TYPE_DELETE = 'DELETE';
 	const REQ_TYPE_PUT = 'PUT';
+	const REQ_TYPE_PATCH = 'PATCH';
+
 	/**
 	 * @var exodApp
 	 */
@@ -134,6 +136,10 @@ abstract class exodClientBase {
 			case self::REQ_TYPE_POST:
 				$exodCurl->setPostFields($this->getPostfields());
 				$exodCurl->post();
+				break;
+			case self::REQ_TYPE_PATCH:
+				$exodCurl->setPostFields($this->getPostfields());
+				$exodCurl->patch();
 				break;
 		}
 

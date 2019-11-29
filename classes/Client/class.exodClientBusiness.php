@@ -12,18 +12,15 @@ require_once('class.exodPath.php');
  */
 class exodClientBusiness extends exodClientBase {
 
-	/**
-	 * @param $id
-	 *
-	 * @return exodFile[]|exodFolder[]
-	 */
-	public function listFolder($id) {
-		$exodPath = exodPath::getInstance($id);
-		$id = rawurlencode($id);
-
+    /**
+     * @param $folder_id
+     *
+     * @return exodFile[]|exodFolder[]
+     * @throws ilCloudException
+     */
+	public function listFolder($parent_root_id) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $id
-		             . '\')/children';
+        $ressource = $this->getExodApp()->getRessource() . '/drive/items/' . $parent_root_id . '/children';
 		$this->setRessource($ressource);
 		$response = $this->getResponseJsonDecoded();
 
@@ -31,19 +28,31 @@ class exodClientBusiness extends exodClientBase {
 	}
 
 
-	/**
-	 * @param $path
-	 *
-	 * @return exodFile
-	 * @throws ilCloudException
-	 */
-	public function getFileObject($path) {
-		$exodPath = exodPath::getInstance($path);
+    /**
+     * @param $root_id
+     *
+     * @return string
+     * @throws ilCloudException
+     */public function receivePathFromId($root_id) {
+        $this->setRequestType(self::REQ_TYPE_GET);
+        $ressource = $this->getExodApp()->getRessource() . '/drive/items/' . $root_id;
+        $this->setRessource($ressource);
+        $response = $this->getResponseJsonDecoded();
+
+        return $response->parentReference->path . "/" . $response->name;
+    }
+
+
+    /**
+     * @param $id
+     *
+     * @return exodFile
+     * @throws ilCloudException
+     */
+	public function getFileObject($id) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\''
-		             . $exodPath->getFullPath() . '\')';
+        $ressource = $this->getExodApp()->getRessource() . '/drive/items/' . $id;
 		$this->setRessource($ressource);
-		//		throw new ilCloudException(-1, $ressource );
 		$this->request();
 
 		$n = new exodFile();
@@ -51,6 +60,27 @@ class exodClientBusiness extends exodClientBase {
 
 		return $n;
 	}
+
+
+    /**
+     * @param $path
+     *
+     * @return exodFolder
+     * @throws ilCloudException
+     */
+    public function getFolderObjectByPath($path) {
+        $exodPath = exodPath::getInstance($path);
+        $this->setRequestType(self::REQ_TYPE_GET);
+        $ressource = $this->getExodApp()->getRessource() . '/drive/items/getByPath(\''
+            . $exodPath->getFullPath() . '\')';
+        $this->setRessource($ressource);
+        $this->request();
+
+        $n = new exodFolder();
+        $n->loadFromStdClass($this->getResponseJsonDecoded());
+
+        return $n;
+    }
 
 
 	/**
@@ -73,16 +103,16 @@ class exodClientBusiness extends exodClientBase {
 	}
 
 
-	/**
-	 * @param $path
-	 *
-	 * @return exodFile
-	 * @throws ilCloudException
-	 */
-	public function deliverFile($path) {
+    /**
+     * @param $id
+     *
+     * @return void
+     * @throws ilCloudException
+     */
+	public function deliverFile($id) {
 		$this->setRequestType(self::REQ_TYPE_GET);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\''
-		                    . rawurlencode($path) . '\')');
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/'
+		                    . $id);
 		//		throw new ilCloudException(-1, $this->getRessource());
 
 		$file = new exodFile();
@@ -104,71 +134,107 @@ class exodClientBusiness extends exodClientBase {
 	}
 
 
-	/**
-	 * @param $path
-	 *
-	 * @return bool
-	 */
-	public function createFolder($path) {
-		$exodPath = exodPath::getInstance($path);
+    /**
+     * @param $path
+     *
+     * @return bool
+     */
+    public function createFolderByPath($path) {
+        $exodPath = exodPath::getInstance($path);
 
-		foreach ($exodPath->getParts() as $i => $p) {
-			$pathToPart = $exodPath->getPathToPart($i);
-			if (!$this->folderExists($pathToPart)) {
+        foreach ($exodPath->getParts() as $i => $p) {
+            $pathToPart = $exodPath->getPathToPart($i);
+            if (!$this->folderExists($pathToPart)) {
 
-				$this->createSingleFolder($pathToPart);
-			}
-		}
+                return $this->createSingleFolderByPath($pathToPart);
+            }
+        }
 
-		return true;
-	}
-
-
-	protected function createSingleFolder($path) {
-		$exodPath = exodPath::getInstance($path);
-
-		$this->setRequestType(self::REQ_TYPE_GET);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\''
-		                    . $exodPath->getParentDirname() . '\')');
-		$this->request();
-
-		$folder = new exodFolder();
-		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
-
-		$this->setRequestType(self::REQ_TYPE_PUT);
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/' . $folder->getId()
-		                    . '/children/' . $exodPath->getBaseName());
-		$this->request();
-
-		return true;
-	}
+        return true;
+    }
 
 
-	/**
-	 * @param $location
-	 * @param $local_file_path
-	 *
-	 * @return bool
-	 * @throws ilCloudException
-	 */
-	public function uploadFile($location, $local_file_path) {
-		$this->setRequestType(self::REQ_TYPE_GET);
-		$dirname = dirname($location);
-		if ($dirname == '.') {
-			$dirname = '/';
-		}
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\''
-		                    . rawurlencode($dirname) . '\')');
-		$this->request();
+    /**
+     * @param $id
+     * @param $folder_name
+     *
+     * @return mixed
+     */
+    public function createFolderById($id, $folder_name) {
+        return $this->createSingleFolderByRootId($id, $folder_name);
+    }
 
-		$folder = new exodFolder();
-		$folder->loadFromStdClass(json_decode($this->getResponseBody()));
-		$name = rawurlencode(basename($location));
 
+    /**
+     * @param $path
+     *
+     * @return mixed
+     * @throws ilCloudException
+     */
+    protected function createSingleFolderByPath($path) {
+        $exodPath = exodPath::getInstance($path);
+
+        $this->setRequestType(self::REQ_TYPE_GET);
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/getByPath(\''
+            . $exodPath->getParentDirname() . '\')');
+        $this->request();
+
+        $folder = new exodFolder();
+        $folder->loadFromStdClass(json_decode($this->getResponseBody()));
+
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields(
+            [
+                "name"   => rawurldecode($exodPath->getBaseName()),
+                "folder" => new stdClass(),
+            ]
+        );
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $folder->getId()
+            . '/children');
+        $response = $this->getResponseJsonDecoded();
+
+        return $response->id;
+    }
+
+
+    /**
+     * @param $parent_root_id
+     * @param $folder_name
+     *
+     * @return mixed
+     * @throws ilCloudException
+     */
+    protected function createSingleFolderByRootId($parent_root_id, $folder_name) {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields(
+            [
+                "name"   => $folder_name,
+                "folder" => new stdClass(),
+            ]
+        );
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $parent_root_id
+            . '/children');
+        $response = $this->getResponseJsonDecoded();
+
+        return $response->id;
+    }
+
+
+    /**
+     * @param $parent_folder_id
+     * @param $name
+     * @param $local_file_path
+     *
+     * @return bool
+     * @throws ilCloudException
+     */
+	public function uploadFile($parent_folder_id, $name, $local_file_path) {
 		$finfo = finfo_open(FILEINFO_MIME_TYPE);
 		$this->setRequestType(self::REQ_TYPE_PUT);
-		$this->setRessource($this->getExodApp()->getRessource() . '/Files/' . $folder->getId()
-		                    . '/children/' . $name . '/content');
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $parent_folder_id
+            . '/children/' . rawurlencode($name) . '/content');
 		$this->setRequestFilePath($local_file_path);
 		$request_content_type = finfo_file($finfo, $local_file_path);
 		$this->setRequestContentType($request_content_type);
@@ -178,14 +244,15 @@ class exodClientBusiness extends exodClientBase {
 	}
 
 
-	/**
-	 * @param $path
-	 *
-	 * @return bool
-	 */
-	public function delete($path) {
-		$this->setRessource($this->getExodApp()->getRessource() . '/files/getByPath(\''
-		                    . rawurlencode($path) . '\')');
+    /**
+     * @param $id
+     *
+     * @return bool
+     * @throws ilCloudException
+     */
+	public function delete($id) {
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/'
+		                    . $id);
 		$this->setRequestType(self::REQ_TYPE_GET);
 		$this->request();
 
@@ -207,7 +274,7 @@ class exodClientBusiness extends exodClientBase {
 	 */
 	protected function itemExists($path) {
 		$path = rawurlencode($path);
-		$ressource = $this->getExodApp()->getRessource() . '/files/getByPath(\'' . $path . '\')';
+        $ressource = $this->getExodApp()->getRessource() . '/drive/items/getByPath(\'' . $path . '\')';
 		$this->setRessource($ressource);
 		try {
 			$this->request();
@@ -217,4 +284,76 @@ class exodClientBusiness extends exodClientBase {
 
 		return true;
 	}
+
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     * @throws ilCloudException
+     */
+    public function createSharingLink($id)
+    {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields(
+            [
+                "type"  => "view",
+                "scope" => "anonymous",
+            ]
+        );
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id
+            . '/createLink');
+        $response = $this->getResponseJsonDecoded();
+
+        return $response->link->webUrl;
+    }
+
+
+    /**
+     * @param $id
+     * @param $title
+     *
+     * @return bool
+     * @throws ilCloudException
+     */
+    public function renameItemById($id, $title)
+    {
+        $this->setRequestType(self::REQ_TYPE_PATCH);
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields(
+            [
+                "name"  => $title,
+            ]
+        );
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id);
+        $this->request();
+
+        return true;
+    }
+
+
+    /**
+     * @param $id
+     * @param $email
+     *
+     * @return string
+     * @throws ilCloudException
+     */
+    public function addWritePermissionToFile($id, $email)
+    {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id . '/invite');
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields([
+            'roles' => ['write'],
+            'requireSignIn' => true,
+            'sendInvitation' => false,
+            'message' => '',
+            'recipients' => [['email' => $email]]
+        ]);
+        $this->request();
+        return $this->getResponseBody();
+    }
+
 }

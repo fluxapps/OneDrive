@@ -18,8 +18,8 @@ $fields = array(
 		'length' => 2000
 	),
 	'public_link' => array(
-		'type' => 'integer',
-		'length' => 1
+        'type'   => 'text',
+        'length' => 2000,
 	),
 	'max_file_size' => array(
 		'type' => 'text',
@@ -35,7 +35,7 @@ $fields = array(
 	),
 );
 global $ilDB;
-$ilDB->createTable($plugin_object->getPluginTableName(), $fields);
+$ilDB->createTable($plugin_object->getPluginTableName(), $fields, true);
 $ilDB->addPrimaryKey($plugin_object->getPluginTableName(), array( "id" ));
 ?>
 <#2>
@@ -45,4 +45,41 @@ include_once("./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
 $plugin_object = ilOneDrivePlugin::getInstance();
 $config_object = new ilCloudPluginConfig($plugin_object->getPluginConfigTableName());
 $config_object->initDB();
+?>
+<#3>
+<?php
+global $DIC;
+$ilDB = $DIC['ilDB'];
+
+$ilDB->manipulate(
+		"UPDATE il_cld_data SET " .
+        " auth_complete = 0"
+);
+?>
+<#4>
+<?php
+//Adding a new Permission ("Open in Office Online")
+require_once("./Services/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
+$orgu_type_id = ilDBUpdateNewObjectType::getObjectTypeId('cld');
+
+if ($orgu_type_id) {
+    $offering_admin = ilDBUpdateNewObjectType::addCustomRBACOperation(ilOneDrivePlugin::getInstance()->getPrefix() . '_asl_open_msoffice', 'open ms office', 'object', 280);
+    if ($offering_admin) {
+        ilDBUpdateNewObjectType::addRBACOperation($orgu_type_id, $offering_admin);
+    }
+}
+?>
+<#5>
+<?php
+include_once("./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php");
+$plugin_object = ilOneDrivePlugin::getInstance();
+global $DIC;
+$DIC->database()->modifyTableColumn(
+	$plugin_object->getPluginTableName(),
+	'public_link',
+    [
+        'type'   => 'text',
+        'length' => 2000,
+    ]
+);
 ?>

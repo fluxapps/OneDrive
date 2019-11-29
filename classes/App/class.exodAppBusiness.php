@@ -30,7 +30,7 @@ class exodAppBusiness extends exodApp {
 		$this->setTokenUrl($this->getBaseUrl() . 'token');
 		$this->setRessourceUri('https://' . $this->getTenantName() . '-my.sharepoint.com/');
 		$this->setRessource('https://' . $this->getTenantName()
-		                    . '-my.sharepoint.com/_api/v1.0/me');
+            . '-my.sharepoint.com/_api/v2.0/me');
 	}
 
 

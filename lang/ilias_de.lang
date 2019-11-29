@@ -1,12 +1,15 @@
 <!-- language file start -->
 OneDrive#:#OneDrive
 add_new_base_folder#:#Basis-Ordner
-add_new_custom_base_folder#:#Eigener Ordner
+add_new_custom_base_folder#:#Ordner selber wählen
+add_new_custom_base_folder_info#:#Der Pfad zum angezeigten Ordner kann selber gewählt werden. Wenn der eingegebene Ordner bereits besteht, wird dessen Inhalt hier in ILIAS angezeigt, andernfalls wird er erstellt.
 add_new_custom_base_folder_input#:#Ordnername
 add_new_custom_base_folder_input_info#:#Mit führendem /
 add_new_default_base_folder#:#Hauptverzeichnis
+add_new_default_base_folder_info#:#Es wird im Ordner ILIASCloud auf OneDrive ein Unterordner erstellt. Als Namen wird der weiter oben eingefügte Titel genommen. Wenn der Ordner bereits existiert, wird dessen Inhalt in ILIAS angezeigt.
 app_secret#:#App-Secret
 asl_open_msoffice#:#In Office Online öffnen
+asl_rename#:#Umbenennen
 client_id#:#Client-ID
 client_secret#:#Client-Secret
 client_type#:#Client
@@ -14,8 +17,8 @@ config_info_client_id#:#ID der in Windows Azure registrierten App
 config_info_client_secret#:#In Windows Azure sichtbar
 config_info_client_type#:#Typ der API
 config_info_ip_resolve_v4#:#Aktivieren, falls vom Server benötigt
-config_info_tenant_id#:#ID der Office365 Instanz
-config_info_tenant_name#:#Name der Office365 Instanz
+config_info_tenant_id#:#ID der Office 365 Instanz
+config_info_tenant_name#:#Name der Office 365 Instanz
 config_info_ssl_version#:#Diese SSL-version wird bei der Kommunikation verwendet
 common_configuration#:#Konfiguration
 common_OneDrive#:#OneDrive
@@ -25,3 +28,13 @@ ip_resolve_v4#:#IP V4 Auflösung
 tenant_id#:#Tenant-ID
 tenant_name#:#Tenant-Name
 ssl_version#:#SSL-Version
+settings_root_folder#:#Pfad
+open_in_onedrive#:#Ordner in OneDrive öffnen
+err_unsupported_chars#:#Der Name enthält Zeichen, welche nicht unterstützt werden. Bitte korrigieren Sie Ihre Eingabe. Die folgenden Zeichen werden nicht unterstützt:
+form_title_rename#:#Objekt umbenennen
+title#:#Titel
+msg_renamed#:#Objekt wurde umbenannt.
+save#:#Speichern
+cancel#:#Abbrechen
+office_365_mapping#:#Office 356 Mapping
+config_info_o365_mapping#:#Benutzerfeld, welches den Office 356 Benutzernamen enthält.
