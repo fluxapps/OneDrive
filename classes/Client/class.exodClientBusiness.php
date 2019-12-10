@@ -28,7 +28,12 @@ class exodClientBusiness extends exodClientBase {
 	}
 
 
-	public function receivePathFromId($root_id) {
+    /**
+     * @param $root_id
+     *
+     * @return string
+     * @throws ilCloudException
+     */public function receivePathFromId($root_id) {
         $this->setRequestType(self::REQ_TYPE_GET);
         $ressource = $this->getExodApp()->getRessource() . '/drive/items/' . $root_id;
         $this->setRessource($ressource);
@@ -149,11 +154,23 @@ class exodClientBusiness extends exodClientBase {
     }
 
 
+    /**
+     * @param $id
+     * @param $folder_name
+     *
+     * @return mixed
+     */
     public function createFolderById($id, $folder_name) {
         return $this->createSingleFolderByRootId($id, $folder_name);
     }
 
 
+    /**
+     * @param $path
+     *
+     * @return mixed
+     * @throws ilCloudException
+     */
     protected function createSingleFolderByPath($path) {
         $exodPath = exodPath::getInstance($path);
 
@@ -180,6 +197,14 @@ class exodClientBusiness extends exodClientBase {
         return $response->id;
     }
 
+
+    /**
+     * @param $parent_root_id
+     * @param $folder_name
+     *
+     * @return mixed
+     * @throws ilCloudException
+     */
     protected function createSingleFolderByRootId($parent_root_id, $folder_name) {
         $this->setRequestType(self::REQ_TYPE_POST);
         $this->setRequestContentType(exodCurl::JSON);
@@ -261,6 +286,12 @@ class exodClientBusiness extends exodClientBase {
 	}
 
 
+    /**
+     * @param $id
+     *
+     * @return mixed
+     * @throws ilCloudException
+     */
     public function createSharingLink($id)
     {
         $this->setRequestType(self::REQ_TYPE_POST);
@@ -278,6 +309,14 @@ class exodClientBusiness extends exodClientBase {
         return $response->link->webUrl;
     }
 
+
+    /**
+     * @param $id
+     * @param $title
+     *
+     * @return bool
+     * @throws ilCloudException
+     */
     public function renameItemById($id, $title)
     {
         $this->setRequestType(self::REQ_TYPE_PATCH);
@@ -292,4 +331,29 @@ class exodClientBusiness extends exodClientBase {
 
         return true;
     }
+
+
+    /**
+     * @param $id
+     * @param $email
+     *
+     * @return string
+     * @throws ilCloudException
+     */
+    public function addWritePermissionToFile($id, $email)
+    {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $id . '/invite');
+        $this->setRequestContentType(exodCurl::JSON);
+        $this->setPostfields([
+            'roles' => ['write'],
+            'requireSignIn' => true,
+            'sendInvitation' => false,
+            'message' => '',
+            'recipients' => [['email' => $email]]
+        ]);
+        $this->request();
+        return $this->getResponseBody();
+    }
+
 }

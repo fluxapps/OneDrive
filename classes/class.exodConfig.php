@@ -21,6 +21,10 @@ class exodConfig extends ilCloudPluginConfig {
 	const F_IP_RESOLVE_V_4 = 'ip_resolve_v4';
 	const F_CLIENT_TYPE = 'client_type';
 	const F_SSL_VERSION = 'ssl_version';
+	const F_O365_MAPPING = 'office_365_mapping';
+
+	const DEFAULT_O365_MAPPING = 'email';
+
 	/**
 	 * @var array
 	 */
@@ -112,6 +116,16 @@ class exodConfig extends ilCloudPluginConfig {
 	public function getSSLVersion() {
 		return $this->getValue(self::F_SSL_VERSION);
 	}
+
+
+    /**
+     * @return int|string
+     * @throws ilCloudPluginConfigException
+     */
+	public function getO365Mapping()
+    {
+        return $this->getValue(self::F_O365_MAPPING) ?: self::DEFAULT_O365_MAPPING;
+    }
 
 
 	/**

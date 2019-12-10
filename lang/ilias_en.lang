@@ -36,3 +36,5 @@ title#:#Title
 msg_renamed#:#Object was renamed.
 save#:#Save
 cancel#:#Cancel
+office_365_mapping#:#Office 356 Mapping
+config_info_o365_mapping#:#User field containing the Office 365 username.
