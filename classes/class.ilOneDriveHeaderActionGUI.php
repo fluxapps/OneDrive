@@ -35,4 +35,29 @@ class ilOneDriveHeaderActionGUI extends ilCloudPluginHeaderActionGUI
 
         return $DIC->access()->checkAccessOfUser($user_id, $perm, "", $ref_id);
     }
+
+
+    /**
+     * Add custom commands to the object on the repository view
+     *
+     * @return array
+     */
+    public function getCustomListActions()
+    {
+        $customActionList = [];
+
+        // If authenticated and a share link has been created
+        if (ilObjCloudAccess::checkAuthStatus($this->getPluginObject()->getObjId()) && !empty($this->getPluginObject()->getPublicLink())) {
+            $customActionList = [
+                [
+                    "permission" => "read",
+                    "cmd"        => "fileManagerLaunch",
+                    "lang_var"   => ilOneDrivePlugin::getInstance()->getPrefix() . "_open_in_onedrive",
+                    "custom_url" => $this->getPluginObject()->getPublicLink(),
+                ],
+            ];
+        }
+
+        return $customActionList;
+    }
 }
