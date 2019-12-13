@@ -81,19 +81,8 @@ class ilOneDrivePlugin extends ilCloudHookPlugin  {
      */
 	public function getOneDriveEmailForUser($user)
     {
-        $config = new exodConfig();
-        $mapping_field = $config->getO365Mapping();
-        switch ($mapping_field) {
-            case 'email':
-                return $user->getEmail();
-            case 'ext_account':
-                return $user->getExternalAccount();
-            case null:
-                return null;
-            default:
-                $ud_data = $user->getUserDefinedData();
-                return $ud_data[$mapping_field] ?: null;
-        }
+        OneDriveEmailBuilderFactory::getInstance()->getEmailBuilder()->getOneDriveEmailForUser($user);
+
     }
 
 	/**

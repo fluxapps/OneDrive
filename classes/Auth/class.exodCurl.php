@@ -29,6 +29,11 @@ class exodCurl {
 		$this->execute();
 	}
 
+	public function patch() {
+		$this->setRequestType(self::REQ_TYPE_PATCH);
+		$this->execute();
+	}
+
 
 	public function delete() {
 		$this->setRequestType(self::REQ_TYPE_DELETE);

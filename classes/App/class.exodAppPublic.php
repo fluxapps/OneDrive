@@ -21,7 +21,7 @@ class exodAppPublic extends exodApp {
 		$this->setAuthUrl($this->getBaseUrl() . 'oauth20_authorize.srf');
 		$this->setTokenUrl($this->getBaseUrl() . 'oauth20_token.srf');
 		$this->setRessourceUri('https://api.onedrive.com');
-		$this->setRessource('https://api.onedrive.com/v1.0');
+		$this->setRessource('https://api.onedrive.com/v2.0');
 	}
 
 
