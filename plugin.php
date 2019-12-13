@@ -1,6 +1,6 @@
 <?php
 $id = 'exod';
-$version = '1.0.3';
+$version = '1.0.4';
 $ilias_min_version = '5.3.0';
 $ilias_max_version = '5.4.999';
 $responsible = 'studer + raimann ag';
