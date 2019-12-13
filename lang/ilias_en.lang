@@ -38,3 +38,8 @@ save#:#Save
 cancel#:#Cancel
 office_365_mapping#:#Office 356 Mapping
 config_info_o365_mapping#:#User field containing the Office 365 username.
+email_mapping_hook#:#Mapping Hook
+email_mapping_hook_info#:#Use an own implemented class to build the Office 365 username
+email_mapping_hook_path#:#Path to class
+email_mapping_hook_class#:#Classname
+email_mapping_hook_class_info#:#Must implement 'OneDriveEmailBuilderInterface'

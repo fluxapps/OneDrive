@@ -38,3 +38,8 @@ save#:#Speichern
 cancel#:#Abbrechen
 office_365_mapping#:#Office 356 Mapping
 config_info_o365_mapping#:#Benutzerfeld, welches den Office 356 Benutzernamen enthält.
+email_mapping_hook#:#Mapping Hook
+email_mapping_hook_info#:#Aktiviert die Verwendung einer eigens implementierten Klasse zum erzeugen des Office 365 Benutzernamen
+email_mapping_hook_path#:#Pfad zur Klasse
+email_mapping_hook_class#:#Klassenname
+email_mapping_hook_class_info#:#Muss 'OneDriveEmailBuilderInterface' implementieren

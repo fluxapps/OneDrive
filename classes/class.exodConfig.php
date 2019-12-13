@@ -22,8 +22,11 @@ class exodConfig extends ilCloudPluginConfig {
 	const F_CLIENT_TYPE = 'client_type';
 	const F_SSL_VERSION = 'ssl_version';
 	const F_O365_MAPPING = 'office_365_mapping';
-
 	const DEFAULT_O365_MAPPING = 'email';
+	const F_EMAIL_MAPPING_HOOK_ACTIVE = 'email_mapping_hook';
+	const F_EMAIL_MAPPING_HOOK_PATH = 'path';
+	const F_EMAIL_MAPPING_HOOK_CLASS = 'class';
+
 
 	/**
 	 * @var array

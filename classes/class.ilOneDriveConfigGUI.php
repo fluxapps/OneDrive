@@ -70,7 +70,24 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
                 'options'       => $this->getMappingOptions(),
                 'info'          => 'config_info_o365_mapping',
                 'subelements'   => null
-            )
+            ),
+            exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE      => array(
+                'type'        => self::IL_CHECKBOX_INPUT_GUI,
+                'info'        => exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE . '_info',
+                'subelements' => array(
+                    exodConfig::F_EMAIL_MAPPING_HOOK_PATH      => array(
+                        'type'        => self::IL_TEXT_INPUT_GUI,
+                        'subelements' => null,
+                        'required'  => true
+                    ),
+                    exodConfig::F_EMAIL_MAPPING_HOOK_CLASS      => array(
+                        'type'        => self::IL_TEXT_INPUT_GUI,
+                        'info'        => exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE . '_' . exodConfig::F_EMAIL_MAPPING_HOOK_CLASS . '_info',
+                        'subelements' => null,
+                        'required'  => true
+                    ),
+                ),
+            ),
 		);
 	}
 
@@ -90,13 +107,17 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 				$field->setOptions($item['options']);
 			}
 			$field->setInfo($this->plugin_object->txt($item["info"]));
+			$field->setRequired(isset($item['required']));
 			if (is_array($item["subelements"])) {
 				foreach ($item["subelements"] as $subkey => $subitem) {
 					$subfield = new $subitem["type"]($this->plugin_object->txt($key . "_"
 					                                                           . $subkey), $key
 					                                                                       . "_"
 					                                                                       . $subkey);
-					$subfield->setInfo($this->plugin_object->txt($subitem["info"]));
+					if ($subitem["info"]) {
+                        $subfield->setInfo($this->plugin_object->txt($subitem["info"]));
+                    }
+                    $subfield->setRequired(isset($subitem['required']));
 					$field->addSubItem($subfield);
 				}
 			}

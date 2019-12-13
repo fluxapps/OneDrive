@@ -127,7 +127,6 @@ abstract class exodClientBase {
 			case self::REQ_TYPE_PUT:
 				$exodCurl->setPutFilePath($this->getRequestFilePath());
 				$exodCurl->put();
-
 				break;
 			case self::REQ_TYPE_DELETE:
 				$exodCurl->addHeader('if-match: ' . $this->getRequestEtag());

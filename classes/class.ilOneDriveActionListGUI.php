@@ -2,6 +2,7 @@
 require_once('./Modules/Cloud/classes/class.ilCloudPluginActionListGUI.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/Item/class.exodItemCache.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/Mapping/OneDriveEmailBuilderFactory.php');
 
 /**
  * Class ilOneDriveActionListGUI
@@ -19,6 +20,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
 
     const GET_ID = 'id';
     const POST_TITLE = 'title';
+
     const ITEM_ID = 'item_id';
 
 	/**
@@ -67,8 +69,8 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      * @return bool
      * @throws ilCloudException
      */
-	protected function addItemsAfter() {
-	    global $DIC;
+    protected function addItemsAfter() {
+        global $DIC;
         if (!$this->node->getIsDir() && $this->checkOpenInOfficePerm()) {
             $file = $this->fetchExoFileByNodeId($this->node->getId());
 
@@ -231,8 +233,11 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         exit;
     }
 
+
     /**
-     *
+     * @throws exodEmailBuilderException
+     * @throws ilCloudException
+     * @throws ilCloudPluginConfigException
      */
     protected function openInOfficeOnline()
     {
@@ -244,7 +249,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
             $exoFile = $this->getService()->getClient()->getFileObject($item_id);
         }
 
-        $od_email = ilOneDrivePlugin::getInstance()->getOneDriveEmailForUser($DIC->user());
+        $od_email = OneDriveEmailBuilderFactory::getInstance()->getEmailBuilder()->getOneDriveEmailForUser($DIC->user());
         if (!is_null($od_email) && $od_email !== '') {
             $response = $this->getService()->getClient()->addWritePermissionToFile(
                 $item_id,
