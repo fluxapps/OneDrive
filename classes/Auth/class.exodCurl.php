@@ -40,12 +40,6 @@ class exodCurl {
 		$this->execute();
 	}
 
-    public function patch() {
-        $this->setRequestType(self::REQ_TYPE_PATCH);
-        $this->execute();
-    }
-
-
 	protected function debug() {
 		$exodLog = exodLog::getInstance();
 		$exodLog->write('execute *************************************************');

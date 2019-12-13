@@ -73,17 +73,16 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
             ),
             exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE      => array(
                 'type'        => self::IL_CHECKBOX_INPUT_GUI,
-                'info'        => 'config_info_' . exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE,
+                'info'        => exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE . '_info',
                 'subelements' => array(
                     exodConfig::F_EMAIL_MAPPING_HOOK_PATH      => array(
                         'type'        => self::IL_TEXT_INPUT_GUI,
-                        'info'        => 'config_info_' . exodConfig::F_EMAIL_MAPPING_HOOK_PATH,
                         'subelements' => null,
                         'required'  => true
                     ),
                     exodConfig::F_EMAIL_MAPPING_HOOK_CLASS      => array(
                         'type'        => self::IL_TEXT_INPUT_GUI,
-                        'info'        => 'config_info_' . exodConfig::F_EMAIL_MAPPING_HOOK_CLASS,
+                        'info'        => exodConfig::F_EMAIL_MAPPING_HOOK_ACTIVE . '_' . exodConfig::F_EMAIL_MAPPING_HOOK_CLASS . '_info',
                         'subelements' => null,
                         'required'  => true
                     ),
@@ -115,7 +114,9 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 					                                                           . $subkey), $key
 					                                                                       . "_"
 					                                                                       . $subkey);
-					$subfield->setInfo($this->plugin_object->txt($subitem["info"]));
+					if ($subitem["info"]) {
+                        $subfield->setInfo($this->plugin_object->txt($subitem["info"]));
+                    }
                     $subfield->setRequired(isset($subitem['required']));
 					$field->addSubItem($subfield);
 				}
