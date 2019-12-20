@@ -97,7 +97,7 @@ class ilOneDriveService extends ilCloudPluginService {
 			foreach ($exodFiles as $item) {
 				$size = ($item instanceof exodFile) ? $size = $item->getSize() : null;
 				$is_Dir = $item instanceof exodFolder;
-				$path = end(explode(':', $item->getFullPath()));
+				$path = $item->getFullPath();
 				$file_tree->addIdBasedNode($path, $item->getId(), $parent_id, $is_Dir, strtotime($item->getDateTimeLastModified()), $size);
 			}
 
