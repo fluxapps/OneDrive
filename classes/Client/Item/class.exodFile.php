@@ -39,6 +39,26 @@ class exodFile extends exodItem {
 	protected $content_url = '';
 
 
+    /**
+     * @param string $new_title
+     * @param string $old_path An old title or old path. Make sure a file extension is available.
+     *
+     * @return string
+     */
+	public static function formatRename($new_title, $old_path) {
+        $finalFileName = $new_title;
+        $dotAmount = substr_count($new_title, ".");
+
+        if ($dotAmount == 0) {
+            $path_parts = pathinfo($old_path);
+            $extension = $path_parts['extension'];
+            $finalFileName .= "." . $extension;
+        }
+
+        return $finalFileName;
+    }
+
+
 	/**
 	 * @return bool
 	 */

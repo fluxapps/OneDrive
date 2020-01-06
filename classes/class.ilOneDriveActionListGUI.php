@@ -175,6 +175,11 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         $id = filter_input(INPUT_GET, self::GET_ID, FILTER_SANITIZE_STRING);
         $title = $form->getInput(self::POST_TITLE);
 
+        $exoFile = exodItemCache::get($id);
+        if ($exoFile instanceof exodFile) {
+            $title = exodFile::formatRename($title, $exoFile->getName());
+        }
+
         try {
             $this->getService()->getClient()->renameItemById($id, $title);
 
