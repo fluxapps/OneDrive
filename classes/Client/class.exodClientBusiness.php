@@ -113,23 +113,10 @@ class exodClientBusiness extends exodClientBase {
 		$this->setRequestType(self::REQ_TYPE_GET);
         $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/'
 		                    . $id);
-		//		throw new ilCloudException(-1, $this->getRessource());
 
 		$file = new exodFile();
 		$file->loadFromStdClass($this->getResponseJsonDecoded());
-		$this->setRessource($file->getContentUrl());
-
-		//		header("Content-type: " . $this->getResponseMimeType());
-		header("Content-type: application/octet-stream");
-		header('Content-Description: File Transfer');
-		header('Content-Disposition: attachment; filename='
-		       . str_replace(' ', '_', basename($file->getName())));
-		header('Content-Transfer-Encoding: binary');
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate');
-		header('Pragma: public');
-		header('Content-Length: ' . $this->getResponseContentSize());
-		echo $this->getResponseRaw();
+		header('Location: ' . $file->getContentUrl());
 		exit;
 	}
 
