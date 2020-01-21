@@ -21,16 +21,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
 
     function handleFileUpload($file_upload)
     {
-        $finalFileName = $_POST["title"];
-        $dotAmount = substr_count($_POST["title"], ".");
-
-        if ($dotAmount == 0) {
-            $path_parts = pathinfo($file_upload["name"]);
-            $extension = $path_parts['extension'];
-            $finalFileName .= "." . $extension;
-        }
-
-        $_POST["title"] = $finalFileName;
+        $_POST["title"] = exodFile::formatRename($_POST["title"], $file_upload["name"]);
 
         return parent::handleFileUpload($file_upload);
     }
