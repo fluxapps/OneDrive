@@ -83,3 +83,8 @@ $DIC->database()->modifyTableColumn(
     ]
 );
 ?>
+<#6>
+<?php
+require_once 'Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php';
+exodBearerToken::updateDB();
+?>
