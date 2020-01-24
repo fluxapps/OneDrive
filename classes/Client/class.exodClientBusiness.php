@@ -124,20 +124,22 @@ class exodClientBusiness extends exodClientBase {
     /**
      * @param $path
      *
-     * @return bool
+     * @return bool|int
+     * @throws ilCloudException
      */
     public function createFolderByPath($path) {
         $exodPath = exodPath::getInstance($path);
+        $root_id = true;
 
         foreach ($exodPath->getParts() as $i => $p) {
             $pathToPart = $exodPath->getPathToPart($i);
             if (!$this->folderExists($pathToPart)) {
 
-                return $this->createSingleFolderByPath($pathToPart);
+                $root_id = $this->createSingleFolderByPath($pathToPart);
             }
         }
 
-        return true;
+        return $root_id;
     }
 
 

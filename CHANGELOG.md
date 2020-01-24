@@ -2,6 +2,7 @@
 
 ## [2.0.1]
 - Bugfix: fixed file download
+- Bugfix: creating root folder and subfolder at the same time didn't work
 - Improvement: better error message when renaming fails
 - Improvement: add file type suffix on rename
 
