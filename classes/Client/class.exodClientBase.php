@@ -3,6 +3,7 @@
 require_once('class.exodPath.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/Item/class.exodItemFactory.php');
+require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Exception/ilOneDriveException.php');
 
 /**
  * Class exodClientBase
@@ -159,10 +160,9 @@ abstract class exodClientBase {
 
 		if ($resp->error) {
 			if (self::DEBUG) {
-				throw new ilCloudException(- 1, print_r($resp, true));
+				throw new ilOneDriveException(-1, print_r($resp, true));
 			} else {
-
-				throw new ilCloudException(- 1, $resp->error->message);
+				throw ilOneDriveException::fromErrorResponse($resp->error);
 			}
 		}
 	}
