@@ -9,6 +9,8 @@ add_new_default_base_folder#:#Hauptverzeichnis
 add_new_default_base_folder_info#:#Es wird im Ordner ILIASCloud auf OneDrive ein Unterordner erstellt. Als Namen wird der weiter oben eingefügte Titel genommen. Wenn der Ordner bereits existiert, wird dessen Inhalt in ILIAS angezeigt.
 app_secret#:#App-Secret
 asl_open_msoffice#:#In Office Online öffnen
+cld_cld_cldh_exod_asl_open_msoffice#:#In Office Online öffnen
+cld_cldh_exod_asl_open_msoffice#:#In Office Online öffnen
 asl_rename#:#Umbenennen
 client_id#:#Client-ID
 client_secret#:#Client-Secret
@@ -43,3 +45,5 @@ email_mapping_hook_info#:#Aktiviert die Verwendung einer eigens implementierten 
 email_mapping_hook_path#:#Pfad zur Klasse
 email_mapping_hook_class#:#Klassenname
 email_mapping_hook_class_info#:#Muss 'OneDriveEmailBuilderInterface' implementieren
+msg_name_already_exists#:#Eine Datei mit diesem Namen existiert bereits.
+msg_rename_failed#:#Umbenennen fehlgeschlagen
