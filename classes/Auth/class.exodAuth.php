@@ -134,11 +134,10 @@ class exodAuth {
 			$exodCurl->post();
 			$this->response->loadFromResponse($exodCurl->getResponseBody());
 
-			$exodBearerToken = new exodBearerToken();
-			$exodBearerToken->setAccessToken($this->getResponse()->getAccessToken());
-			$exodBearerToken->setRefreshToken($this->getResponse()->getRefreshToken());
-			$exodBearerToken->setValidThrough($this->getResponse()->getExpiresOn());
-			$this->setExodBearerToken($exodBearerToken);
+			$this->getExodBearerToken()->setAccessToken($this->getResponse()->getAccessToken());
+            $this->getExodBearerToken()->setRefreshToken($this->getResponse()->getRefreshToken());
+            $this->getExodBearerToken()->setValidThrough($this->getResponse()->getExpiresOn());
+            $this->getExodBearerToken()->store();
 		} else {
 			throw new ilCloudException(ilCloudException::UNKNONW_EXCEPTION, 'No Code received');
 		}
@@ -172,6 +171,7 @@ class exodAuth {
 		$exodBearerToken->setRefreshToken($this->response->getRefreshToken());
 		$exodBearerToken->setAccessToken($this->response->getAccessToken());
 		$exodBearerToken->setValidThrough($this->response->getExpiresOn());
+		$exodBearerToken->store();
 		$this->setExodBearerToken($exodBearerToken);
 
 		return true;

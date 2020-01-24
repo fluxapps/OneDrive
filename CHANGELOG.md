@@ -5,6 +5,7 @@
 - Bugfix: creating root folder and subfolder at the same time didn't work
 - Improvement: better error message when renaming fails
 - Improvement: add file type suffix on rename
+- Bugfix: Save token per user instead of per object (avoid "not authenticated")
 
 ## [2.0.0]
 - Feature: "Open in Office Online" will automatically give permissions on document

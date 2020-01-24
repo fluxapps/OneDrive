@@ -6,23 +6,76 @@
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  * @version 1.0.0
  */
-class exodBearerToken {
+class exodBearerToken extends ActiveRecord {
 
-	/**
-	 * @var string
-	 */
-	protected $access_token = '';
-	/**
-	 * @var string
-	 */
-	protected $refresh_token = '';
-	/**
-	 * @var int
-	 */
-	protected $valid_through = 0;
+    const DB_TABLE_NAME = 'cld_cldh_exod_token';
+    /**
+     * @var int
+     *
+     * @db_has_field        true
+     * @db_fieldtype        integer
+     * @db_length           8
+     * @db_is_primary       true
+     * @con_sequence        true
+     */
+    public $id;
+    /**
+     * @var int
+     *
+     * @db_has_field        true
+     * @db_fieldtype        integer
+     * @db_length           8
+     * @db_is_unique        true
+     */
+    public $user_id;
+    /**
+     * @var string
+     *
+     * @db_has_field        true
+     * @db_fieldtype        text
+     * @db_length           2000
+     */
+    public $access_token = '';
+    /**
+     * @var string
+     *
+     * @db_has_field        true
+     * @db_fieldtype        text
+     * @db_length           2000
+     */
+    public $refresh_token = '';
+    /**
+     * @var int
+     *
+     * @db_has_field        true
+     * @db_fieldtype        integer
+     * @db_length           8
+     */
+    public $valid_through = 0;
 
 
-	/**
+    /**
+     * @param int $user_id
+     *
+     * @return exodBearerToken
+     */
+    public static function findOrGetInstanceForUser($user_id)
+    {
+        $self = self::where(['user_id' => $user_id])->first() ?: new self();
+        $self->setUserId($user_id);
+        return $self;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConnectorContainerName()
+    {
+        return self::DB_TABLE_NAME;
+    }
+
+
+    /**
 	 * @return bool
 	 */
 	public function isValid() {
@@ -56,6 +109,42 @@ class exodBearerToken {
 
 		return false;
 	}
+
+
+    /**
+     * @return int
+     */
+    public function getId() : int
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function getUserId() : int
+    {
+        return $this->user_id;
+    }
+
+
+    /**
+     * @param int $user_id
+     */
+    protected function setUserId(int $user_id)
+    {
+        $this->user_id = $user_id;
+    }
 
 
 	/**

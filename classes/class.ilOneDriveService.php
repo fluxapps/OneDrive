@@ -39,6 +39,12 @@ class ilOneDriveService extends ilCloudPluginService {
 	 * @param string $callback_url
 	 */
 	public function authService($callback_url = "") {
+	    if ($this->getPluginObject()->getTokenObject()->isValid()) {
+	        $this->getAuth()->setExodBearerToken($this->getPluginObject()->getTokenObject());
+	        $this->getPluginObject()->getCloudModulObject()->setAuthComplete(true);
+	        $this->getPluginObject()->getCloudModulObject()->update();
+	        return;
+        }
 		$this->getAuth()->authenticate(htmlspecialchars_decode($callback_url));
 	}
 
@@ -50,7 +56,7 @@ class ilOneDriveService extends ilCloudPluginService {
     public function afterAuthService() {
 		$exodAuth = $this->getApp()->getExodAuth();
 		$exodAuth->loadTokenFromSession();
-		$this->getPluginObject()->storeToken($exodAuth->getExodBearerToken());
+		$exodAuth->getExodBearerToken()->store();
         $this->getPluginObject()->setAllowPublicLinks(true);
 		$ilObjCloud = $this->getPluginObject()->getCloudModulObject();
 		$rootFolder = $ilObjCloud->getRootFolder();
