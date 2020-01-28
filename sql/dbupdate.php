@@ -87,4 +87,23 @@ $DIC->database()->modifyTableColumn(
 <?php
 require_once 'Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Auth/class.exodBearerToken.php';
 exodBearerToken::updateDB();
+/** @var $ilDB ilDBPdo */
+if ($ilDB->tableColumnExists('cld_cldh_exod_props', 'access_token')) {
+	$res = $ilDB->query('SELECT p.*, d.owner FROM cld_cldh_exod_props p inner join object_data d on d.obj_id = p.id');
+	while ($rec = $ilDB->fetchAssoc($res)) {
+		if ($rec['access_token']) {
+			$token = exodBearerToken::findOrGetInstanceForUser($rec['owner']);
+			if ($token->getValidThrough() < $rec['valid_through']) {
+				$token->setAccessToken($rec['access_token']);
+				$token->setRefreshToken($rec['refresh_token']);
+				$token->setValidThrough($rec['valid_through']);
+				$token->store();
+			}
+		}
+	}
+	$ilDB->dropTableColumn('cld_cldh_exod_props', 'access_token');
+	$ilDB->dropTableColumn('cld_cldh_exod_props', 'refresh_token');
+	$ilDB->dropTableColumn('cld_cldh_exod_props', 'valid_through');
+	$ilDB->dropTableColumn('cld_cldh_exod_props', 'validation_user_id');
+}
 ?>
