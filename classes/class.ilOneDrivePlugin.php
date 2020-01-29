@@ -27,7 +27,50 @@ class ilOneDrivePlugin extends ilCloudHookPlugin  {
 	}
 
 
-	/**
+    public function updateLanguages($a_lang_keys = null)
+    {
+        global $DIC;
+        parent::updateLanguages($a_lang_keys);
+        $lang_entries_de = [];
+        $lang_entries_en = [];
+        $lang_entries_de['cld_cldh_exod_asl_open_msoffice'] = 'In Office Online öffnen';
+        $lang_entries_en['cld_cldh_exod_asl_open_msoffice'] = 'Open in Office Online';
+        $lang_entries_de['cld_cld_cldh_exod_asl_open_msoffice'] = 'Benutzer können Dokumente in Office Online bearbeiten';
+        $lang_entries_en['cld_cld_cldh_exod_asl_open_msoffice'] = 'Users can edit documents in Office Online';
+
+        foreach ($lang_entries_de as $identifier => $value) {
+            ilObjLanguage::replaceLangEntry('rbac', $identifier, 'de', $value);
+        }
+
+        foreach ($lang_entries_en as $identifier => $value) {
+            ilObjLanguage::replaceLangEntry('rbac', $identifier, 'en', $value);
+        }
+
+        $q = "SELECT * FROM lng_modules WHERE " .
+            " lang_key = 'de'" .
+            " AND module = 'rbac'";
+        $set = $DIC->database()->query($q);
+        $row = $DIC->database()->fetchAssoc($set);
+        $arr2 = unserialize($row["lang_array"]);
+        if (is_array($arr2)) {
+            $lang_entries_de = array_merge($arr2, $lang_entries_de);
+        }
+        ilObjLanguage::replaceLangModule('de', 'rbac', $lang_entries_de);
+
+        $q = "SELECT * FROM lng_modules WHERE " .
+            " lang_key = 'en'" .
+            " AND module = 'rbac'";
+        $set = $DIC->database()->query($q);
+        $row = $DIC->database()->fetchAssoc($set);
+        $arr2 = unserialize($row["lang_array"]);
+        if (is_array($arr2)) {
+            $lang_entries_en = array_merge($arr2, $lang_entries_en);
+        }
+        ilObjLanguage::replaceLangModule('en', 'rbac', $lang_entries_en);
+    }
+
+
+    /**
 	 * @param exodBearerToken $exodBearerToken
 	 *
 	 * @return exodAppBusiness|exodAppPublic

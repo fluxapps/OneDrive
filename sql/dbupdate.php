@@ -60,12 +60,12 @@ $ilDB->manipulate(
 <?php
 //Adding a new Permission ("Open in Office Online")
 require_once("./Services/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
-$orgu_type_id = ilDBUpdateNewObjectType::getObjectTypeId('cld');
+$cld_type_id = ilDBUpdateNewObjectType::getObjectTypeId('cld');
 
-if ($orgu_type_id) {
-    $offering_admin = ilDBUpdateNewObjectType::addCustomRBACOperation(ilOneDrivePlugin::getInstance()->getPrefix() . '_asl_open_msoffice', 'open ms office', 'object', 280);
-    if ($offering_admin) {
-        ilDBUpdateNewObjectType::addRBACOperation($orgu_type_id, $offering_admin);
+if ($cld_type_id) {
+    $open_ms_office = ilDBUpdateNewObjectType::addCustomRBACOperation(ilOneDrivePlugin::getInstance()->getPrefix() . '_asl_open_msoffice', 'open ms office', 'object', 280);
+    if ($open_ms_office) {
+        ilDBUpdateNewObjectType::addRBACOperation($cld_type_id, $open_ms_office);
     }
 }
 ?>
