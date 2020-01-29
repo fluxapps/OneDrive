@@ -6,6 +6,7 @@
 - Improvement: better error message when renaming fails
 - Improvement: add file type suffix on rename
 - Bugfix: Save token per user instead of per object (avoid "not authenticated")
+- Bugfix: Added missing permission language variable ("hack" required)
 
 ## [2.0.0]
 - Feature: "Open in Office Online" will automatically give permissions on document
