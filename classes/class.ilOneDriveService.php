@@ -35,16 +35,18 @@ class ilOneDriveService extends ilCloudPluginService {
 	}
 
 
-	/**
-	 * @param string $callback_url
-	 */
+    /**
+     * @param string $callback_url
+     *
+     * @throws Exception
+     */
 	public function authService($callback_url = "") {
-	    if ($this->getPluginObject()->getTokenObject()->isValid()) {
-	        $this->getAuth()->setExodBearerToken($this->getPluginObject()->getTokenObject());
-	        $this->getPluginObject()->getCloudModulObject()->setAuthComplete(true);
-	        $this->getPluginObject()->getCloudModulObject()->update();
-	        return;
+	    if ($this->getPluginObject()->getTokenObject()->isValid() || $this->getApp()->checkAndRefreshToken()) {
+	        global $DIC;
+	        $this->afterAuthService();
+	        $DIC->ctrl()->redirectToURL(htmlspecialchars_decode($callback_url));
         }
+
 		$this->getAuth()->authenticate(htmlspecialchars_decode($callback_url));
 	}
 
@@ -54,11 +56,10 @@ class ilOneDriveService extends ilCloudPluginService {
      * @throws ilCloudException
      */
     public function afterAuthService() {
-		$exodAuth = $this->getApp()->getExodAuth();
-		$exodAuth->loadTokenFromSession();
-		$exodAuth->getExodBearerToken()->store();
+        $this->getAuth()->setExodBearerToken($this->getPluginObject()->getTokenObject());
         $this->getPluginObject()->setAllowPublicLinks(true);
 		$ilObjCloud = $this->getPluginObject()->getCloudModulObject();
+		$this->setAuthComplete();
 		$rootFolder = $ilObjCloud->getRootFolder();
 
 		// If root id is either missing or contains unused "root" fix it
@@ -80,7 +81,6 @@ class ilOneDriveService extends ilCloudPluginService {
             // to tackle ilObjCloudGUI's afterServiceAuth which always sets it to "root"
 		    $rootId = $ilObjCloud->getRootId();
         }
-
         $this->getPluginObject()->setPublicLink($this->createSharingLink($rootId));
         $this->getPluginObject()->doUpdate();
         global $DIC;
@@ -89,6 +89,23 @@ class ilOneDriveService extends ilCloudPluginService {
 		return true;
 	}
 
+
+    /**
+     * set auth complete for all objects with the same owner
+     */
+	protected function setAuthComplete()
+    {
+        global $DIC;
+        $DIC->database()->query('
+                update il_cld_data 
+                set auth_complete = 1
+                where id IN (
+                    select obj_id from object_data 
+                    where service = \'OneDrive\' 
+                      and owner_id = ' . $this->getPluginObject()->getCloudModulObject()->getOwnerId() . '
+                )
+        ');
+    }
 
 	/**
 	 * @param ilCloudFileTree $file_tree

@@ -94,14 +94,8 @@ class exodAuth {
 
 	public function redirectToObject() {
 		$this->loadToken();
-		$this->storeTokenToSession();
 
 		ilUtil::redirect(ilSession::get(self::EXOD_CALLBACK_URL));
-	}
-
-
-	protected function storeTokenToSession() {
-		ilSession::set(self::EXOD_AUTH_BEARER, serialize($this->getExodBearerToken()));
 	}
 
 
@@ -163,7 +157,6 @@ class exodAuth {
 		$exodCurl->addPostField('grant_type', 'refresh_token');
 		$exodCurl->addPostField('refresh_token', $exodBearerToken->getRefreshToken());
 		$exodCurl->addPostField('resource', $this->exod_app->getRessourceUri());
-		$exodCurl->addPostField('redirect_uri', $this->exod_app->getRedirectUri());
 		$exodCurl->post();
 
 		$this->response->loadFromResponse($exodCurl->getResponseBody());

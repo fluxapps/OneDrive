@@ -53,15 +53,23 @@ class ilOneDrive extends ilCloudPlugin {
 		$exodBearerToken = $this->getTokenObject();
 		$inst = ilOneDrivePlugin::getInstance()->getExodApp($exodBearerToken);
 
-		if (!$inst->isTokenValid()) {
-			global $ilUser;
-			if ($ilUser->getId() == $this->getOwnerId()) {
-				$inst->checkAndRefreshToken();
-			} else {
-				throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, 'Der Ordner kann zur Zeit nur vom Besitzer geöffnet werden.');
-			}
-		}
-		return $inst;
+        if (!$inst->isTokenValid()) {
+            if (!$inst->checkAndRefreshToken()) {
+                global $DIC;
+                if ($DIC->user()->getId() == $this->getOwnerId()) {
+                    if ($this->getCloudModulObject()->getAuthComplete()) {
+                        $this->getCloudModulObject()->setAuthComplete(false);
+                        $this->getCloudModulObject()->update();
+                        throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, 'Authentifizierung fehlgeschlagen. Bitte laden Sie die Seite erneut, um an die Authentifizierungsstelle weitergeleitet zu werden.');
+                    }
+                    return $inst;
+                } else {
+                    throw new ilCloudException(ilCloudException::AUTHENTICATION_FAILED, 'Der Ordner kann zur Zeit nur vom Besitzer geöffnet werden.');
+
+                }
+            }
+        }
+        return $inst;
 	}
 
 

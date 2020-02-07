@@ -33,7 +33,8 @@ class exodClientBusiness extends exodClientBase {
      *
      * @return string
      * @throws ilCloudException
-     */public function receivePathFromId($root_id) {
+     */
+    public function receivePathFromId($root_id) {
         $this->setRequestType(self::REQ_TYPE_GET);
         $ressource = $this->getExodApp()->getRessource() . '/drive/items/' . $root_id;
         $this->setRessource($ressource);
