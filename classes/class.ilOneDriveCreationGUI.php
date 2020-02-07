@@ -71,4 +71,5 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 
 		$obj->setRootFolder($root_folder);
 	}
+
 }
