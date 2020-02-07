@@ -140,9 +140,15 @@ abstract class exodApp {
 	 * @throws Exception
 	 */
 	public function checkAndRefreshToken() {
-		if ($this->getExodBearerToken()->refresh($this->getExodAuth())) {
-			return true;
+		try {
+			if ($this->getExodBearerToken()->refresh($this->getExodAuth())) {
+				return true;
+			}
+		} catch (Exception $e) {
+			$this->getExodBearerToken()->reset();
+			$this->getExodBearerToken()->store();
 		}
+
 
 		return false;
 	}

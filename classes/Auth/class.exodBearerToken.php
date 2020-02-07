@@ -193,4 +193,15 @@ class exodBearerToken extends ActiveRecord {
 	public function setValidThrough($valid_through) {
 		$this->valid_through = $valid_through;
 	}
+
+
+    /**
+     * reset token data
+     */
+    public function reset()
+    {
+        $this->setValidThrough(0);
+        $this->setRefreshToken('');
+        $this->setAccessToken('');
+    }
 }
