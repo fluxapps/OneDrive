@@ -1,6 +1,6 @@
 ILIAS Plugin for OneDrive Business
 ----------------------------------
-##Installation
+## Installation
 Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Modules/Cloud/CloudHook/
@@ -8,6 +8,14 @@ cd Customizing/global/plugins/Modules/Cloud/CloudHook/
 git clone https://github.com/studer-raimann/OneDrive.git
 ```
 As ILIAS administrator go to "Administration->Plugins" and install/activate the plugin.
+
+## Configuration in Microsoft Azure
+To use the plugin, a new "App Registration" must be configured in your Azure "Active Directory". As 
+"Redirect URI", enter the following (replace [your-ilias-url] with the url of your ILIAS installation): 
+
+https://[your-ilias-url]/Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/redirect.php
+
+Then enter the necessary Data from the registered app in the plugin's configuration.
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests
