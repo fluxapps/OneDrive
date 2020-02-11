@@ -46,4 +46,5 @@ email_mapping_hook_path#:#Pfad zur Klasse
 email_mapping_hook_class#:#Klassenname
 email_mapping_hook_class_info#:#Muss 'OneDriveEmailBuilderInterface' implementieren
 msg_name_already_exists#:#Eine Datei mit diesem Namen existiert bereits.
+msg_illegal_characters#:#Der angegebene Name darf keine unzulässigen Zeichen enthalten.
 msg_rename_failed#:#Umbenennen fehlgeschlagen

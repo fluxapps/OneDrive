@@ -45,5 +45,6 @@ email_mapping_hook_info#:#Use an own implemented class to build the Office 365 u
 email_mapping_hook_path#:#Path to class
 email_mapping_hook_class#:#Classname
 email_mapping_hook_class_info#:#Must implement 'OneDriveEmailBuilderInterface'
-msg_name_already_exists#:#The specified item name already exists.
+msg_name_already_exists#:#The provided name cannot contain any illegal characters.
+msg_illegal_characters#:#Der angegebene Name darf keine unzulässigen Zeichen enthalten.
 msg_rename_failed#:#Renaming failed
