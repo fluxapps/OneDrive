@@ -11,6 +11,7 @@ class ilOneDriveException extends ilCloudException
 
     const ERROR_NAME_ALREADY_EXISTS = 'nameAlreadyExists';
 
+    const MSG_ILLEGAL_CHARACTERS = 'The provided name cannot contain any illegal characters.';
 
     /**
      * @param stdClass $error
@@ -23,7 +24,12 @@ class ilOneDriveException extends ilCloudException
             case self::ERROR_NAME_ALREADY_EXISTS:
                 return new self(self::RENAME_FAILED, ilOneDrivePlugin::getInstance()->txt('msg_name_already_exists'));
             default:
-                return new self(self::UNKNONW_EXCEPTION, $error->message);
+                switch ($error->message) {
+                    case self::MSG_ILLEGAL_CHARACTERS:
+                        return new self(self::RENAME_FAILED, ilOneDrivePlugin::getInstance()->txt('msg_illegal_characters'));
+                    default:
+                        return new self(self::UNKNONW_EXCEPTION, $error->message);
+                }
         }
     }
 
