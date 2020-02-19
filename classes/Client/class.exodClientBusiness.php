@@ -13,6 +13,26 @@ require_once('class.exodPath.php');
 class exodClientBusiness extends exodClientBase {
 
     /**
+     * @return bool
+     */
+    public function hasConnection()
+    {
+        $this->setRequestType(self::REQ_TYPE_GET);
+        $ressource = $this->getExodApp()->getRessource();
+        $this->setRessource($ressource);
+        try {
+            $response = $this->getResponseJsonDecoded();
+            if (!$response->error) {
+                return true;
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+
+    }
+
+    /**
      * @param $folder_id
      *
      * @return exodFile[]|exodFolder[]

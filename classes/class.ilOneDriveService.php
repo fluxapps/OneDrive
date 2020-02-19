@@ -41,7 +41,7 @@ class ilOneDriveService extends ilCloudPluginService {
      * @throws Exception
      */
 	public function authService($callback_url = "") {
-	    if ($this->getPluginObject()->getTokenObject()->isValid() || $this->getApp()) {
+	    if (($this->getPluginObject()->getTokenObject()->isValid() || $this->getApp()) && $this->getClient()->hasConnection()) {
 	        global $DIC;
 	        $this->afterAuthService();
 	        $DIC->ctrl()->redirectToURL(htmlspecialchars_decode($callback_url));

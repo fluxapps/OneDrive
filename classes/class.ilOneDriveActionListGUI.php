@@ -34,6 +34,10 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      */
     protected function checkHasAction()
     {
+        global $DIC;
+        if ($DIC->access()->checkAccess('write', '', $_GET['ref_id']) ) {
+            return true;
+        }
         // Check if this is a file that can be opened in Office Online
         if (!$this->node->getIsDir() && $this->checkOpenInOfficePerm()) {
             $file = $this->fetchExoFileByNodeId($this->node->getId());
@@ -50,7 +54,6 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      */
     protected function addItemsBefore()
     {
-        global $DIC;
         $access = new ilObjCloudAccess();
         $obj_id = $this->getPluginObject()->getObjId();
         $ref_id = array_shift(ilObject::_getAllReferences($obj_id));
