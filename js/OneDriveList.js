@@ -60,7 +60,9 @@ function OneDriveList(url_rename) {
             }
             if(data.success)
             {
-                il.CloudFileList.showCurrent(true, callback, data);
+                perm_link = $("#current_perma_link").val();
+                console.log(perm_link);
+                window.location.replace(perm_link);            
             }
             else
             {
