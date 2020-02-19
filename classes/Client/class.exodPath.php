@@ -59,7 +59,7 @@ class exodPath {
         global $DIC;
         if (strpbrk($basename, implode('', self::$preserved_chars))) {
             $error_msg = $DIC->language()->txt(ilOneDrivePlugin::getInstance()->getPrefix() . "_err_unsupported_chars");
-            throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, '<b>' . $error_msg . '</b> '
+            throw new ilCloudException(ilCloudException::FOLDER_CREATION_FAILED, $error_msg
                 . htmlentities(implode(' ', self::$preserved_chars)));
         }
 
