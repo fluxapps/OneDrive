@@ -33,8 +33,11 @@ class ilOneDriveFileTreeGUI extends ilCloudPluginFileTreeGUI
         // Folder with content
         if ($node->getIsDir()) {
             if ($node->getIconPath() == "") {
-                //				$item->setVariable("SRC_ICON", "./Modules/Cloud/templates/images/icon_folder_b.png");
+                $item->setCurrentBlock('icon_link_s');
+                $item->setVariable('ICON_HREF', $this->getLinkToFolder($node));
+                $item->parseCurrentBlock();
                 $item->setVariable("SRC_ICON", ilUtil::getImagePath('icon_dcl_fold.svg'));
+                $item->touchBlock('icon_link_e');
             }
             $item->setVariable("TXT_TITLE_LINKED", $this->basenameify($node->getPath()));
             $item->setVariable("HREF_TITLE_LINKED", $this->getLinkToFolder($node));
