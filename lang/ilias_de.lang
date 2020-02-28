@@ -2,11 +2,11 @@
 OneDrive#:#OneDrive
 add_new_base_folder#:#Basis-Ordner
 add_new_custom_base_folder#:#Ordner selber wählen
-add_new_custom_base_folder_info#:#Der Pfad zum angezeigten Ordner kann selber gewählt werden. Wenn der eingegebene Ordner bereits besteht, wird dessen Inhalt hier in ILIAS angezeigt, andernfalls wird er erstellt.
+add_new_custom_base_folder_info#:#Der Pfad zum angezeigten Ordner kann individuell gewählt werden. Wenn der eingegebene Ordner bereits existiert, wird dessen Inhalt hier in ILIAS angezeigt, andernfalls wird er erstellt.
 add_new_custom_base_folder_input#:#Ordnername
 add_new_custom_base_folder_input_info#:#Mit führendem /
-add_new_default_base_folder#:#Hauptverzeichnis
-add_new_default_base_folder_info#:#Es wird im Ordner ILIASCloud auf OneDrive ein Unterordner erstellt. Als Namen wird der weiter oben eingefügte Titel genommen. Wenn der Ordner bereits existiert, wird dessen Inhalt in ILIAS angezeigt.
+add_new_default_base_folder#:#Hauptordner
+add_new_default_base_folder_info#:#Auf Ihrem OneDrive wird innerhalb des Ordners ILIASCloud ein Unterordner erstellt. Der Titel oben ist identisch mit dem Namen des Unterordners. Wenn der Ordner bereits existiert, wird dessen Inhalt in ILIAS angezeigt.
 app_secret#:#App-Secret
 asl_open_msoffice#:#In Office Online öffnen
 cld_cld_cldh_exod_asl_open_msoffice#:#In Office Online öffnen
