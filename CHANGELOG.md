@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.1.0]
+- Change: ILIAS 6 support
+- Change: dropped ILIAS 5.4 support
+
 ## [2.0.1]
 - Bugfix: fixed file download
 - Bugfix: creating root folder and subfolder at the same time didn't work
