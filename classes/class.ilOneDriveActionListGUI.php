@@ -56,9 +56,11 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
     {
         $access = new ilObjCloudAccess();
         $obj_id = $this->getPluginObject()->getObjId();
-        $ref_id = array_shift(ilObject::_getAllReferences($obj_id));
+        $references = ilObject::_getAllReferences($obj_id);
+        $ref_id = array_shift($references);
         if ($access->_checkAccess('', 'edit_settings', $ref_id, $obj_id)) {
-            $title = end(explode('/', $this->node->getPath()));
+            $path_parts = explode('/', $this->node->getPath());
+            $title = end($path_parts);
             $this->selection_list->addItem(
                 ilOneDrivePlugin::getInstance()->txt('asl_rename'),
                 'rn',
@@ -164,13 +166,12 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      */
     protected function rename()
     {
-        global $DIC;
         $response = new stdClass();
         // TODO: access check
         $form = $this->buildForm();
         if (!$form->checkInput()) {
             $response->success = false;
-            $response->message = $DIC->ui()->mainTemplate()->getMessageHTML($this->txt('msg_invalid_input'), "failure");
+            $response->message = ilUtil::getSystemMessageHTML($this->txt('msg_invalid_input'), "failure");
             echo json_encode($response);
             exit;
         }
@@ -186,16 +187,16 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         try {
             $this->getService()->getClient()->renameItemById($id, $title);
 
-            $response->message = $DIC->ui()->mainTemplate()->getMessageHTML($this->txt("msg_renamed"), "success");
+            $response->message = ilUtil::getSystemMessageHTML($this->txt("msg_renamed"), "success");
             $response->success = true;
         } catch (Exception $e) {
-            $response->message = $DIC->ui()->mainTemplate()->getMessageHTML($e->getMessage(), "failure");
+            $response->message = ilUtil::getSystemMessageHTML($e->getMessage(), "failure");
         }
 
         $response->id = $id;
         $response->title = $title;
 
-        echo "<script language='javascript' type='text/javascript'>window.parent.il.OneDriveList.afterRenamed(" . json_encode($response)
+        echo "<script type='text/javascript'>window.parent.il.OneDriveList.afterRenamed(" . json_encode($response)
             . ");</script>";
         exit;
     }

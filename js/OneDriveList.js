@@ -44,7 +44,6 @@ function OneDriveList(url_rename) {
         this.clicked_rename = false;
         if (data.success || data.status == "cancel") {
             var callback = function (self, data) {
-                console.log(data.id);
                 $("#cld_rename").remove();
                 il.CloudFileList.showItemCreationList();
 
@@ -61,8 +60,7 @@ function OneDriveList(url_rename) {
             if(data.success)
             {
                 perm_link = $("#current_perma_link").val();
-                console.log(perm_link);
-                window.location.replace(perm_link);            
+                window.location.replace(perm_link);
             }
             else
             {
