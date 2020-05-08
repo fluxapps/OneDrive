@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.2.0]
+- Feature: (globally) configurable info message (usage information)
+
 ## [2.1.0]
 - Change: ILIAS 6 support
 - Change: dropped ILIAS 5.4 support
