@@ -45,6 +45,8 @@ email_mapping_hook_info#:#Use an own implemented class to build the Office 365 u
 email_mapping_hook_path#:#Path to class
 email_mapping_hook_class#:#Classname
 email_mapping_hook_class_info#:#Must implement 'OneDriveEmailBuilderInterface'
+info_message#:#Usage Information
+info_message_info#:#This message will be shown when creating a new OneDrive object and in the "Info" tab of created objects.
 msg_name_already_exists#:#A file with the same name already exists.
 msg_illegal_characters#:#The provided name cannot contain any illegal characters.
 msg_leading_or_trailing_spaces#:#The provided name cannot contain leading, or trailing, spaces.

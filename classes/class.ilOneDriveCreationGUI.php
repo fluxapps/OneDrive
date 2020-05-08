@@ -21,6 +21,9 @@ class ilOneDriveCreationGUI extends ilCloudPluginCreationGUI {
 	 * @param ilRadioOption $option
 	 */
 	public function initPluginCreationFormSection(ilRadioOption $option) {
+	    if ($message = $this->getAdminConfigObject()->getValue(exodConfig::F_INFO_MESSAGE)) {
+	        ilUtil::sendInfo($message);
+        }
 		//		$option->setInfo($this->txt('create_info1') . '</br>' . $this->txt('create_info2') . $this->getAdminConfigObject()->getAppName()
 		//			. $this->txt('create_info3'));
 		$sub_selection = new ilRadioGroupInputGUI($this->txt('base_folder'), self::F_BASE_FOLDER);

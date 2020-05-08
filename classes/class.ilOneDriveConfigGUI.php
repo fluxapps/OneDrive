@@ -11,6 +11,7 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
 
 	const IL_CHECKBOX_INPUT_GUI = 'ilCheckboxInputGUI';
 	const IL_TEXT_INPUT_GUI = 'ilTextInputGUI';
+	const IL_TEXTAREA_INPUT_GUI = 'ilTextAreaInputGUI';
 	const IL_NUMBER_INPUT_GUI = 'ilNumberInputGUI';
 	const IL_SELECT_INPUT_GUI = 'ilSelectInputGUI';
 
@@ -88,6 +89,11 @@ class ilOneDriveConfigGUI extends ilCloudPluginConfigGUI {
                     ),
                 ),
             ),
+			exodConfig::F_INFO_MESSAGE => array(
+                'type'        => self::IL_TEXTAREA_INPUT_GUI,
+                'info'        => exodConfig::F_INFO_MESSAGE . '_info',
+                'subelements' => null,
+        ),
 		);
 	}
 

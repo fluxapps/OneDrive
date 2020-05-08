@@ -45,6 +45,8 @@ email_mapping_hook_info#:#Aktiviert die Verwendung einer eigens implementierten 
 email_mapping_hook_path#:#Pfad zur Klasse
 email_mapping_hook_class#:#Klassenname
 email_mapping_hook_class_info#:#Muss 'OneDriveEmailBuilderInterface' implementieren
+info_message#:#Nutzungsinformation
+info_message_info#:#Die hier angegebene Meldung wird beim Erstellen von OneDrive-Objekten, sowie im Reiter "Info" von erstellten Objekten angezeigt.
 msg_name_already_exists#:#Eine Datei mit diesem Namen existiert bereits.
 msg_illegal_characters#:#Der angegebene Name darf keine unzulässigen Zeichen enthalten.
 msg_leading_or_trailing_spaces#:#Der angegebene Name darf keine führenden oder nachgestellten Leerzeichen enthalten.

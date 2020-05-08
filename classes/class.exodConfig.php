@@ -26,6 +26,7 @@ class exodConfig extends ilCloudPluginConfig {
 	const F_EMAIL_MAPPING_HOOK_ACTIVE = 'email_mapping_hook';
 	const F_EMAIL_MAPPING_HOOK_PATH = 'path';
 	const F_EMAIL_MAPPING_HOOK_CLASS = 'class';
+	const F_INFO_MESSAGE = 'info_message';
 
 
 	/**
@@ -39,19 +40,19 @@ class exodConfig extends ilCloudPluginConfig {
 	 */
 	public function checkComplete() {
 		if (!$this->getClientType()) {
-			throw new ilCloudException(- 1, 'Configuration of OneDrive inclomplete. Please contact your system administrator');
+			throw new ilCloudException(- 1, 'Configuration of OneDrive incomplete. Please contact your system administrator.');
 		}
 		switch ($this->getClientType()) {
 			case exodApp::TYPE_BUSINESS:
 				if (!$this->getClientId() || !$this->getClientSecret() || !$this->getTenantName()
 				    || !$this->getTentantId()
 				) {
-					throw new ilCloudException(- 1, 'Configuration of OneDrive inclomplete. Please contact your system administrator');
+					throw new ilCloudException(- 1, 'Configuration of OneDrive incomplete. Please contact your system administrator.');
 				}
 				break;
 			case exodApp::TYPE_PUBLIC:
 				if (!$this->getClientId() || !$this->getClientSecret()) {
-					throw new ilCloudException(- 1, 'Configuration of OneDrive inclomplete. Please contact your system administrator');
+					throw new ilCloudException(- 1, 'Configuration of OneDrive incomplete. Please contact your system administrator.');
 				}
 				break;
 		}
