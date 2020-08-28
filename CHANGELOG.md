@@ -1,6 +1,6 @@
 # Changelog
 
-## [x]
+## [2.2.1]
 - Fix Docker-ILIAS log
 
 ## [2.2.0]
