@@ -1,5 +1,8 @@
 # Changelog
 
+## [x]
+- Fix Docker-ILIAS log
+
 ## [2.2.0]
 - Feature: (globally) configurable info message (usage information)
 
