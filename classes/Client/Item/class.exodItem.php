@@ -87,7 +87,7 @@ abstract class exodItem {
 					break;
 				case 'parent_reference':
 					$this->setPath($v->path);
-					continue;
+					continue 2;
 			}
 
 			if (property_exists(get_class($this), $internal_key)) {
