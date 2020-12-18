@@ -35,7 +35,7 @@ class exodToken extends ActiveRecord
      *
      * @db_has_field        true
      * @db_fieldtype        text
-     * @db_length           2000
+     * @db_length           4000
      */
     public $access_token;
     /**
@@ -43,7 +43,7 @@ class exodToken extends ActiveRecord
      *
      * @db_has_field        true
      * @db_fieldtype        text
-     * @db_length           2000
+     * @db_length           4000
      */
     public $refresh_token;
     /**

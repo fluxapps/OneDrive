@@ -107,3 +107,23 @@ if ($ilDB->tableColumnExists('cld_cldh_exod_props', 'access_token')) {
 	$ilDB->dropTableColumn('cld_cldh_exod_props', 'validation_user_id');
 }
 ?>
+<#7>
+<?php
+global $DIC;
+$DIC->database()->modifyTableColumn(
+    'cld_cldh_exod_token',
+    'access_token',
+    [
+        'type'   => 'text',
+        'length' => 4000,
+    ]
+);
+$DIC->database()->modifyTableColumn(
+    'cld_cldh_exod_token',
+    'refresh_token',
+    [
+        'type'   => 'text',
+        'length' => 4000,
+    ]
+);
+?>

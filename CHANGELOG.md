@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.2.2]
+- Fix: 'invalid_token' bug (access tokens too long)
+
 ## [2.2.1]
 - Fix Docker-ILIAS log
 
