@@ -9,8 +9,6 @@ add_new_default_base_folder#:#Main folder
 add_new_default_base_folder_info#:#A subfolder will be added inside ILIASCloud on your OneDrive. The name of the folder will be the title above. If the folder already exists, the content will be shown here.
 app_secret#:#App-Name
 asl_open_msoffice#:#Open in Office Online
-cld_cld_cldh_exod_asl_open_msoffice#:#Open in Office Online
-cld_cldh_exod_asl_open_msoffice#:#Open in Office Online
 asl_rename#:#Rename
 client_id#:#Client-ID
 client_secret#:#Client-Secret

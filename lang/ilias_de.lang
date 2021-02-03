@@ -9,8 +9,6 @@ add_new_default_base_folder#:#Hauptordner
 add_new_default_base_folder_info#:#Auf Ihrem OneDrive wird innerhalb des Ordners ILIASCloud ein Unterordner erstellt. Der Titel oben ist identisch mit dem Namen des Unterordners. Wenn der Ordner bereits existiert, wird dessen Inhalt in ILIAS angezeigt.
 app_secret#:#App-Secret
 asl_open_msoffice#:#In Office Online öffnen
-cld_cld_cldh_exod_asl_open_msoffice#:#In Office Online öffnen
-cld_cldh_exod_asl_open_msoffice#:#In Office Online öffnen
 asl_rename#:#Umbenennen
 client_id#:#Client-ID
 client_secret#:#Client-Secret
