@@ -58,14 +58,14 @@ $ilDB->manipulate(
 ?>
 <#4>
 <?php
-//Adding a new Permission ("Open in Office Online")
+//Adding a new Permission ("Open in Online Editor")
 require_once("./Services/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
 $cld_type_id = ilDBUpdateNewObjectType::getObjectTypeId('cld');
 
 if ($cld_type_id) {
-    $open_ms_office = ilDBUpdateNewObjectType::addCustomRBACOperation(ilOneDrivePlugin::getInstance()->getPrefix() . '_asl_open_msoffice', 'open ms office', 'object', 280);
-    if ($open_ms_office) {
-        ilDBUpdateNewObjectType::addRBACOperation($cld_type_id, $open_ms_office);
+    $open_online_editor = ilDBUpdateNewObjectType::addCustomRBACOperation('edit_in_online_editor', 'edit in online editor', 'object', 280);
+    if ($open_online_editor) {
+        ilDBUpdateNewObjectType::addRBACOperation($cld_type_id, $open_online_editor);
     }
 }
 ?>
@@ -126,4 +126,18 @@ $DIC->database()->modifyTableColumn(
         'length' => 4000,
     ]
 );
+?>
+<#8>
+<?php
+// rename rbac operation
+global $DIC;
+$query = $DIC->database()->query('SELECT * FROM rbac_operations WHERE operation = "cld_cldh_exod_asl_open_msoffice"');
+if ($res = $DIC->database()->fetchAssoc($query)) {
+    require_once("./Services/Migration/DBUpdate_3560/classes/class.ilDBUpdateNewObjectType.php");
+    if (ilDBUpdateNewObjectType::getCustomRBACOperationId('edit_in_online_editor')) {
+        $DIC->database()->query('DELETE FROM rbac_operations WHERE ops_id = ' . $res['ops_id']);
+    } else {
+        $DIC->database()->query('UPDATE rbac_operations SET operation = "edit_in_online_editor", description = "edit in online editor" WHERE ops_id = ' . $res['ops_id']);
+    }
+}
 ?>

@@ -1,5 +1,8 @@
 # Changelog
 
+## [2.2.3]
+- Change: changed Office-Online permission to general 'Edit in online editor' (shared with other cloud plugins) - **might require an ILIAS language reload**
+
 ## [2.2.2]
 - Fix: 'invalid_token' bug (access tokens too long)
 
