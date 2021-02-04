@@ -123,10 +123,9 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         global $DIC;
         $user = $DIC->user();
         $user_id = $user->getId();
-        $perm = ilOneDrivePlugin::getInstance()->getPrefix() . '_asl_open_msoffice';
         $ref_id = $_GET["ref_id"];
 
-        return $DIC->access()->checkAccessOfUser($user_id, $perm, "", $ref_id);
+        return $DIC->access()->checkAccessOfUser($user_id, 'edit_in_online_editor', "", $ref_id);
     }
 
 
