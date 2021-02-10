@@ -54,7 +54,7 @@ class EventLogEntryAR extends ActiveRecord
      * @con_is_notnull   true
      * @con_length       64
      */
-    protected $object_name;
+    protected $path;
     /**
      * @var ObjectType
      * @con_is_unique    true
@@ -64,15 +64,6 @@ class EventLogEntryAR extends ActiveRecord
      * @con_length       64
      */
     protected $object_type;
-    /**
-     * @var string
-     * @con_is_unique    true
-     * @con_has_field    true
-     * @con_fieldtype    text
-     * @con_is_notnull   true
-     * @con_length       512
-     */
-    protected $parent;
     /**
      * @var array
      * @con_is_unique  true
@@ -125,17 +116,17 @@ class EventLogEntryAR extends ActiveRecord
     /**
      * @return string
      */
-    public function getObjectName() : string
+    public function getPath() : string
     {
-        return $this->object_name;
+        return $this->path;
     }
 
     /**
-     * @param string $object_name
+     * @param string $path
      */
-    public function setObjectName(string $object_name)
+    public function setPath(string $path)
     {
-        $this->object_name = $object_name;
+        $this->path = $path;
     }
 
     /**
@@ -152,22 +143,6 @@ class EventLogEntryAR extends ActiveRecord
     public function setObjectType(ObjectType $object_type)
     {
         $this->object_type = $object_type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getParent() : string
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param string $parent
-     */
-    public function setParent(string $parent)
-    {
-        $this->parent = $parent;
     }
 
     /**

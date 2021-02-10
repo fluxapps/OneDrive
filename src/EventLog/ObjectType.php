@@ -2,6 +2,9 @@
 namespace srag\Plugins\OneDrive\EventLog;
 
 use ilCloudException;
+use exodItem;
+use exodFile;
+use exodFolder;
 
 /**
  * Class ObjectType
@@ -46,12 +49,28 @@ class ObjectType
      * @return ObjectType
      * @throws ilCloudException
      */
-    public static function fromValue(string $type)
+    public static function fromValue(string $type) : self
     {
         if (!in_array($type, self::$types)) {
             throw new ilCloudException('OneDrive EventLog: unknown object type "' . $type . '"');
         }
         return new self($type);
+    }
+
+    /**
+     * @param exodItem $item
+     * @return static
+     * @throws ilCloudException
+     */
+    public static function fromExodItem(exodItem $item) : self
+    {
+        if ($item instanceof exodFile) {
+            return self::file();
+        }
+        if ($item instanceof exodFolder) {
+            return self::folder();
+        }
+        throw new ilCloudException('OneDrive EventLog: unknown item type "' . get_class($item) . '"');
     }
 
     public function value() : string

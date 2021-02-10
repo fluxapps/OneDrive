@@ -79,7 +79,13 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
 
     protected function afterUpload()
     {
-        // TODO: event logging
+        global $DIC;
+        $name = filter_input(INPUT_POST, 'filename', FILTER_SANITIZE_STRING);
+        $parent_id = $_SESSION["cld_folder_id"];
+        EventLogger::logUploadComplete(
+            $DIC->user()->getId(),
+            ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name
+        );
     }
 
     protected function asyncGetResumableUploadUrl()
@@ -99,8 +105,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         }
         EventLogger::logUploadStarted(
             $DIC->user()->getId(),
-            $name,
-            ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath()
+            ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name
         );
         http_response_code(200);
         echo $upload_url->toJson();

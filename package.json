@@ -14,7 +14,6 @@
     "url": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLONEDRIVE"
   },
   "dependencies": {
-    "@mux/upchunk": "^2.2.0",
     "blueimp-file-upload": "^10.31.0"
   },
   "private": true

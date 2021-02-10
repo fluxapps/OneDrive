@@ -1,4 +1,8 @@
 <?php
+
+use srag\Plugins\OneDrive\EventLog\EventLogger;
+use srag\Plugins\OneDrive\EventLog\ObjectType;
+
 require_once('./Modules/Cloud/classes/class.ilCloudPluginActionListGUI.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/Item/class.exodItemCache.php');
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/class.ilOneDrivePlugin.php');
@@ -165,6 +169,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
      */
     protected function rename()
     {
+        global $DIC;
         $response = new stdClass();
         // TODO: access check
         $form = $this->buildForm();
@@ -178,14 +183,19 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         $id = filter_input(INPUT_GET, self::GET_ID, FILTER_SANITIZE_STRING);
         $title = $form->getInput(self::POST_TITLE);
 
-        $exoFile = exodItemCache::get($id);
-        if ($exoFile instanceof exodFile) {
-            $title = exodFile::formatRename($title, $exoFile->getName());
+        $exoItem = exodItemCache::get($id);
+        if ($exoItem instanceof exodFile) {
+            $title = exodFile::formatRename($title, $exoItem->getName());
         }
 
         try {
             $this->getService()->getClient()->renameItemById($id, $title);
-
+            EventLogger::logObjectRenamed(
+                $DIC->user()->getId(),
+                $exoItem->getPath(),
+                $title,
+                ObjectType::fromExodItem($exoItem)
+            );
             $response->message = ilUtil::getSystemMessageHTML($this->txt("msg_renamed"), "success");
             $response->success = true;
         } catch (Exception $e) {

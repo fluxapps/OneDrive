@@ -9,78 +9,69 @@ class EventLogger
 {
     public static function logUploadStarted(
         int $user_id,
-        string $file_name,
-        string $parent
+        string $file_path,
     ) {
         self::log(
             $user_id,
             EventType::uploadStarted(),
-            $file_name,
+            $file_path,
             ObjectType::file(),
-            $parent,
             []
         );
     }
     
     public static function logUploadComplete(
         int $user_id,
-        string $file_name,
-        string $parent
+        string $file_path
     ) {
         self::log(
             $user_id,
             EventType::uploadComplete(),
-            $file_name,
+            $file_path,
             ObjectType::file(),
-            $parent,
             []
         );
     }
     
     public static function logUploadAborted(
         int $user_id,
-        string $file_name,
+        string $file_path,
         string $parent
     ) {
         self::log(
             $user_id,
             EventType::uploadAborted(),
-            $file_name,
+            $file_path,
             ObjectType::file(),
-            $parent,
             []
         );
     }
     
     public static function logObjectDeleted(
         int $user_id,
-        string $object_name,
-        ObjectType $object_type,
-        string $parent
+        string $object_path,
+        ObjectType $object_type
     ) {
         self::log(
             $user_id,
             EventType::uploadAborted(),
-            $object_name,
+            $object_path,
             $object_type,
-            $parent,
             []
         );
     }
     
     public static function logObjectRenamed(
         int $user_id,
-        string $object_name_old,
+        string $object_path_old,
         string $object_name_new,
-        ObjectType $object_type,
-        string $parent
+        ObjectType $object_type
     ) {
         self::log(
             $user_id,
             EventType::uploadAborted(),
-            $object_name_old,
+            $object_path_old,
             $object_type,
-            $parent,
             ['new_name' => $object_name_new]
         );
     }
@@ -88,18 +79,16 @@ class EventLogger
     protected static function log(
         int $user_id,
         EventType $event_type,
-        string $object_name,
+        string $object_path,
         ObjectType $object_type,
-        string $parent,
         array $additional_data
     ) {
         $entry = new EventLogEntryAR();
         $entry->setTimestamp(date('Y-m-d H:i:s', time()));
         $entry->setEventType($event_type);
         $entry->setUserId($user_id);
-        $entry->setObjectName($object_name);
+        $entry->setPath($object_path);
         $entry->setObjectType($object_type);
-        $entry->setParent($parent);
         $entry->setAdditionalData($additional_data);
         $entry->create();
     }
