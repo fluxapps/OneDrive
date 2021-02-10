@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'OneDriveEmailBuilderFactory' => $baseDir . '/classes/Auth/Mapping/OneDriveEmailBuilderFactory.php',
     'OneDriveEmailBuilderInterface' => $baseDir . '/classes/Auth/Mapping/OneDriveEmailBuilderInterface.php',
+    'ResumableUploadUrlDTO' => $baseDir . '/classes/Util/ResumableUploadUrlDTO.php',
     'SingletonTrait' => $baseDir . '/classes/Util/SingletonTrait.php',
     'StdOneDriveEmailBuilder' => $baseDir . '/classes/Auth/Mapping/StdOneDriveEmailBuilder.php',
     'exodApp' => $baseDir . '/classes/App/class.exodApp.php',
@@ -53,5 +54,10 @@ return array(
     'ilOneDriveService' => $baseDir . '/classes/class.ilOneDriveService.php',
     'ilOneDriveSettingsGUI' => $baseDir . '/classes/class.ilOneDriveSettingsGUI.php',
     'ilOneDriveUploadGUI' => $baseDir . '/classes/class.ilOneDriveUploadGUI.php',
-    'srag\\Plugins\\OneDrive\\Input\\srChunkFileUploadInputGUI' => $baseDir . '/src/Input/srChunkFileUploadInputGUI.php',
+    'srag\\Plugins\\OneDrive\\EventLog\\EventLogEntryAR' => $baseDir . '/src/EventLog/EventLogEntryAR.php',
+    'srag\\Plugins\\OneDrive\\EventLog\\EventLogger' => $baseDir . '/src/EventLog/EventLogger.php',
+    'srag\\Plugins\\OneDrive\\EventLog\\EventType' => $baseDir . '/src/EventLog/EventType.php',
+    'srag\\Plugins\\OneDrive\\EventLog\\ObjectType' => $baseDir . '/src/EventLog/ObjectType.php',
+    'srag\\Plugins\\OneDrive\\Input\\srChunkedDirectFileUploadInputGUI' => $baseDir . '/src/Input/ChunkedFileUpload/srChunkedDirectFileUploadInputGUI.php',
+    'srag\\Plugins\\OneDrive\\Waiter\\Waiter' => $baseDir . '/src/Util/Waiter/Waiter.php',
 );

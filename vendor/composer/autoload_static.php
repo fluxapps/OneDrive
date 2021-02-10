@@ -23,6 +23,7 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
     public static $classMap = array (
         'OneDriveEmailBuilderFactory' => __DIR__ . '/../..' . '/classes/Auth/Mapping/OneDriveEmailBuilderFactory.php',
         'OneDriveEmailBuilderInterface' => __DIR__ . '/../..' . '/classes/Auth/Mapping/OneDriveEmailBuilderInterface.php',
+        'ResumableUploadUrlDTO' => __DIR__ . '/../..' . '/classes/Util/ResumableUploadUrlDTO.php',
         'SingletonTrait' => __DIR__ . '/../..' . '/classes/Util/SingletonTrait.php',
         'StdOneDriveEmailBuilder' => __DIR__ . '/../..' . '/classes/Auth/Mapping/StdOneDriveEmailBuilder.php',
         'exodApp' => __DIR__ . '/../..' . '/classes/App/class.exodApp.php',
@@ -68,7 +69,12 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         'ilOneDriveService' => __DIR__ . '/../..' . '/classes/class.ilOneDriveService.php',
         'ilOneDriveSettingsGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveSettingsGUI.php',
         'ilOneDriveUploadGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveUploadGUI.php',
-        'srag\\Plugins\\OneDrive\\Input\\srChunkFileUploadInputGUI' => __DIR__ . '/../..' . '/src/Input/srChunkFileUploadInputGUI.php',
+        'srag\\Plugins\\OneDrive\\EventLog\\EventLogEntryAR' => __DIR__ . '/../..' . '/src/EventLog/EventLogEntryAR.php',
+        'srag\\Plugins\\OneDrive\\EventLog\\EventLogger' => __DIR__ . '/../..' . '/src/EventLog/EventLogger.php',
+        'srag\\Plugins\\OneDrive\\EventLog\\EventType' => __DIR__ . '/../..' . '/src/EventLog/EventType.php',
+        'srag\\Plugins\\OneDrive\\EventLog\\ObjectType' => __DIR__ . '/../..' . '/src/EventLog/ObjectType.php',
+        'srag\\Plugins\\OneDrive\\Input\\srChunkedDirectFileUploadInputGUI' => __DIR__ . '/../..' . '/src/Input/ChunkedFileUpload/srChunkedDirectFileUploadInputGUI.php',
+        'srag\\Plugins\\OneDrive\\Waiter\\Waiter' => __DIR__ . '/../..' . '/src/Util/Waiter/Waiter.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
