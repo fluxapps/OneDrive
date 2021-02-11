@@ -4,6 +4,7 @@ namespace srag\Plugins\OneDrive\EventLog;
 
 use ActiveRecord;
 use ilCloudException;
+use stdClass;
 
 /**
  * Class EventLogEntry

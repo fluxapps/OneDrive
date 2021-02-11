@@ -45,6 +45,7 @@ return array(
     'ilOneDriveConfigGUI' => $baseDir . '/classes/class.ilOneDriveConfigGUI.php',
     'ilOneDriveCreateFolderGUI' => $baseDir . '/classes/class.ilOneDriveCreateFolderGUI.php',
     'ilOneDriveCreationGUI' => $baseDir . '/classes/class.ilOneDriveCreationGUI.php',
+    'ilOneDriveDeleteGUI' => $baseDir . '/classes/class.ilOneDriveDeleteGUI.php',
     'ilOneDriveException' => $baseDir . '/classes/Exception/ilOneDriveException.php',
     'ilOneDriveFileTreeGUI' => $baseDir . '/classes/class.ilOneDriveFileTreeGUI.php',
     'ilOneDriveHeaderActionGUI' => $baseDir . '/classes/class.ilOneDriveHeaderActionGUI.php',
@@ -58,6 +59,7 @@ return array(
     'srag\\Plugins\\OneDrive\\EventLog\\EventLogger' => $baseDir . '/src/EventLog/EventLogger.php',
     'srag\\Plugins\\OneDrive\\EventLog\\EventType' => $baseDir . '/src/EventLog/EventType.php',
     'srag\\Plugins\\OneDrive\\EventLog\\ObjectType' => $baseDir . '/src/EventLog/ObjectType.php',
+    'srag\\Plugins\\OneDrive\\EventLog\\UI\\EventLogTableUI' => $baseDir . '/src/EventLog/UI/EventLogTableUI.php',
     'srag\\Plugins\\OneDrive\\Input\\srChunkedDirectFileUploadInputGUI' => $baseDir . '/src/Input/ChunkedFileUpload/srChunkedDirectFileUploadInputGUI.php',
     'srag\\Plugins\\OneDrive\\Waiter\\Waiter' => $baseDir . '/src/Util/Waiter/Waiter.php',
 );

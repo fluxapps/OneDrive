@@ -60,6 +60,7 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         'ilOneDriveConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveConfigGUI.php',
         'ilOneDriveCreateFolderGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveCreateFolderGUI.php',
         'ilOneDriveCreationGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveCreationGUI.php',
+        'ilOneDriveDeleteGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveDeleteGUI.php',
         'ilOneDriveException' => __DIR__ . '/../..' . '/classes/Exception/ilOneDriveException.php',
         'ilOneDriveFileTreeGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveFileTreeGUI.php',
         'ilOneDriveHeaderActionGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveHeaderActionGUI.php',
@@ -73,6 +74,7 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         'srag\\Plugins\\OneDrive\\EventLog\\EventLogger' => __DIR__ . '/../..' . '/src/EventLog/EventLogger.php',
         'srag\\Plugins\\OneDrive\\EventLog\\EventType' => __DIR__ . '/../..' . '/src/EventLog/EventType.php',
         'srag\\Plugins\\OneDrive\\EventLog\\ObjectType' => __DIR__ . '/../..' . '/src/EventLog/ObjectType.php',
+        'srag\\Plugins\\OneDrive\\EventLog\\UI\\EventLogTableUI' => __DIR__ . '/../..' . '/src/EventLog/UI/EventLogTableUI.php',
         'srag\\Plugins\\OneDrive\\Input\\srChunkedDirectFileUploadInputGUI' => __DIR__ . '/../..' . '/src/Input/ChunkedFileUpload/srChunkedDirectFileUploadInputGUI.php',
         'srag\\Plugins\\OneDrive\\Waiter\\Waiter' => __DIR__ . '/../..' . '/src/Util/Waiter/Waiter.php',
     );

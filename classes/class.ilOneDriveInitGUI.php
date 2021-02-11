@@ -20,7 +20,7 @@ class ilOneDriveInitGUI extends ilCloudPluginInitGUI {
         $DIC->ui()->mainTemplate()->addJavaScript("./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/js/OneDriveList.js");
         srChunkedDirectFileUploadInputGUI::loadJavaScript($DIC->ui()->mainTemplate());
         $rename_url = $DIC->ctrl()->getLinkTargetByClass([ilObjCloudGUI::class, ilCloudPluginActionListGUI::class], ilOneDriveActionListGUI::CMD_INIT_RENAME, "", false, false);
-        $after_upload_url = $DIC->ctrl()->getLinkTargetByClass([ilObjCloudGUI::class, ilOneDriveUploadGUI::class], ilOneDriveUploadGUI::CMD_AFTER_UPLOAD, "", false, false);
+        $after_upload_url = $DIC->ctrl()->getLinkTargetByClass([ilObjCloudGUI::class, ilCloudPluginUploadGUI::class], ilOneDriveUploadGUI::CMD_AFTER_UPLOAD, "", false, false);
         $this->tpl_file_tree->setVariable(
             'PLUGIN_AFTER_CONTENT',
             '<script type="text/javascript">' .

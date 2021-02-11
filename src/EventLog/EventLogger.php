@@ -9,7 +9,7 @@ class EventLogger
 {
     public static function logUploadStarted(
         int $user_id,
-        string $file_path,
+        string $file_path
     ) {
         self::log(
             $user_id,
@@ -35,8 +35,7 @@ class EventLogger
     
     public static function logUploadAborted(
         int $user_id,
-        string $file_path,
-        string $parent
+        string $file_path
     ) {
         self::log(
             $user_id,
@@ -54,7 +53,7 @@ class EventLogger
     ) {
         self::log(
             $user_id,
-            EventType::uploadAborted(),
+            EventType::objectDeleted(),
             $object_path,
             $object_type,
             []
@@ -69,7 +68,7 @@ class EventLogger
     ) {
         self::log(
             $user_id,
-            EventType::uploadAborted(),
+            EventType::objectRenamed(),
             $object_path_old,
             $object_type,
             ['new_name' => $object_name_new]

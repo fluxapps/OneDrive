@@ -1,5 +1,7 @@
 <?php
 
+use srag\Plugins\OneDrive\EventLog\UI\EventLogTableUI;
+
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodPath.php');
 
 /**
@@ -101,7 +103,9 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
         global $DIC;
         $DIC->tabs()->activateTab('settings');
         $this->initSubtabs(self::SUBTAB_LOGS);
-
+        $DIC->ui()->mainTemplate()->setContent(
+            (new EventLogTableUI($DIC))->render()
+        );
     }
 
     protected function initSubtabs(string $active)
