@@ -42,7 +42,7 @@ class exodClientBusiness extends exodClientBase {
     {
         $this->setRequestType(self::REQ_TYPE_POST);
         $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $parent_id
-            . ':/' . $name . ':/oneDrive.createUploadSession');
+            . ':/' . rawurlencode($name) . ':/oneDrive.createUploadSession');
         $this->setPostfields([
             'item' => [
                 "@name.conflictBehavior" => "rename",
@@ -51,6 +51,9 @@ class exodClientBusiness extends exodClientBase {
         ]);
         $this->setRequestContentType(exodCurl::JSON);
         $response = $this->getResponseJsonDecoded();
+        if (is_null($response)) {
+            throw new ilCloudException('could not create upload session from OneDrive (empty response)');
+        }
         return ResumableUploadUrlDTO::fromStdClass($response);
     }
 

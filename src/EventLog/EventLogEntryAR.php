@@ -53,7 +53,7 @@ class EventLogEntryAR extends ActiveRecord
      * @con_has_field    true
      * @con_fieldtype    text
      * @con_is_notnull   true
-     * @con_length       64
+     * @con_length       512
      */
     protected $path;
     /**

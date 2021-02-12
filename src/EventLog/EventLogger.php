@@ -9,14 +9,15 @@ class EventLogger
 {
     public static function logUploadStarted(
         int $user_id,
-        string $file_path
+        string $file_path,
+        string $renamed_from = ''
     ) {
         self::log(
             $user_id,
             EventType::uploadStarted(),
             $file_path,
             ObjectType::file(),
-            []
+            $renamed_from ? ['renamed_from' => $renamed_from] : []
         );
     }
     
@@ -45,7 +46,21 @@ class EventLogger
             []
         );
     }
-    
+
+    public static function logUploadFailed(
+        int $user_id,
+        string $file_path,
+        string $message = ''
+    ) {
+        self::log(
+            $user_id,
+            EventType::uploadFailed(),
+            $file_path,
+            ObjectType::file(),
+            $message ? ['error_msg' => $message] : []
+        );
+    }
+
     public static function logObjectDeleted(
         int $user_id,
         string $object_path,

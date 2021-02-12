@@ -14,6 +14,7 @@ class EventType
     const UPLOAD_STARTED = 'upload_started';
     const UPLOAD_COMPLETE = 'upload_complete';
     const UPLOAD_ABORTED = 'upload_aborted';
+    const UPLOAD_FAILED = 'upload_failed';
     const OBJECT_DELETED = 'object_deleted';
     const OBJECT_RENAMED = 'object_renamed';
 
@@ -21,6 +22,7 @@ class EventType
         self::UPLOAD_STARTED,
         self::UPLOAD_COMPLETE,
         self::UPLOAD_ABORTED,
+        self::UPLOAD_FAILED,
         self::OBJECT_DELETED,
         self::OBJECT_RENAMED
     ];
@@ -49,6 +51,10 @@ class EventType
     public static function uploadAborted() : self
     {
         return new self(self::UPLOAD_ABORTED);
+    }
+    public static function uploadFailed() : self
+    {
+        return new self(self::UPLOAD_FAILED);
     }
     public static function objectDeleted() : self
     {

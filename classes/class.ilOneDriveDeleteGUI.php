@@ -6,6 +6,8 @@ use srag\Plugins\OneDrive\EventLog\ObjectType;
 /**
  * Class ilOneDriveDeleteGUI
  * @author Theodor Truffer <tt@studer-raimann.ch>
+ *
+ * @ilCtrl_IsCalledBy ilOneDriveDeleteGUI : ilObjCloudGUI
  */
 class ilOneDriveDeleteGUI extends ilCloudPluginDeleteGUI
 {
@@ -35,8 +37,16 @@ class ilOneDriveDeleteGUI extends ilCloudPluginDeleteGUI
                 $response->message = $tpl->getMessageHTML($e->getMessage(), "failure");
             }
         }
-        echo "<script language='javascript' type='text/javascript'>window.parent.il.CloudFileList.afterDeleteItem(" . ilJsonUtil::encode($response)
+        echo "<script type='text/javascript'>window.parent.il.CloudFileList.afterDeleteItem(" . ilJsonUtil::encode($response)
             . ");</script>";
-        exit;    }
+        exit;
+    }
+
+    public function initDeleteItem()
+    {
+        global $DIC;
+        parent::initDeleteItem();
+        $this->gui->setFormAction($DIC->ctrl()->getFormActionByClass(ilCloudPluginDeleteGUI::class));
+    }
 
 }

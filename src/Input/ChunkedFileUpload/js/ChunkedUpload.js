@@ -1,37 +1,42 @@
-initChunkedUpload = (input_id, form_id, url_fetch_upload_url, chunk_size, after_upload_callback) => {
+initChunkedUpload = (input_id, form_id, url_fetch_upload_url, chunk_size, after_upload_callback, url_upload_aborted, url_upload_failed) => {
   const file_picker = document.getElementById(input_id);
-  let upload_in_progress = false;
   $('#form_' + form_id).on('submit', (event) => {
-    console.log('start chunked upload');
     event.preventDefault();
     il.waiter.show();
-    upload_in_progress = true;
-
-    let reader = new FileReader();
     let file = file_picker.files[0];
+    this.file_in_progress = file;
+
+    // fetch upload url
     $.ajax({
       type: 'post',
       url: url_fetch_upload_url,
-      data: { name: file.name }
+      data: { filename: file.name }
     }).success((response) => {
       response = JSON.parse(response);
-      $('#' + input_id)
-      .on('fileuploaddone', (e, data) => {
+      let $input = $('#' + input_id);
+      // callback functions
+      $input.on('fileuploaddone', (e, data) => {
         il.waiter.hide();
-        upload_in_progress = false;
+        this.file_in_progress = undefined;
         if (typeof after_upload_callback !== 'undefined') {
           executeFunctionByName(after_upload_callback, window, file);
         }
       }).on('fileuploadprogress', (e, data) => {
-        il.waiter.setPercentage(data.loaded / data.total * 100);
+        il.waiter.setBytes(data.loaded, data.total);
       }).on('fileuploadfail', (e, data) => {
+        $.ajax({
+          type: 'post',
+          url: url_upload_failed,
+          data: { filename: file.name, message: e.errorThrown }
+        });
         il.waiter.hide();
-        upload_in_progress = false;
+        this.file_in_progress = undefined;
         alert('Error: ' + data.errorThrown)
       });
 
-      $('#' + input_id).fileupload();
-      $('#' + input_id).fileupload('send', {
+      // init chunked upload
+      $input.fileupload();
+      $input.fileupload('send', {
         files: file,
         url: response.uploadUrl,
         type: 'PUT',
@@ -40,18 +45,29 @@ initChunkedUpload = (input_id, form_id, url_fetch_upload_url, chunk_size, after_
       });
     }).fail((err) => {
       il.waiter.hide();
-      alert('Error: ' + err.message);
-      console.log(err.responseText);
+      const error_json = JSON.parse(err.responseText);
+      alert(error_json.error.message + "<br>Please contact an administrator.");
     });
-  })
+  });
+
+  // abort listener
   $(window).bind('beforeunload', () => {
-    if (upload_in_progress) {
-      // TODO: send abort
+    if (typeof this.file_in_progress !== 'undefined') {
       return 'Upload in progress. Are you sure you want to leave?';
     }
     return undefined;
   });
+  $(window).bind('unload', () => {
+    if (typeof this.file_in_progress !== 'undefined') {
+      $.ajax({
+        type: 'post',
+        url: url_upload_aborted,
+        data: { filename: this.file_in_progress.name }
+      });
+    }
+  })
 }
+
 
 function executeFunctionByName(functionName, context /*, args */) {
   var args = Array.prototype.slice.call(arguments, 2);

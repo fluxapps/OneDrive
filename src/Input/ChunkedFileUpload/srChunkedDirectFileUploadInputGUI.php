@@ -12,13 +12,25 @@ use srag\Plugins\OneDrive\Waiter\Waiter;
 
 /**
  * Class srChunkedDirectFileUploadInputGUI
+ *
  * This file input executes a chunked upload directly to an external url.
+ * It was designed for the OneDrive plugin and therefore for the OneDrive API. It should work with other
+ * chunk-upload-compatible APIs, though it might have to be adjusted a little. Also it does not yet work
+ * with other input fields in the same form.
+ *
+ * Workflow:
+ * - fetch target upload url via $url_fetch_upload_url (direct chunk-upload-compatible API url with no authentication)
+ * - upload files in chunks (PUT request with Content-Range Header)
+ * - on fail: POST $upload_failed_url with filename
+ * - on abort: POST $upload_aborted_url with filename
+ * - on complete: execute $after_upload_js_callback
+ *
  * @package srag\DIC\OneDrive\Plugin
  * @author  Theodor Truffer <tt@studer-raimann.ch>
  */
 class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
 {
-    const DEFAULT_CHUNK_SIZE = 327680 * 10;
+    const DEFAULT_CHUNK_SIZE = 327680 * 20;
     /**
      * @var ilTemplate
      */
@@ -46,6 +58,14 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
      * javascript callable
      */
     protected $after_upload_js_callback;
+    /**
+     * @var string
+     */
+    protected $upload_failed_url;
+    /**
+     * @var string
+     */
+    protected $upload_aborted_url;
 
     protected static $js_loaded = false;
 
@@ -64,7 +84,6 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
         $this->loadJavaScript($DIC->ui()->mainTemplate());
         $this->tpl = new ilTemplate(__DIR__ . '/html/tpl.chunked_upload.html', true, true);
         parent::__construct($a_title, "");
-
     }
 
     public static function loadJavaScript(ilTemplate $a_tpl, bool $force = false)
@@ -90,7 +109,9 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
             '"' . $this->form->getId() . '",' .
             '"' . $this->url_fetch_upload_url . '",' .
             '' . $this->chunk_size . ',' .
-            '"' . $this->getAfterUploadJsCallback() . '")';
+            '"' . $this->getAfterUploadJsCallback() . '",' .
+            '"' . $this->getUploadAbortedUrl() . '",' .
+            '"' . $this->getUploadFailedUrl() . '")';
     }
 
     public function render()
@@ -157,6 +178,38 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
     public function setAfterUploadJsCallback(string $after_upload_js_callback)
     {
         $this->after_upload_js_callback = $after_upload_js_callback;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadFailedUrl() : string
+    {
+        return $this->upload_failed_url;
+    }
+
+    /**
+     * @param string $upload_failed_url
+     */
+    public function setUploadFailedUrl(string $upload_failed_url)
+    {
+        $this->upload_failed_url = $upload_failed_url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadAbortedUrl() : string
+    {
+        return $this->upload_aborted_url;
+    }
+
+    /**
+     * @param string $upload_aborted_url
+     */
+    public function setUploadAbortedUrl(string $upload_aborted_url)
+    {
+        $this->upload_aborted_url = $upload_aborted_url;
     }
 
 }

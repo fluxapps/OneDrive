@@ -15,6 +15,19 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
 
     const CMD_AFTER_UPLOAD = 'afterUpload';
     const CMD_ASYNC_GET_RESUMABLE_UPLOAD_URL = 'asyncGetResumableUploadUrl';
+    const CMD_UPLOAD_ABORTED = 'uploadAborted';
+    const CMD_UPLOAD_FAILED = 'uploadFailed';
+
+    /**
+     * onedrive forbids some special chars which will be removed here
+     *
+     * @param $name
+     * @return string
+     */
+    protected function sanitizeFileName($name) : string
+    {
+        return str_replace(["/", "\\", "*", "<", ">", "?", ":", "|", "#", "%"], "-", $name);
+    }
 
     public function asyncUploadFile()
     {
@@ -44,10 +57,14 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         $file = new srChunkedDirectFileUploadInputGUI(
             $this->form,
             $this->getPluginHookObject(),
-            $DIC->ctrl()->getLinkTargetByClass(ilCloudPluginUploadGUI::class, self::CMD_ASYNC_GET_RESUMABLE_UPLOAD_URL, "", false, false),
+            $DIC->ctrl()->getLinkTargetByClass(ilCloudPluginUploadGUI::class, self::CMD_ASYNC_GET_RESUMABLE_UPLOAD_URL, "", true, false),
             $lng->txt("cld_upload_files")
         );
         $file->setAfterUploadJsCallback('il.OneDriveList.afterUpload');
+        $file->setUploadFailedUrl($DIC->ctrl()->getLinkTargetByClass(
+            ilCloudPluginUploadGUI::class, self::CMD_UPLOAD_FAILED, "", true, false));
+        $file->setUploadAbortedUrl($DIC->ctrl()->getLinkTargetByClass(
+            ilCloudPluginUploadGUI::class, self::CMD_UPLOAD_ABORTED, "", true, false));
         $file->setRequired(true);
         $this->form->addItem($file);
 
@@ -81,6 +98,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
     {
         global $DIC;
         $name = filter_input(INPUT_POST, 'filename', FILTER_SANITIZE_STRING);
+        $name = $this->sanitizeFileName($name);
         $parent_id = $_SESSION["cld_folder_id"];
         EventLogger::logUploadComplete(
             $DIC->user()->getId(),
@@ -95,21 +113,55 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
             echo $this->getJsonError(403, "Permission Denied.");
             exit;
         }
-        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+        $name = filter_input(INPUT_POST, 'filename', FILTER_SANITIZE_STRING);
+        $name_sanitized = $this->sanitizeFileName($name);
         $parent_id = $_SESSION["cld_folder_id"];
+        $file_path = ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name_sanitized;
         try {
-            $upload_url = $this->getService()->getClient()->getResumableUploadUrl($parent_id, $name);
+            $upload_url = $this->getService()->getClient()->getResumableUploadUrl($parent_id, $name_sanitized);
         } catch (ilCloudException $e) {
+            EventLogger::logUploadFailed(
+                $DIC->user()->getId(),
+                $file_path,
+                $e->getMessage()
+            );
             echo $this->getJsonError(500, $e->getMessage());
             exit;
         }
         EventLogger::logUploadStarted(
             $DIC->user()->getId(),
-            ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name
+            $file_path,
+            $name_sanitized === $name ? '' : $name
         );
         http_response_code(200);
         echo $upload_url->toJson();
         exit;
+    }
+
+    protected function uploadFailed()
+    {
+        global $DIC;
+        $name = filter_input(INPUT_POST, 'filename', FILTER_SANITIZE_STRING);
+        $message = filter_input(INPUT_POST, 'message', FILTER_SANITIZE_STRING);
+        $parent_id = $_SESSION["cld_folder_id"];
+        $file_path = ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name;
+        EventLogger::logUploadFailed(
+            $DIC->user()->getId(),
+            $file_path,
+            $message ?? ''
+        );
+    }
+
+    protected function uploadAborted()
+    {
+        global $DIC;
+        $name = filter_input(INPUT_POST, 'filename', FILTER_SANITIZE_STRING);
+        $parent_id = $_SESSION["cld_folder_id"];
+        $file_path = ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name;
+        EventLogger::logUploadAborted(
+            $DIC->user()->getId(),
+            $file_path
+        );
     }
 
     protected function getJsonError(int $status_code, string $message) : string

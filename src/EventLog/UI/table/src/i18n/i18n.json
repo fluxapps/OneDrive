@@ -3,6 +3,7 @@
     "translation": {
       "column": {
         "id": "ID",
+        "user": "Benutzername",
         "timestamp": "Timestamp",
         "name": "Name",
         "path": "Pfad",
@@ -14,6 +15,7 @@
         "upload_started": "Upload gestartet",
         "upload_aborted": "Upload abgebrochen",
         "upload_complete": "Upload abgeschlossen",
+        "upload_failed": "Upload fehlgeschlagen",
         "object_deleted": "Objekt gelöscht",
         "object_renamed": "Objekt umbenannt"
       },
@@ -22,7 +24,9 @@
         "folder": "Ordner"
       },
       "additional_data": {
-        "new_name": "neuer Titel"
+        "new_name": "Neuer Titel",
+        "renamed_from": "Ungültige Zeichen entfernt - Originaltitel",
+        "error_msg": "Fehlermeldung"
       }
     }
   },
@@ -31,6 +35,7 @@
       "test": "test",
       "column": {
         "id": "ID",
+        "user": "Username",
         "timestamp": "Timestamp",
         "name": "Name",
         "path": "Path",
@@ -42,6 +47,7 @@
         "upload_started": "upload started",
         "upload_aborted": "upload aborted",
         "upload_complete": "upload complete",
+        "upload_failed": "upload failed",
         "object_deleted": "object deleted",
         "object_renamed": "object renamed"
       },
@@ -50,7 +56,9 @@
         "folder": "folder"
       },
       "additional_data": {
-        "new_name": "new name"
+        "new_name": "new name",
+        "renamed_from": "removed illegal characters - original title",
+        "error_msg": "error message"
       }
     }
   }
