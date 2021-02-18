@@ -5,16 +5,17 @@ initChunkedUpload = (
   chunk_size,
   after_upload_callback,
   url_upload_aborted,
-  url_upload_failed, submit_cmd
+  url_upload_failed,
+  submit_cmd
 ) => {
   let $submit_btn = $('input[name="cmd[' + submit_cmd + ']"]');
-  $submit_btn.prop("disabled", true);
+  $submit_btn.prop("disabled", !!submit_cmd);
   let $input = $('#' + input_id);
   let $filename_input = $('#' + input_id + '_filename');
   $input.on('change', () => {
     let file = $input.get(0).files[0];
     $filename_input.val(file ? file.name : '');
-    $submit_btn.prop("disabled", !file);
+    $submit_btn.prop("disabled", (!file && !!submit_cmd));
   });
   $('#form_' + form_id).on('submit', (event) => {
     let file = $input.get(0).files[0];

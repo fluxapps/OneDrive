@@ -117,7 +117,7 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
             '"' . $this->getAfterUploadJsCallback() . '",' .
             '"' . $this->getUploadAbortedUrl() . '",' .
             '"' . $this->getUploadFailedUrl() . '",' .
-            '"' . $this->submit_cmd . '")';
+            '"' . ($this->getRequired() ? $this->submit_cmd : "") . '")';
     }
 
     public function render()
