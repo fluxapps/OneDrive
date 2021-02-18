@@ -1,0 +1,49 @@
+{
+  "name": "srag/librariesnamespacechanger",
+  "description": "Change namespace of libraries to plugin namespace",
+  "version": "0.15.0",
+  "extra": {
+    "generate_plugin_readme_template": "SRAG_LIBRARY",
+    "long_description_template": "src/LONG_DESCRIPTION.md"
+  },
+  "type": "library",
+  "keywords": [
+    "changer",
+    "libraries",
+    "namespace"
+  ],
+  "homepage": "https://github.com/studer-raimann/LibrariesNamespaceChanger",
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "studer + raimann ag - Team Custom 1",
+      "email": "support-custom1@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LNAMESPACECHANGER"
+  },
+  "require": {
+    "php": ">=7.0"
+  },
+  "require-dev": {
+    "srag/generateplugininfoshelper": ">=0.1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "srag\\LibrariesNamespaceChanger\\": "src/"
+    }
+  },
+  "config": {
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "sort-packages": true
+  },
+  "scripts": {
+    "generate-plugin-readme": [
+      "srag\\GeneratePluginInfosHelper\\GeneratePluginReadme::generatePluginReadme"
+    ]
+  }
+}

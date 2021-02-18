@@ -7,4 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'srag\\Plugins\\OneDrive\\' => array($baseDir . '/src'),
+    'srag\\LibrariesNamespaceChanger\\' => array($vendorDir . '/srag/librariesnamespacechanger/src'),
+    'srag\\DIC\\' => array($vendorDir . '/srag/dic/src'),
+    'srag\\CustomInputGUIs\\' => array($vendorDir . '/srag/custominputguis/src'),
 );
