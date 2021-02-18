@@ -103,6 +103,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         $parent_id = $_SESSION["cld_folder_id"];
         EventLogger::logUploadComplete(
             $DIC->user()->getId(),
+            $this->getPluginObject()->getObjId(),
             ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name
         );
     }
@@ -123,6 +124,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         } catch (ilCloudException $e) {
             EventLogger::logUploadFailed(
                 $DIC->user()->getId(),
+                $this->getPluginObject()->getObjId(),
                 $file_path,
                 $e->getMessage()
             );
@@ -131,6 +133,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         }
         EventLogger::logUploadStarted(
             $DIC->user()->getId(),
+            $this->getPluginObject()->getObjId(),
             $file_path,
             $name_sanitized === $name ? '' : $name
         );
@@ -148,6 +151,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         $file_path = ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name;
         EventLogger::logUploadFailed(
             $DIC->user()->getId(),
+            $this->getPluginObject()->getObjId(),
             $file_path,
             $message ?? ''
         );
@@ -161,6 +165,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
         $file_path = ilCloudFileTree::getFileTreeFromSession()->getNodeFromId($parent_id)->getPath() . '/' . $name;
         EventLogger::logUploadAborted(
             $DIC->user()->getId(),
+            $this->getPluginObject()->getObjId(),
             $file_path
         );
     }

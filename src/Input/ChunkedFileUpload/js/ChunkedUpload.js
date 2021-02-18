@@ -6,6 +6,7 @@ initChunkedUpload = (
   after_upload_callback,
   url_upload_aborted,
   url_upload_failed,
+  url_session_refresh,
   submit_cmd
 ) => {
   let $submit_btn = $('input[name="cmd[' + submit_cmd + ']"]');
@@ -17,7 +18,7 @@ initChunkedUpload = (
     $filename_input.val(file ? file.name : '');
     $submit_btn.prop("disabled", (!file && !!submit_cmd));
   });
-  $('#form_' + form_id).on('submit', (event) => {
+  $submit_btn.on('click', (event) => {
     let file = $input.get(0).files[0];
     event.preventDefault();
     il.waiter.show();
@@ -33,6 +34,7 @@ initChunkedUpload = (
       response = JSON.parse(response);
       // callback functions
       $input.on('fileuploaddone', (e, data) => {
+        clearInterval(this.session_refresher);
         il.waiter.hide();
         this.file_in_progress = undefined;
         if (typeof after_upload_callback !== 'undefined') {
@@ -41,6 +43,7 @@ initChunkedUpload = (
       }).on('fileuploadprogress', (e, data) => {
         il.waiter.setBytes(data.loaded, data.total);
       }).on('fileuploadfail', (e, data) => {
+        clearInterval(this.session_refresher);
         $.ajax({
           type: 'post',
           url: url_upload_failed,
@@ -51,6 +54,11 @@ initChunkedUpload = (
         alert('Error: ' + data.errorThrown)
       });
 
+      // session refresher every 5 minutes for very long uploads 300000
+      this.session_refresher = setInterval(() => {
+        $.get(url_session_refresh);
+      }, 300000);
+
       // init chunked upload
       $input.fileupload('send', {
         files: file,
@@ -60,6 +68,7 @@ initChunkedUpload = (
         multipart: false
       });
     }).fail((err) => {
+      clearInterval(this.session_refresher);
       il.waiter.hide();
       const error_json = JSON.parse(err.responseText);
       alert(error_json.error.message + "<br>Please contact an administrator.");

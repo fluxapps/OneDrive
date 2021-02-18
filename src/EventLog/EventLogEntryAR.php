@@ -24,6 +24,14 @@ class EventLogEntryAR extends ActiveRecord
      */
     protected $id;
     /**
+     * @var int
+     * @con_has_field    true
+     * @con_fieldtype    integer
+     * @con_is_notnull   true
+     * @con_length       8
+     */
+    protected $obj_id;
+    /**
      * @var string
      * @con_has_field    true
      * @con_fieldtype    timestamp
@@ -80,6 +88,22 @@ class EventLogEntryAR extends ActiveRecord
     public function getId() : int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getObjId() : int
+    {
+        return $this->obj_id;
+    }
+
+    /**
+     * @param int $obj_id
+     */
+    public function setObjId(int $obj_id)
+    {
+        $this->obj_id = $obj_id;
     }
 
     /**

@@ -30,6 +30,7 @@ class ilOneDriveDeleteGUI extends ilCloudPluginDeleteGUI
                 $response->success = true;
                 EventLogger::logObjectDeleted(
                     $DIC->user()->getId(),
+                    $this->getPluginHookObject()->getId(),
                     $node->getPath(),
                     ObjectType::fromExodItem(exodItemCache::get($node->getId()))
                 );

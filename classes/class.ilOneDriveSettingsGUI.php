@@ -104,7 +104,7 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
         $DIC->tabs()->activateTab('settings');
         $this->initSubtabs(self::SUBTAB_LOGS);
         $DIC->ui()->mainTemplate()->setContent(
-            (new EventLogTableUI($DIC))->render()
+            (new EventLogTableUI($DIC, $this->getPluginObject()->getObjId()))->render()
         );
     }
 

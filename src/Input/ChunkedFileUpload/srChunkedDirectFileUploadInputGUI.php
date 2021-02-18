@@ -30,7 +30,7 @@ use srag\Plugins\OneDrive\Waiter\Waiter;
  */
 class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
 {
-    const DEFAULT_CHUNK_SIZE = 327680 * 20;
+    const DEFAULT_CHUNK_SIZE = 327680 * 40;
     /**
      * @var string
      */
@@ -103,6 +103,11 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
         }
     }
 
+    protected function getSessionRefreshUrl()
+    {
+        return ILIAS_HTTP_PATH;
+    }
+
     /**
      * @param string $input_id
      * @return string
@@ -117,10 +122,11 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
             '"' . $this->getAfterUploadJsCallback() . '",' .
             '"' . $this->getUploadAbortedUrl() . '",' .
             '"' . $this->getUploadFailedUrl() . '",' .
+            '"' . $this->getSessionRefreshUrl() . '",' .
             '"' . ($this->getRequired() ? $this->submit_cmd : "") . '")';
     }
 
-    public function render()
+    public function render() : string
     {
         $tmp_id = ilUtil::randomhash();
         $this->tpl->setVariable('LABEL', $this->dic->language()->txt('select_file'));

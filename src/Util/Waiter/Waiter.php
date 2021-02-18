@@ -33,21 +33,21 @@ class Waiter
 
     /**
      * @param string     $type
-     * @param ilTemplate $ilTemplate
      */
-    public static final function init(string $type, ilTemplate $ilTemplate)/*: void*/
+    public static final function init(string $type)/*: void*/
     {
+        global $DIC;
         if (self::$init === false) {
             self::$init = true;
 
             $dir = __DIR__;
             $dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
 
-            $ilTemplate->addCss($dir . "/css/waiter.css");
+            $DIC->ui()->mainTemplate()->addCss($dir . "/css/waiter.css");
 
-            $ilTemplate->addJavaScript($dir . "/js/waiter.min.js");
+            $DIC->ui()->mainTemplate()->addJavaScript($dir . "/js/waiter.min.js");
         }
 
-        $ilTemplate->addOnLoadCode('il.waiter.init("' . $type . '");');
+        $DIC->ui()->mainTemplate()->addOnLoadCode('il.waiter.init("' . $type . '");');
     }
 }

@@ -13,6 +13,10 @@ use ilObjUser;
 class EventLogTableUI
 {
     /**
+     * @var int
+     */
+    private $obj_id;
+    /**
      * @var Container
      */
     protected $dic;
@@ -20,10 +24,12 @@ class EventLogTableUI
     /**
      * EventLogTableUI constructor.
      * @param Container $dic
+     * @param int       $obj_id
      */
-    public function __construct(Container $dic)
+    public function __construct(Container $dic, int $obj_id)
     {
         $this->dic = $dic;
+        $this->obj_id = $obj_id;
     }
 
     public function render() : string
@@ -37,7 +43,7 @@ class EventLogTableUI
                    : $value[1];
             });
             return $arrayForConnector;
-        }, EventLogEntryAR::get());
+        }, EventLogEntryAR::where(['obj_id' => $this->obj_id])->get());
         return '<script type="application/javascript">' .
             'window.exod_log_data = ' . json_encode(array_values($data)) . ';' .
             'window.lng = "' . $this->dic->language()->getLangKey() . '";' .

@@ -21,7 +21,9 @@
     "issues": "https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_PLONEDRIVE"
   },
   "require": {
-    "php": ">=7.0"
+    "php": ">=7.0",
+    "srag/custominputguis": ">=0.1.0",
+    "srag/librariesnamespacechanger": ">=0.1.0"
   },
   "autoload": {
     "psr-4": {
@@ -37,5 +39,8 @@
     "sort-packages": true
   },
   "scripts": {
+    "pre-autoload-dump": [
+      "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces"
+    ]
   }
 }
