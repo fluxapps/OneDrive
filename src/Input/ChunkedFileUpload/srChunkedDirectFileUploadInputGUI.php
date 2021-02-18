@@ -32,6 +32,10 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
 {
     const DEFAULT_CHUNK_SIZE = 327680 * 20;
     /**
+     * @var string
+     */
+    protected $submit_cmd;
+    /**
      * @var ilTemplate
      */
     protected $tpl;
@@ -74,7 +78,7 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
      */
     protected $dic;
 
-    public function __construct(ilPropertyFormGUI $ilPropertyFormGUI, ilPlugin $plugin, string $url_fetch_upload_url, $a_title = "")
+    public function __construct(ilPropertyFormGUI $ilPropertyFormGUI, ilPlugin $plugin, string $url_fetch_upload_url, string $submit_cmd, $a_title = "")
     {
         global $DIC;
         $this->dic = $DIC;
@@ -84,6 +88,7 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
         $this->loadJavaScript($DIC->ui()->mainTemplate());
         $this->tpl = new ilTemplate(__DIR__ . '/html/tpl.chunked_upload.html', true, true);
         parent::__construct($a_title, "");
+        $this->submit_cmd = $submit_cmd;
     }
 
     public static function loadJavaScript(ilTemplate $a_tpl, bool $force = false)
@@ -111,12 +116,14 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
             '' . $this->chunk_size . ',' .
             '"' . $this->getAfterUploadJsCallback() . '",' .
             '"' . $this->getUploadAbortedUrl() . '",' .
-            '"' . $this->getUploadFailedUrl() . '")';
+            '"' . $this->getUploadFailedUrl() . '",' .
+            '"' . $this->submit_cmd . '")';
     }
 
     public function render()
     {
         $tmp_id = ilUtil::randomhash();
+        $this->tpl->setVariable('LABEL', $this->dic->language()->txt('select_file'));
         $this->tpl->setVariable('ID', $tmp_id);
         return $this->tpl->get() .
             '<script type="text/javascript">' . $this->getOnloadCode($tmp_id) . '</script>';

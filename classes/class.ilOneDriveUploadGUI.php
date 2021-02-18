@@ -58,6 +58,7 @@ class ilOneDriveUploadGUI extends ilCloudPluginUploadGUI
             $this->form,
             $this->getPluginHookObject(),
             $DIC->ctrl()->getLinkTargetByClass(ilCloudPluginUploadGUI::class, self::CMD_ASYNC_GET_RESUMABLE_UPLOAD_URL, "", true, false),
+            "uploadFiles",
             $lng->txt("cld_upload_files")
         );
         $file->setAfterUploadJsCallback('il.OneDriveList.afterUpload');

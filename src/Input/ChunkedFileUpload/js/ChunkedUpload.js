@@ -1,11 +1,28 @@
-initChunkedUpload = (input_id, form_id, url_fetch_upload_url, chunk_size, after_upload_callback, url_upload_aborted, url_upload_failed) => {
-  const file_picker = document.getElementById(input_id);
+initChunkedUpload = (
+  input_id,
+  form_id,
+  url_fetch_upload_url,
+  chunk_size,
+  after_upload_callback,
+  url_upload_aborted,
+  url_upload_failed, submit_cmd
+) => {
+  let $submit_btn = $('input[name="cmd[' + submit_cmd + ']"]');
+  $submit_btn.prop("disabled", true);
+  let $input = $('#' + input_id);
+  let $filename_input = $('#' + input_id + '_filename');
+  $input.on('change', () => {
+    let file = $input.get(0).files[0];
+    $filename_input.val(file ? file.name : '');
+    $submit_btn.prop("disabled", !file);
+  });
   $('#form_' + form_id).on('submit', (event) => {
+    let file = $input.get(0).files[0];
     event.preventDefault();
     il.waiter.show();
-    let file = file_picker.files[0];
     this.file_in_progress = file;
 
+    $input.fileupload();
     // fetch upload url
     $.ajax({
       type: 'post',
@@ -13,7 +30,6 @@ initChunkedUpload = (input_id, form_id, url_fetch_upload_url, chunk_size, after_
       data: { filename: file.name }
     }).success((response) => {
       response = JSON.parse(response);
-      let $input = $('#' + input_id);
       // callback functions
       $input.on('fileuploaddone', (e, data) => {
         il.waiter.hide();
@@ -35,7 +51,6 @@ initChunkedUpload = (input_id, form_id, url_fetch_upload_url, chunk_size, after_
       });
 
       // init chunked upload
-      $input.fileupload();
       $input.fileupload('send', {
         files: file,
         url: response.uploadUrl,
@@ -73,7 +88,7 @@ function executeFunctionByName(functionName, context /*, args */) {
   var args = Array.prototype.slice.call(arguments, 2);
   var namespaces = functionName.split(".");
   var func = namespaces.pop();
-  for(var i = 0; i < namespaces.length; i++) {
+  for (var i = 0; i < namespaces.length; i++) {
     context = context[namespaces[i]];
   }
   return context[func].apply(context, args);

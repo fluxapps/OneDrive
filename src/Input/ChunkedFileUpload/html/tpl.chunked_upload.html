@@ -1,1 +1,9 @@
-<input type="file" id="{ID}"/>
+<div class="input-group">
+    <span class="input-group-btn">
+        <span class="btn btn-default btn-file">
+            {LABEL}
+            <input type="file" class="form-control-file" id="{ID}">
+        </span>
+    </span>
+    <input type="text" class="form-control" readonly="readonly" id="{ID}_filename"/>
+</div>
