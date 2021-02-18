@@ -8,7 +8,7 @@ use ilPlugin;
 use ilTemplate;
 use ilUtil;
 use ilPropertyFormGUI;
-use srag\Plugins\OneDrive\Waiter\Waiter;
+use srag\CustomInputGUIs\OneDrive\Waiter\Waiter;
 
 /**
  * Class srChunkedDirectFileUploadInputGUI
