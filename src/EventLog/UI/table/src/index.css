@@ -12,10 +12,6 @@ code {
     monospace;
 }
 
-.MuiInputBase-root {
-  font-size: 1em;
-}
-
 .MuiInput-root {
   min-height: 27px;
 }
@@ -23,3 +19,8 @@ code {
 .MuiTypography-h6 {
   font-size: 2.25rem;
 }
+
+.MuiTableCell-root, .MuiTypography-caption, .MuiInputBase-root {
+  font-size: 1em;
+}
+
