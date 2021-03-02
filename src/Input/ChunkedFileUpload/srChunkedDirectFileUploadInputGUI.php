@@ -9,6 +9,7 @@ use ilTemplate;
 use ilUtil;
 use ilPropertyFormGUI;
 use srag\CustomInputGUIs\OneDrive\Waiter\Waiter;
+use ilGlobalPageTemplate;
 
 /**
  * Class srChunkedDirectFileUploadInputGUI
@@ -91,7 +92,11 @@ class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
         $this->submit_cmd = $submit_cmd;
     }
 
-    public static function loadJavaScript(ilTemplate $a_tpl, bool $force = false)
+    /**
+     * @param ilTemplate|ilGlobalPageTemplate $a_tpl
+     * @param bool $force
+     */
+    public static function loadJavaScript($a_tpl, bool $force = false)
     {
         if (!self::$js_loaded || $force) {
             Waiter::init(Waiter::TYPE_PERCENTAGE, $a_tpl);

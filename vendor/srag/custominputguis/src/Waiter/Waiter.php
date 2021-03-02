@@ -2,8 +2,8 @@
 
 namespace srag\CustomInputGUIs\OneDrive\Waiter;
 
-use ilTemplate;
 use srag\DIC\OneDrive\DICTrait;
+use ilGlobalPageTemplate;
 
 /**
  * Class Waiter
@@ -42,9 +42,9 @@ final class Waiter
 
     /**
      * @param string          $type
-     * @param ilTemplate|null $tpl
+     * @param ilGlobalPageTemplate|ilTemplate|null $tpl
      */
-    public static final function init(string $type, /*?*/ ilTemplate $tpl = null)/*: void*/
+    public static final function init(string $type, /*?ilGlobalPageTemplate*/ $tpl = null)/*: void*/
     {
         $tpl = $tpl ?? self::dic()->ui()->mainTemplate();
 
