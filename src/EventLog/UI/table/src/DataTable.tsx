@@ -1,6 +1,5 @@
 import React from "react";
-import {Table} from "antd";
-import "antd/dist/antd.css";
+import MaterialTable from 'material-table';
 import columns from "./Columns";
 import { withTranslation } from "react-i18next";
 
@@ -21,14 +20,19 @@ class DataTable extends React.Component<any, any> {
     }
 
     render() {
-        return (<Table dataSource={this.state.data} columns={columns(this.props.t)}/>);
+        return (<MaterialTable
+            title="Events"
+            data={this.state.data}
+            columns={columns(this.props.t)}
+            options={{filtering: true}}
+        />);
     }
 
     formatAdditionalData(additional_data: string) {
         let parsed = JSON.parse(additional_data);
         let string = '';
         Object.keys(parsed).map((key: string) => {
-           string += this.props.t("additional_data." + key) + ": " + parsed[key]
+            string += this.props.t("additional_data." + key) + ": " + parsed[key]
         });
         return string;
     }
