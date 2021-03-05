@@ -40,6 +40,7 @@ return array(
     'exodPathPublic' => $baseDir . '/classes/Client/class.exodPathPublic.php',
     'exodTenant' => $baseDir . '/classes/App/class.exodTenant.php',
     'exodToken' => $baseDir . '/classes/Auth/Token/class.exodToken.php',
+    'exodUtil' => $baseDir . '/classes/Util/exodUtil.php',
     'ilOneDrive' => $baseDir . '/classes/class.ilOneDrive.php',
     'ilOneDriveActionListGUI' => $baseDir . '/classes/class.ilOneDriveActionListGUI.php',
     'ilOneDriveConfigGUI' => $baseDir . '/classes/class.ilOneDriveConfigGUI.php',
@@ -137,5 +138,4 @@ return array(
     'srag\\Plugins\\OneDrive\\EventLog\\ObjectType' => $baseDir . '/src/EventLog/ObjectType.php',
     'srag\\Plugins\\OneDrive\\EventLog\\UI\\EventLogTableUI' => $baseDir . '/src/EventLog/UI/EventLogTableUI.php',
     'srag\\Plugins\\OneDrive\\Input\\srChunkedDirectFileUploadInputGUI' => $baseDir . '/src/Input/ChunkedFileUpload/srChunkedDirectFileUploadInputGUI.php',
-    'srag\\Plugins\\OneDrive\\Waiter\\Waiter' => $baseDir . '/src/Util/Waiter/Waiter.php',
 );
