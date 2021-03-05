@@ -34,6 +34,10 @@ https://[your-ilias-url]/Customizing/global/plugins/Modules/Cloud/CloudHook/OneD
 
 Then enter the necessary Data from the registered app in the plugin's configuration.
 
+#### Sharing Settings
+
+The plugin creates a sharing link with viewer permissions for created folders. Therefore, the OneDrive's (or Sharepoint) settings may have to be adjusted to allow sharing. To do that, open the OneDrive admin center and choose "Sharing" (should be at https://admin.onedrive.com/?v=SharingSettings). Look for "External Sharing" and set the regulator to "Anyone (Users can create shareable links that don't require sign-in)". 
+
 #### Permissions
 
 In the registered App, open the "API Permissions" and add the following permissions:
