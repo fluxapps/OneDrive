@@ -31,7 +31,7 @@ use ilGlobalPageTemplate;
  */
 class srChunkedDirectFileUploadInputGUI extends ilFormPropertyGUI
 {
-    const DEFAULT_CHUNK_SIZE = 327680 * 40;
+    const DEFAULT_CHUNK_SIZE = 327680 * 80;
     /**
      * @var string
      */
