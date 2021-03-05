@@ -26,7 +26,7 @@ class ilOneDriveDeleteGUI extends ilCloudPluginDeleteGUI
                 $file_tree = ilCloudFileTree::getFileTreeFromSession();
                 $node = $file_tree->getNodeFromId($_POST["id"]);
                 $file_tree->deleteFromService($node->getId());
-                $response->message = $tpl->getMessageHTML($lng->txt("cld_file_deleted"), "success");
+                $response->message = exodUtil::getSystemMessageHTML($lng->txt("cld_file_deleted"), "success");
                 $response->success = true;
                 EventLogger::logObjectDeleted(
                     $DIC->user()->getId(),
@@ -35,7 +35,7 @@ class ilOneDriveDeleteGUI extends ilCloudPluginDeleteGUI
                     ObjectType::fromExodItem(exodItemCache::get($node->getId()))
                 );
             } catch (Exception $e) {
-                $response->message = $tpl->getMessageHTML($e->getMessage(), "failure");
+                $response->message = exodUtil::getSystemMessageHTML($e->getMessage(), "failure");
             }
         }
         echo "<script type='text/javascript'>window.parent.il.CloudFileList.afterDeleteItem(" . ilJsonUtil::encode($response)
