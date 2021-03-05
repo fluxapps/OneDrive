@@ -68,7 +68,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
             $this->selection_list->addItem(
                 ilOneDrivePlugin::getInstance()->txt('asl_rename'),
                 'rn',
-                "javascript:il.OneDriveList.rename(\'" . $this->node->getId() . "\', \'" . $title . "\');"
+                "javascript:il.OneDriveList.rename('" . $this->node->getId() . "', '" . $title . "');"
             );
         }
     }
@@ -175,7 +175,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
         $form = $this->buildForm();
         if (!$form->checkInput()) {
             $response->success = false;
-            $response->message = $DIC->ui()->mainTemplate()->getMessageHTML($this->txt('msg_invalid_input'), "failure");
+            $response->message = exodUtil::getSystemMessageHTML($this->txt('msg_invalid_input'), "failure");
             echo json_encode($response);
             exit;
         }
@@ -197,7 +197,7 @@ class ilOneDriveActionListGUI extends ilCloudPluginActionListGUI {
                 $title,
                 ObjectType::fromExodItem($exoItem)
             );
-            $response->message = $DIC->ui()->mainTemplate()->getMessageHTML($this->txt("msg_renamed"), "success");
+            $response->message = exodUtil::getSystemMessageHTML($this->txt("msg_renamed"), "success");
             $response->success = true;
         } catch (Exception $e) {
             $response->message = $DIC->ui()->mainTemplate()->getMessageHTML($e->getMessage(), "failure");

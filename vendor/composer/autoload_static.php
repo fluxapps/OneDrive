@@ -11,8 +11,8 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         array (
             'srag\\Plugins\\OneDrive\\' => 22,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
-            'srag\\CustomInputGUIs\\' => 21,
+            'srag\\DIC\\OneDrive\\' => 18,
+            'srag\\CustomInputGUIs\\OneDrive\\' => 30,
         ),
     );
 
@@ -25,11 +25,11 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\OneDrive\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\' => 
+        'srag\\CustomInputGUIs\\OneDrive\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
@@ -70,6 +70,7 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         'exodPathPublic' => __DIR__ . '/../..' . '/classes/Client/class.exodPathPublic.php',
         'exodTenant' => __DIR__ . '/../..' . '/classes/App/class.exodTenant.php',
         'exodToken' => __DIR__ . '/../..' . '/classes/Auth/Token/class.exodToken.php',
+        'exodUtil' => __DIR__ . '/../..' . '/classes/Util/exodUtil.php',
         'ilOneDrive' => __DIR__ . '/../..' . '/classes/class.ilOneDrive.php',
         'ilOneDriveActionListGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveActionListGUI.php',
         'ilOneDriveConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilOneDriveConfigGUI.php',
@@ -167,7 +168,6 @@ class ComposerStaticInit7f6a7ab5d2d9578777e239f27ff216d2
         'srag\\Plugins\\OneDrive\\EventLog\\ObjectType' => __DIR__ . '/../..' . '/src/EventLog/ObjectType.php',
         'srag\\Plugins\\OneDrive\\EventLog\\UI\\EventLogTableUI' => __DIR__ . '/../..' . '/src/EventLog/UI/EventLogTableUI.php',
         'srag\\Plugins\\OneDrive\\Input\\srChunkedDirectFileUploadInputGUI' => __DIR__ . '/../..' . '/src/Input/ChunkedFileUpload/srChunkedDirectFileUploadInputGUI.php',
-        'srag\\Plugins\\OneDrive\\Waiter\\Waiter' => __DIR__ . '/../..' . '/src/Util/Waiter/Waiter.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
