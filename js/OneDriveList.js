@@ -1,5 +1,7 @@
-function OneDriveList(url_rename) {
+function OneDriveList(url_rename, url_after_upload) {
     var url_rename = url_rename;
+
+    var url_after_upload = url_after_upload;
 
     var clicked_rename = false;
 
@@ -80,6 +82,14 @@ function OneDriveList(url_rename) {
             display_message = false;
             il.CloudFileList.hideProgressAnimation();
         }
+    }
 
+    this.afterUpload = (file) => {
+        $.ajax({
+            type: 'POST',
+            url: url_after_upload,
+            data: { filename: file.name }
+        });
+        il.CloudFileList.afterUpload('chunked upload successfully completed');
     }
 }

@@ -1,7 +1,5 @@
 <?php
-require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/App/class.exodApp.php');
-require_once('./Modules/Cloud/classes/class.ilCloudPluginConfigGUI.php');
-
+require_once('Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/vendor/autoload.php');
 /**
  * Class ilOneDriveConfigGUI
  *

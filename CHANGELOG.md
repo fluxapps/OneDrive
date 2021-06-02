@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.3.0]
+- Feature: new file upload (chunked, no upload limit & upload progress bar)
+- Feature: log events for upload/rename/delete and display them in a table (tab "Settings", subtab "Events")
+
 ## [2.2.3]
 - Change: changed Office-Online permission to general 'Edit in online editor' (shared with other cloud plugins) - **might require an ILIAS language reload**
 

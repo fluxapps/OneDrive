@@ -33,6 +33,31 @@ class exodClientBusiness extends exodClientBase {
     }
 
     /**
+     * @param $parent_id
+     * @param $name
+     * @return ResumableUploadUrlDTO
+     * @throws ilCloudException
+     */
+    public function getResumableUploadUrl($parent_id, $name) : ResumableUploadUrlDTO
+    {
+        $this->setRequestType(self::REQ_TYPE_POST);
+        $this->setRessource($this->getExodApp()->getRessource() . '/drive/items/' . $parent_id
+            . ':/' . rawurlencode($name) . ':/oneDrive.createUploadSession');
+        $this->setPostfields([
+            'item' => [
+                "@name.conflictBehavior" => "rename",
+                "name" => $name
+            ]
+        ]);
+        $this->setRequestContentType(exodCurl::JSON);
+        $response = $this->getResponseJsonDecoded();
+        if (is_null($response)) {
+            throw new ilCloudException('could not create upload session from OneDrive (empty response)');
+        }
+        return ResumableUploadUrlDTO::fromStdClass($response);
+    }
+
+    /**
      * @param $folder_id
      *
      * @return exodFile[]|exodFolder[]

@@ -1,0 +1,65 @@
+{
+  "de": {
+    "translation": {
+      "column": {
+        "id": "ID",
+        "user": "Benutzername",
+        "timestamp": "Timestamp",
+        "name": "Name",
+        "path": "Pfad",
+        "object_type": "Objekttyp",
+        "additional_data": "Zusätzliche Informationen",
+        "event_type": "Ereignis"
+      },
+      "event_type": {
+        "upload_started": "Upload gestartet",
+        "upload_aborted": "Upload abgebrochen",
+        "upload_complete": "Upload abgeschlossen",
+        "upload_failed": "Upload fehlgeschlagen",
+        "object_deleted": "Objekt gelöscht",
+        "object_renamed": "Objekt umbenannt"
+      },
+      "object_type": {
+        "file": "Datei",
+        "folder": "Ordner"
+      },
+      "additional_data": {
+        "new_name": "Neuer Titel",
+        "renamed_from": "Ungültige Zeichen entfernt - Originaltitel",
+        "error_msg": "Fehlermeldung"
+      }
+    }
+  },
+  "en": {
+    "translation": {
+      "test": "test",
+      "column": {
+        "id": "ID",
+        "user": "Username",
+        "timestamp": "Timestamp",
+        "name": "Name",
+        "path": "Path",
+        "object_type": "Object Type",
+        "additional_data": "Additional Data",
+        "event_type": "Event"
+      },
+      "event_type": {
+        "upload_started": "upload started",
+        "upload_aborted": "upload aborted",
+        "upload_complete": "upload complete",
+        "upload_failed": "upload failed",
+        "object_deleted": "object deleted",
+        "object_renamed": "object renamed"
+      },
+      "object_type": {
+        "file": "file",
+        "folder": "folder"
+      },
+      "additional_data": {
+        "new_name": "new name",
+        "renamed_from": "removed illegal characters - original title",
+        "error_msg": "error message"
+      }
+    }
+  }
+}

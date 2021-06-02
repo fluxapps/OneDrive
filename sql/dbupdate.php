@@ -141,3 +141,7 @@ if ($res = $DIC->database()->fetchAssoc($query)) {
     }
 }
 ?>
+<#9>
+<?php
+srag\Plugins\OneDrive\EventLog\EventLogEntryAR::updateDB();
+?>

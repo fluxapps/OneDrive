@@ -1,5 +1,7 @@
 <?php
 
+use srag\Plugins\OneDrive\EventLog\UI\EventLogTableUI;
+
 require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/classes/Client/class.exodPath.php');
 
 /**
@@ -12,6 +14,9 @@ require_once('./Customizing/global/plugins/Modules/Cloud/CloudHook/OneDrive/clas
  * @ingroup           ModulesCloud
  */
 class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
+
+    const SUBTAB_GENERAL = 'general';
+    const SUBTAB_LOGS = 'logs';
 
 	/**
 	 * @var ilPropertyFormGUI
@@ -28,6 +33,7 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
     public function updateSettings() {
 		global $DIC;
 		$ilCtrl = $DIC['ilCtrl'];
+		$this->initSubtabs(self::SUBTAB_GENERAL);
 
 		try {
 			$this->initSettingsForm();
@@ -50,6 +56,8 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
         global $DIC;
         $ilCtrl = $DIC['ilCtrl'];
         $lng = $DIC['lng'];
+
+        $this->initSubtabs(self::SUBTAB_GENERAL);
 
         $cloud_object_changed = false;
 
@@ -88,6 +96,30 @@ class ilOneDriveSettingsGUI extends ilCloudPluginSettingsGUI {
         $item = $this->form->getItemByPostVar("root_folder");
         $item->setTitle($this->txt("root_folder"));
 
+    }
+
+    protected function showLogs()
+    {
+        global $DIC;
+        $DIC->tabs()->activateTab('settings');
+        $this->initSubtabs(self::SUBTAB_LOGS);
+        $DIC->ui()->mainTemplate()->setContent(
+            (new EventLogTableUI($DIC, $this->getPluginObject()->getObjId()))->render()
+        );
+    }
+
+    protected function initSubtabs(string $active)
+    {
+        global $DIC;
+        $DIC->tabs()->addSubTab(
+            self::SUBTAB_GENERAL,
+            $this->txt('subtab_' . self::SUBTAB_GENERAL),
+            $DIC->ctrl()->getLinkTargetByClass(parent::class, 'editSettings'));
+        $DIC->tabs()->addSubTab(
+            self::SUBTAB_LOGS,
+            $this->txt('subtab_' . self::SUBTAB_LOGS),
+            $DIC->ctrl()->getLinkTargetByClass(parent::class, 'showLogs'));
+        $DIC->tabs()->setSubTabActive($active);
     }
 
 
