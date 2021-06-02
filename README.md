@@ -10,8 +10,7 @@ Allows the connection of a OneDrive platform to ILIAS LMS through ILIAS' Cloud O
 
 ### Requirements
 
-* ILIAS 6.x
-* PHP >= 7.0
+* ILIAS 6.x / 7.x
 
 ### Installation
 

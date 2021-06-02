@@ -1,4 +1,6 @@
 # Changelog
+## [2.4.0]
+- Change: ILIAS 7 compatibility
 
 ## [2.3.0]
 - Feature: new file upload (chunked, no upload limit & upload progress bar)
