@@ -46,11 +46,8 @@ In the registered App, open the "API Permissions" and add the following permissi
     * MyFiles.Read
     * MyFiles.Write
 
-## Authors
+## Maintenance
+This is an OpenSource project by fluxlabs ag, support@fluxlabs.ch
 
-This is an OpenSource project by studer + raimann ag (https://studer-raimann.ch).
-
-## License
-
-This project is licensed under the GPL v3 License 
+This project is maintained by fluxlabs. 
 
